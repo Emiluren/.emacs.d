@@ -6,12 +6,7 @@
 
 ;; Enable melpa repository
 (add-to-list 'package-archives
-       '("melpa" . "https://melpa.org/packages/"))
-
-;; Enable stumpwm mode
-(add-to-list 'load-path "/usr/share/stumpwm/contrib/util/swm-emacs")
-(require 'stumpwm-mode)
-(setq stumpwm-shell-program "/usr/share/stumpwm/contrib/util/stumpish/stumpish")
+			 '("melpa" . "https://melpa.org/packages/"))
 
 ;; Disable menu, tool and scroll bars
 (menu-bar-mode -1)
@@ -32,15 +27,11 @@
 (require 'ido)
 (ido-mode t)
 
-(setq-default tab-width 4
-        show-trailing-whitespace t)
+(setq-default tab-width 4)
 
 ;; Some misc key bindings
 (global-set-key (kbd "<escape>") 'keyboard-quit)
 (global-set-key (kbd "C-x g") 'magit-status)
-
-;; Remove invalid environment variable set by stumpwm
-(setenv "SBCL_HOME")
 
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
@@ -54,8 +45,6 @@
     (setq parinfer-extensions
           '(defaults       ; should be included.
             pretty-parens  ; different paren styles for different modes.
-            evil           ; If you use Evil.
-            lispy          ; If you use Lispy. With this extension, you should install Lispy and do not enable lispy-mode directly.
             paredit        ; Introduce some paredit commands.
             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
             smart-yank))   ; Yank behavior depend on mode.
@@ -71,8 +60,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ido-enable-flex-matching t)
- '(package-selected-packages (quote (use-package parinfer magit nyan-mode cider slime))))
-(custom-set-faces)
+ '(package-selected-packages
+   (quote
+	(haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
