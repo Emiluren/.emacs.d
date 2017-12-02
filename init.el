@@ -4,9 +4,13 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+;; Make undo easier to use
+(global-undo-tree-mode)
+
 ;; Enable melpa repository
-(add-to-list 'package-archives
-			 '("melpa" . "https://melpa.org/packages/"))
+(add-to-list
+ 'package-archives
+ '("melpa" . "https://melpa.org/packages/"))
 
 ;; Disable menu, tool and scroll bars
 (menu-bar-mode -1)
@@ -62,13 +66,18 @@
  '(ido-enable-flex-matching t)
  '(package-selected-packages
    (quote
-	(haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime))))
+	(undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ 
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
