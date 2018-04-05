@@ -10,6 +10,19 @@
 ;; Flycheck stuff
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; Set up rust lsp stuff
+(with-eval-after-load 'lsp-mode
+  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
+  (require 'lsp-rust))
+
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'rust-mode-hook #'lsp-rust-enable)
+
+;; I'm not quite sure what the "hover text" is
+;; but it intefers with the normal buffer text
+(setq lsp-ui-sideline-show-hover nil)
+
 (load-file "~/.emacs.d/theme.el")
 
 ;; Make undo easier to use
@@ -100,7 +113,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (yaml-mode flycheck flycheck-clojure flycheck-crystal flycheck-elixir flycheck-elm racer rust-mode markdown-mode crystal-mode solaire-mode doom-themes tao-theme alchemist elixir-mode apropospriate-theme glsl-mode clj-refactor geiser zenburn-theme undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime)))
+    (lsp-mode lsp-rust lsp-ui yaml-mode flycheck flycheck-clojure flycheck-crystal flycheck-elixir flycheck-elm rust-mode markdown-mode crystal-mode solaire-mode doom-themes tao-theme alchemist elixir-mode apropospriate-theme glsl-mode clj-refactor geiser zenburn-theme undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
