@@ -28,6 +28,9 @@
                        lsp-face-highlight-write))
     (set-face-attribute face-name nil :background brighter-bg)))
 
+;; Without this the cursor would be black and very hard to see on a dark background
+(set-mouse-color "white")
+
 (require 'solaire-mode)
 
 ;; brighten buffers (that represent real files)
