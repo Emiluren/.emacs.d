@@ -1,16 +1,29 @@
-;;; Package -- summary
+;;; init.el -- My Emacs initalization
+
 ;;; Commentary:
+;;
+;; All my Emacs settings
+
+;;; Code:
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-;;; Code:
 (package-initialize)
 
 ;; Set up recentf
+(require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; Set up multiple cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;; Set up highlighting of cursor/line
 (blink-cursor-mode -1)
@@ -20,11 +33,11 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; Set up rust lsp stuff
-(with-eval-after-load 'lsp-mode
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
-  (require 'lsp-rust))
-
 (require 'lsp-ui)
+(require 'lsp-rust)
+(with-eval-after-load 'lsp-mode
+  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
+
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 (add-hook 'rust-mode-hook #'lsp-rust-enable)
 
@@ -57,6 +70,7 @@
 	  split-width-threshold 120)
 
 ;; Faster than the default scp (according to Emacs wiki)
+(require 'tramp)
 (setq tramp-default-method "ssh")
 
 ;; Enable Interactively Do Things
@@ -75,6 +89,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c b") 'org-switchb)
+(require 'magit)
 (setq magit-delete-by-moving-to-trash nil)
 
 ;; Use .m as matlab instead of objective-c
@@ -84,6 +99,7 @@
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 
+(require 'slime)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 
@@ -100,6 +116,8 @@
 (require 'clj-refactor)
 
 (defun my-clojure-mode-hook ()
+  "Enable paredit and clj-refactor in clojure."
+  (require 'paredit)
   (enable-paredit-mode)
   (clj-refactor-mode 1))
 
@@ -117,6 +135,7 @@
     ("77c3f5f5acaa5a276ca709ff82cce9b303f49d383415f740ba8bcc76570718b9" "bbb4a4d39ed6551f887b7a3b4b84d41a3377535ccccf901a3c08c7317fad7008" "90bd0eb20a1cb155b5a076f698b3c72cfe775aa7ea93b7bfbc171eb250db5e20" "5e52ce58f51827619d27131be3e3936593c9c7f9f9f9d6b33227be6331bf9881" "086970da368bb95e42fd4ddac3149e84ce5f165e90dfc6ce6baceae30cf581ef" "0e0c37ee89f0213ce31205e9ae8bce1f93c9bcd81b1bcda0233061bb02c357a8" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" "5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "2a739405edf418b8581dcd176aaf695d319f99e3488224a3c495cb0f9fd814e3" default)))
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(ido-enable-flex-matching t)
+ '(lsp-ui-sideline-show-hover nil)
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))

@@ -1,5 +1,12 @@
+;;; theme.el --- Theme settings
+
+;;; Commentary:
+;;
+;; All my theme customization
+
 (require 'doom-themes)
 
+;;; Code:
 ;; Global settings (defaults)
 (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
       doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -13,6 +20,14 @@
 
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
+
+;; Prevent lsp-face-highlight from being too distracting
+(let ((brighter-bg (doom-lighten (face-attribute 'default :background) 0.05)))
+  (dolist (face-name '(lsp-face-highlight-read
+                       lsp-face-highlight-textual
+                       lsp-face-highlight-write))
+    (custom-set-faces
+     `(,face-name ((t (:background ,brighter-bg)))))))
 
 (require 'solaire-mode)
 
@@ -41,6 +56,7 @@
 (scroll-bar-mode -1)
 
 ;; Use nyan-mode to replace scroll bar
+(require 'nyan-mode)
 (nyan-mode 1)
 (setq nyan-wavy-trail t)
 
@@ -49,3 +65,6 @@
 
 ;; Show matching parens
 (show-paren-mode 1)
+
+(provide 'theme)
+;;; theme.el ends here
