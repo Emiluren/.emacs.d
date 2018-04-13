@@ -45,6 +45,10 @@
 ;; but it intefers with the normal buffer text
 (setq lsp-ui-sideline-show-hover nil)
 
+(require 'company-lsp)
+(push 'company-lsp company-backends)
+(add-hook 'after-init-hook 'global-company-mode)
+
 (load-file "~/.emacs.d/theme.el")
 
 ;; Make undo easier to use
