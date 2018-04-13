@@ -26,8 +26,7 @@
   (dolist (face-name '(lsp-face-highlight-read
                        lsp-face-highlight-textual
                        lsp-face-highlight-write))
-    (custom-set-faces
-     `(,face-name ((t (:background ,brighter-bg)))))))
+    (set-face-attribute face-name nil :background brighter-bg)))
 
 (require 'solaire-mode)
 
