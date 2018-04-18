@@ -46,6 +46,9 @@
 
 (load-file "~/.emacs.d/theme.el")
 
+;; Keep backup files in a separate folder
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
+
 ;; Make undo easier to use
 (global-undo-tree-mode)
 
