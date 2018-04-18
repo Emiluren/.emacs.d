@@ -18,6 +18,9 @@
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
+;; Make sure dir-locals.el is reloaded if the major mode changes
+(add-hook 'after-change-major-mode-hook 'hack-local-variables)
+
 ;; Set up multiple cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -30,7 +33,10 @@
 (global-hl-line-mode 1)
 
 ;; Flycheck stuff
+(require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+;; flycheck-clang marks warnings in header files as errors for some reason
+(add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
 
 ;; Set up rust lsp stuff
 (require 'lsp-ui)
@@ -103,6 +109,21 @@
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
+;; Don't check documentation for custom.el
+(add-to-list 'auto-mode-alist
+             '("custom.el" . (lambda ()
+                               (setq flycheck-disabled-checkers
+                                     (append '(emacs-lisp-checkdoc)
+                                             flycheck-disabled-checkers))
+                               (emacs-lisp-mode))))
+
+;; Disable flycheck for .dir-local files
+(add-to-list 'auto-mode-alist
+             '(".dir-locals.el" . (lambda () (flycheck-mode -1))))
+
 (require 'slime)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
@@ -128,9 +149,6 @@
 (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
 
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
-
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
 
 (provide 'init)
 ;;; init.el ends here
