@@ -36,7 +36,7 @@
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; flycheck-clang marks warnings in header files as errors for some reason
-(add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
+(setq-default flycheck-disabled-checkers '(c/c++-clang))
 
 ;; Set up rust lsp stuff
 (require 'lsp-ui)
