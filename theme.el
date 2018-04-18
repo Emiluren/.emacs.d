@@ -1,8 +1,4 @@
-;;; theme.el --- Theme settings
-
-;;; Commentary:
-;;
-;; All my theme customization
+;; Theme settings
 
 (require 'doom-themes)
 
@@ -68,5 +64,6 @@
 ;; Show matching parens
 (show-paren-mode 1)
 
-(provide 'theme)
-;;; theme.el ends here
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
+;; End:

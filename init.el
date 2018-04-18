@@ -1,15 +1,4 @@
-;;; init.el -- My Emacs initalization
-
-;;; Commentary:
-;;
-;; All my Emacs settings
-
-;;; Code:
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;; Added by Package.el. Do not remove
 (package-initialize)
 
 ;; Set up recentf
@@ -112,14 +101,6 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;; Don't check documentation for custom.el
-(add-to-list 'auto-mode-alist
-             '("custom.el" . (lambda ()
-                               (setq flycheck-disabled-checkers
-                                     (append '(emacs-lisp-checkdoc)
-                                             flycheck-disabled-checkers))
-                               (emacs-lisp-mode))))
-
 ;; Disable flycheck for .dir-local files
 (add-to-list 'auto-mode-alist
              '(".dir-locals.el" . (lambda () (flycheck-mode -1))))
@@ -150,5 +131,6 @@
 
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
-(provide 'init)
-;;; init.el ends here
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
+;; End:
