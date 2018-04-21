@@ -44,8 +44,6 @@
 (push 'company-lsp company-backends)
 (add-hook 'after-init-hook 'global-company-mode)
 
-(load-file "~/.emacs.d/theme.el")
-
 ;; Keep backup files in a separate folder
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
 
@@ -103,16 +101,23 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+(load "~/.emacs.d/hasklig.el")
+(load-file "~/.emacs.d/theme.el")
+
+(defun dired-flycheck-fix ()
+  (when (and buffer-file-name
+	     (string= (file-name-nondirectory buffer-file-name) ".dir-locals.el"))
+    (flycheck-mode -1)))
 
 ;; Disable flycheck for .dir-local files
-(add-to-list 'auto-mode-alist
-             '(".dir-locals.el" . (lambda () (flycheck-mode -1))))
+(add-hook 'emacs-lisp-mode-hook #'dired-flycheck-fix)
 
 (require 'slime)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
 (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
 (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
