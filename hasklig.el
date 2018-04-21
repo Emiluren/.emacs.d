@@ -1,4 +1,6 @@
 (require 'dash)
+
+;; The code in this file comes from https://github.com/Profpatsch/blog/blob/master/posts/ligature-emulation-in-emacs/post.md
 (defun my-correct-symbol-bounds (pretty-alist)
   "Prepend a TAB character to each symbol in this alist,
 this way compose-region called by prettify-symbols-mode
