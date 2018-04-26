@@ -98,10 +98,12 @@
 ;; Open the clfswm config file in lisp mode and xmobar in haskell mode
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
+(add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 (load "~/.emacs.d/hasklig.el")
+(load "~/.emacs.d/c++-stuff.el")
 (load-file "~/.emacs.d/theme.el")
 
 (defun dired-flycheck-fix ()

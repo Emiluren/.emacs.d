@@ -14,8 +14,9 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (dash yasnippet yasnippet-snippets company-lsp toml-mode lsp-mode lsp-rust lsp-ui yaml-mode flycheck flycheck-clojure flycheck-crystal flycheck-elixir flycheck-elm rust-mode markdown-mode crystal-mode solaire-mode doom-themes tao-theme alchemist elixir-mode apropospriate-theme glsl-mode clj-refactor geiser zenburn-theme undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838"))))
+    (cmake-ide flycheck-irony company-irony irony rtags cmake-mode dash yasnippet yasnippet-snippets company-lsp toml-mode lsp-mode lsp-rust lsp-ui yaml-mode flycheck flycheck-clojure flycheck-crystal flycheck-elixir flycheck-elm rust-mode markdown-mode crystal-mode solaire-mode doom-themes tao-theme alchemist elixir-mode apropospriate-theme glsl-mode clj-refactor geiser zenburn-theme undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider slime)))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(safe-local-variable-values (quote ((cmake-ide-build-dir . "build/debug")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
