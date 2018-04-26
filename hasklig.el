@@ -35,7 +35,7 @@ codepoints starting from codepoint-start."
   (prettify-symbols-mode))
 
 (when (window-system)
-  (set-frame-font "Fira Code")
+  (set-frame-font "Hasklig")
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
 
 ;; Local Variables:
