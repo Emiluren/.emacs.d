@@ -78,9 +78,19 @@
 (ido-mode t)
 (setq ido-auto-merge-work-directories-length -1) ; And disable annoying auto file search
 
-;; Hide backup files and autosave files in dired
+;; Hide dotfiles, backup files and autosave files in dired
 (require 'dired-x)
-(setq-default dired-omit-files-p t)
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+(defun enable-dired-omit-mode ()
+  (dired-omit-mode 1))
+(add-hook 'dired-mode-hook 'enable-dired-omit-mode)
+
+;; But not for 'recover-session'
+(defadvice recover-session (around disable-dired-omit-for-recover activate)
+  (let ((dired-mode-hook dired-mode-hook))
+    (remove-hook 'dired-mode-hook 'enable-dired-omit-mode)
+    ad-do-it))
+
 
 ;; Some misc key bindings
 (global-set-key (kbd "<escape>") 'keyboard-quit)
