@@ -91,14 +91,32 @@
     (remove-hook 'dired-mode-hook 'enable-dired-omit-mode)
     ad-do-it))
 
+;; Does not work properly yet
+;; (require 'em-prompt)
+;; (setq eshell-prompt-regexp "^[^#$\n]*\n[#$] "
+;;       eshell-prompt-function
+;;       (lambda ()
+;;         (concat (abbreviate-file-name (eshell/pwd))
+;;                 (if (= (user-uid) 0) "\n# " "\n$ "))))
 
 ;; Some misc key bindings
-(global-set-key (kbd "<escape>") 'keyboard-quit)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c b") 'org-switchb)
+
+(defun swap-windows ()
+  "Swap the buffer in the current window with the one in the next."
+  (interactive)
+  (let ((this-buffer (window-buffer))
+        (next-buffer (window-buffer (next-window))))
+    (set-window-buffer (selected-window) next-buffer)
+    (set-window-buffer (next-window) this-buffer)
+    (select-window (next-window))))
+(global-set-key (kbd "C-c o") 'swap-windows)
+
 (require 'magit)
 (setq magit-delete-by-moving-to-trash nil)
 
@@ -116,13 +134,13 @@
 (load "~/.emacs.d/c++-stuff.el")
 (load-file "~/.emacs.d/theme.el")
 
-(defun dired-flycheck-fix ()
+(defun dirlocals-flycheck-fix ()
   (when (and buffer-file-name
 	     (string= (file-name-nondirectory buffer-file-name) ".dir-locals.el"))
     (flycheck-mode -1)))
 
 ;; Disable flycheck for .dir-local files
-(add-hook 'emacs-lisp-mode-hook #'dired-flycheck-fix)
+(add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
 
 (require 'slime)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
