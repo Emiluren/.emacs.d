@@ -18,13 +18,17 @@
 (doom-themes-org-config)
 
 ;; Prevent lsp-face-highlight from being too distracting
-(let ((brighter-bg (doom-lighten (face-attribute 'default :background) 0.05)))
+(let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
   (dolist (face-name '(lsp-face-highlight-read
                        lsp-face-highlight-textual
                        lsp-face-highlight-write))
-    (set-face-attribute face-name nil :background brighter-bg)))
+    (set-face-background face-name brighter-bg)))
 
-;; Without this the cursor would be black and very hard to see on a dark background
+;; Make the eshell prompt slightly green so it stands out
+(set-face-foreground 'eshell-prompt "#9ccca4")
+
+;; Without this the cursor would be black and very hard to see on
+;; a dark background
 (set-mouse-color "white")
 
 (require 'solaire-mode)
