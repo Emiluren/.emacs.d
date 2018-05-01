@@ -117,6 +117,21 @@
     (select-window (next-window))))
 (global-set-key (kbd "C-c o") 'swap-windows)
 
+;; Steve Yegge told me to add these :P
+;; Allows M-x if Alt key is not available
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
+(defun kill-region-or-backward-word ()
+  "If the region is active and non-empty, call `kill-region'.
+Otherwise, call `backward-kill-word'."
+  (interactive)
+  (call-interactively
+   (if (use-region-p) 'kill-region 'backward-kill-word)))
+(global-set-key (kbd "C-w") 'kill-region-or-backward-word)
+
+;; Enable set-goal-column
+(put 'set-goal-column 'disabled nil)
+
 (require 'magit)
 (setq magit-delete-by-moving-to-trash nil)
 
