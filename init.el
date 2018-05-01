@@ -92,12 +92,12 @@
     ad-do-it))
 
 ;; Does not work properly yet
-;; (require 'em-prompt)
-;; (setq eshell-prompt-regexp "^[^#$\n]*\n[#$] "
-;;       eshell-prompt-function
-;;       (lambda ()
-;;         (concat (abbreviate-file-name (eshell/pwd))
-;;                 (if (= (user-uid) 0) "\n# " "\n$ "))))
+(require 'em-prompt)
+(setq eshell-prompt-regexp "[#$] "
+      eshell-prompt-function
+      (lambda ()
+        (concat (abbreviate-file-name (eshell/pwd))
+                (if (= (user-uid) 0) "\n# " "\n$ "))))
 
 ;; Some misc key bindings
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
