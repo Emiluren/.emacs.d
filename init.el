@@ -76,7 +76,8 @@
 ;; Enable Interactively Do Things
 (require 'ido)
 (ido-mode t)
-(setq ido-auto-merge-work-directories-length -1) ; And disable annoying auto file search
+;; And disable annoying auto file search
+(setq ido-auto-merge-work-directories-length -1)
 
 ;; Hide dotfiles, backup files and autosave files in dired
 (require 'dired-x)
