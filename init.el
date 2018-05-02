@@ -45,11 +45,13 @@
 (add-hook 'after-init-hook 'global-company-mode)
 ;; Don't complete with enter or space
 (with-eval-after-load 'company
-  ;; <return> is for windowed Emacs; RET is for terminal Emacs
+  ;; <return> is for gui Emacs; RET is for terminal Emacs
+  ;; [tab] is for gui and "TAB" is for terminal
   (define-key company-active-map (kbd "<return>") nil)
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "SPC") nil)
-  (define-key company-active-map (kbd "TAB") #'company-complete-selection))
+  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  (define-key company-active-map [tab] 'company-complete-selection))
 
 ;; Keep backup files in a separate folder
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
