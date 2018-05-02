@@ -115,6 +115,10 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c b") 'org-switchb)
 
+;; Make it easier to use macro bindings when fn keys are default
+(global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
+(global-set-key (kbd "<f5>") 'kmacro-start-macro-or-insert-counter)
+
 (defun swap-windows ()
   "Swap the buffer in the current window with the one in the next."
   (interactive)
