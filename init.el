@@ -110,6 +110,11 @@
         (concat (abbreviate-file-name (eshell/pwd))
                 (if (= (user-uid) 0) "\n# " "\n$ "))))
 
+;; Set up path and stuff for org-mode
+(require 'org)
+(setq org-directory "~/.emacs.d/personal-org/")
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+
 ;; Some misc key bindings
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C-x g") 'magit-status)
