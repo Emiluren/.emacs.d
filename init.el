@@ -129,6 +129,14 @@
     (select-window (next-window))))
 (global-set-key (kbd "C-c o") 'swap-windows)
 
+;; Used in case eshell locks up
+;; (because of something with the prompt regexp I guess?
+(defun emergency-erase-buffer ()
+  "Force delete all text in the buffer"
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
 ;; Steve Yegge told me to add these :P
 ;; Allows M-x if Alt key is not available
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
