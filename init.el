@@ -101,7 +101,8 @@
     (remove-hook 'dired-mode-hook 'enable-dired-omit-mode)
     ad-do-it))
 
-;; Does not work properly yet
+;; Use a separate line for eshell working directory
+;; Seems to cause some sort of problem with the history though
 (require 'em-prompt)
 (setq eshell-prompt-regexp "[#$] "
       eshell-prompt-function
@@ -133,11 +134,16 @@
 
 ;; Used in case eshell locks up
 ;; (because of something with the prompt regexp I guess?
-(defun emergency-erase-buffer ()
+(defun force-erase-buffer ()
   "Force delete all text in the buffer"
   (interactive)
   (let ((inhibit-read-only t))
     (erase-buffer)))
+
+(defun force-kill-current-buffer ()
+  "Force kill current buffer"
+  (interactive)
+  (let ((inhibit-read-only))))
 
 ;; Steve Yegge told me to add these :P
 ;; Allows M-x if Alt key is not available
