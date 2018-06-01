@@ -50,13 +50,18 @@ by user."
           (call-interactively 'company-complete-selection))))))
 
 (defun focus-gdb-buffer-when-stopped (gdb-result)
-  (unless (string-equal (bindat-get-field gdb-result 'reason)
-			"exited-normally")
+  (require 'bindat)
+  (unless (and (fboundp 'bindat-get-field)
+	       (string-equal (bindat-get-field gdb-result 'reason)
+			     "exited-normally"))
     (raise-frame)
     ;; This is overwritten immediately by the source buffer
     ;; so not the best solution
-    (switch-to-buffer (gdb-get-buffer-create 'gdb-inferior-io))
-    (gdb-display-gdb-buffer)))
+    (require 'gdb-mi)
+    (when (fboundp 'gdb-get-buffer-create)
+      (switch-to-buffer (gdb-get-buffer-create 'gdb-inferior-io)))
+    (when (fboundp 'gdb-display-gdb-buffer)
+      (gdb-display-gdb-buffer))))
 
 ;; TODO: Maybe change this to only use yank
 ;; seems to mess up yank pop
@@ -122,22 +127,23 @@ Otherwise, call `backward-kill-word'."
 (defun turn-on-stumpwm-mode-for-init-file ()
   (when (buffer-file-name= "init.lisp" #'abbreviate-file-name)
     (require 'stumpwm-mode)
-    (stumpwm-mode 1)))
+    (when (fboundp 'stumpwm-mode)
+      (stumpwm-mode 1))))
 
 ;; Disable flycheck for .dir-local files
 (defun dirlocals-flycheck-fix ()
   (when (buffer-file-name= ".dir-locals.el")
     (flycheck-mode -1)))
 
-(defun set-keys-in-mode-map (key-alist mode-map)
-  (cl-loop for (key binding) in key-alist
-           do (define-key mode-map (kbd key) binding)))
-
 ;; Necessary since paredit ignores delete-active-region
 (defun paredit-backward-delete-or-delete-region (&optional arg)
   (interactive "P")
-  (if (and delete-active-region (region-active-p))
+  (require 'paredit)
+  (if (and (fboundp 'paredit-delete-region)
+	   delete-active-region
+	   (region-active-p))
       (paredit-delete-region (region-beginning) (region-end))
-    (paredit-backward-delete arg)))
+    (when (fboundp 'paredit-backward-delete)
+      (paredit-backward-delete arg))))
 
 (provide 'my-functions)

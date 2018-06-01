@@ -7,8 +7,6 @@
 		;; Keep the closing brace previous indentation
 		(arglist-close . 0))))
 
-(require 'em-dirs) ; Needed for eshell/pwd
-
 (setq
  ;; Keep backup files in a separate folder
  backup-directory-alist '(("." . "~/.emacs.d/backups/"))
@@ -17,12 +15,12 @@
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
                    (other . "my-c-style"))
- column-number-mode t ; Enable column number in modeline
+ column-number-mode t		    ; Enable column number in modeline
  ;; Company seems to work poorly with sly and gud/gdb
  ;; TODO: check with sly again
  company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
- dabbrev-case-fold-search t ; Make dabbrev case sensitive
+ dabbrev-case-fold-search t		; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  ;; Use a separate line for eshell working directory
  ;; Seems to cause some sort of problem with the history though
@@ -31,25 +29,26 @@
  eshell-prompt-regexp "[#$] "
  ;; To make sudo work better in eshell
  eshell-prefer-lisp-functions t
- eshell-prompt-function
- (lambda ()
-   (concat (abbreviate-file-name (eshell/pwd))
-           (if (= (user-uid) 0) "\n# " "\n$ ")))
+ eshell-prompt-function (lambda ()
+			  (require 'em-dirs)
+			  (concat (abbreviate-file-name (eshell/pwd))
+				  (if (= (user-uid) 0) "\n# " "\n$ ")))
+ flycheck-emacs-lisp-load-path 'inherit
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
- ido-enable-flex-matching t ; Fuzzy matching
+ ido-enable-flex-matching t		   ; Fuzzy matching
  ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
  ido-create-new-buffer 'always ; Create new buffers without confirmation
- inferior-lisp-program "sbcl" ; Use sbcl for CL repls
+ inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
  magit-delete-by-moving-to-trash nil ; Delete files directly from magit
- minibuffer-auto-raise t ; Focus Emacs if minibuffer activates
+ minibuffer-auto-raise t	 ; Focus Emacs if minibuffer activates
  ;; Set up path and stuff for org-mode
  org-directory "~/.emacs.d/personal-org/"
  org-default-notes-file (concat org-directory "/notes.org")
  recentf-max-menu-items 25
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
- sgml-quick-keys t ; Make characters in html behave electrically
+ sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil
  split-width-threshold 120

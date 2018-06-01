@@ -37,7 +37,3 @@ codepoints starting from codepoint-start."
 (when (window-system)
   (set-frame-font "Hasklig")
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
-
-;; Local Variables:
-;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
-;; End:

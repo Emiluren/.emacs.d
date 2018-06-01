@@ -34,7 +34,6 @@
   (package-install-selected-packages))
 
 (load "~/.emacs.d/lisp/set-variables.el")
-(load "~/.emacs.d/lisp/functions.el")
 (load "~/.emacs.d/lisp/mode-setup.el")
 (load "~/.emacs.d/lisp/bindings.el")
 (load "~/.emacs.d/lisp/hooks.el")

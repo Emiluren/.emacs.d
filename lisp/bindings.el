@@ -1,3 +1,5 @@
+(require 'my-functions)
+
 (global-set-key (kbd "C-`") #'push-mark-no-activate) ; Push current position to mark ring
 (global-set-key (kbd "M-`") 'jump-to-mark) ; Pop last mark from mark ring and jump to it
 (define-key global-map [remap exchange-point-and-mark]
@@ -6,6 +8,10 @@
 
 ;; Set up bindings to quickly open special files
 (global-set-key (kbd "C-c i") #'find-init-file)
+(global-set-key (kbd "C-c j")
+		(lambda ()
+		  (interactive)
+		  (dired "~/.emacs.d/lisp")))
 (global-set-key (kbd "C-c t") #'find-todo-file)
 
 ;; Open eshell quickly
@@ -86,7 +92,5 @@
 
 ;; Define some easier keys to traverse sexps with paredit
 (with-eval-after-load "paredit"
-  (set-keys-in-mode-map '(("C-;" paredit-backward)
-                          ("C-'" paredit-forward)
-                          ("DEL" paredit-backward-delete-or-delete-region))
-                        paredit-mode-map))
+  (define-key paredit-mode-map (kbd "DEL")
+    #'paredit-backward-delete-or-delete-region))
