@@ -19,11 +19,25 @@
 
 ;; Prevent lsp-face-highlight from being too distracting
 (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
-  (dolist (face-name '(lsp-face-highlight-read
-                       lsp-face-highlight-textual
-                       lsp-face-highlight-write))
-    (set-face-background face-name brighter-bg)))
+  (doom-themes-set-faces 'doom-one
+	(lsp-face-highlight-read :background brighter-bg)
+	(lsp-face-highlight-textual :background brighter-bg)
+	(lsp-face-highlight-write :background brighter-bg)))
 
+;; Remove extreme highlighting of rtags errors
+;; (Does not quite seem to be working?)
+;; Try running it after rtags has been loaded
+(defun unset-face-attributes (face attributes &optional frame)
+  (dolist (attr attributes)
+    (set-face-attribute 'rtags-errline frame attr 'unspecified)))
+(dolist (props '((rtags-errline "red")
+		 (rtags-fixitline "yellow")))
+  (cl-destructuring-bind (face color) props
+    (unset-face-attributes face '(:foreground :background))
+    (set-face-attribute face nil :underline
+			`(:color ,color :style wave))))
+
+(require 'em-prompt)
 ;; Make the eshell prompt slightly green so it stands out
 (set-face-foreground 'eshell-prompt "#9ccca4")
 
@@ -67,7 +81,3 @@
 
 ;; Show matching parens
 (show-paren-mode 1)
-
-;; Local Variables:
-;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
-;; End:

@@ -9,3 +9,8 @@ flycheck_init.el
 irony/
 personal-org/
 /bookmarks
+/history
+/mail/
+/network-security.data
+/request/
+/smex-items

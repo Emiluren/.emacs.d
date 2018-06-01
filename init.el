@@ -1,172 +1,46 @@
+;;; -*- lexical-binding: t -*-
+
+(setq
+;; Give emacs 100mb memory to use before trying to collect garbage
+ gc-cons-threshold 100000000
+ ;; Fix emacs 26 being slow
+ x-wait-for-event-timeout nil
+ custom-file "~/.emacs.d/lisp/custom.el"
+ )
+
+;; Make sure custom settings are set up before other stuff
+;; so that selected packages are available
+(load custom-file)
+
 ;; Added by Package.el. Do not remove
 (package-initialize)
 
-;; Set up recentf
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
-;; Make sure dir-locals.el is reloaded if the major mode changes
-(add-hook 'after-change-major-mode-hook 'hack-local-variables)
-
-;; Set up multiple cursors
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-;; Set up highlighting of cursor/line
-(blink-cursor-mode -1)
-(global-hl-line-mode 1)
-
-;; Flycheck stuff
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-;; flycheck-clang marks warnings in header files as errors for some reason
-(setq-default flycheck-disabled-checkers '(c/c++-clang))
-
-;; Set up rust lsp stuff
-(require 'lsp-ui)
-(require 'lsp-rust)
-(with-eval-after-load 'lsp-mode
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls")))
-
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'rust-mode-hook #'lsp-rust-enable)
-
-;; I'm not quite sure what the "hover text" is
-;; but it intefers with the normal buffer text
-(setq lsp-ui-sideline-show-hover nil)
-
-(require 'company-lsp)
-(push 'company-lsp company-backends)
-(add-hook 'after-init-hook 'global-company-mode)
-;; Don't complete with enter or space
-(with-eval-after-load 'company
-  ;; <return> is for gui Emacs; RET is for terminal Emacs
-  ;; [tab] is for gui and "TAB" is for terminal
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "SPC") nil)
-  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-  (define-key company-active-map [tab] 'company-complete-selection))
-
-;; Keep backup files in a separate folder
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
-
-;; Make undo easier to use
-(global-undo-tree-mode)
+;; Load email address and stuff
+(let ((private-file "~/.emacs.d/lisp/private.el"))
+  (when (file-exists-p private-file)
+   (load private-file)))
 
 ;; Enable melpa repository
 (add-to-list
  'package-archives
  '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
-;; Enable column number in modeline
-(setq column-number-mode t)
+;; If this is a new install we need to make sure that all packages are available
+(unless (file-directory-p "~/.emacs.d/elpa")
+  (package-refresh-contents)
+  (package-install-selected-packages))
 
-;; Don't use tabs and use 4 spaces for indentation
-;; Also use tab to complete
-(setq-default indent-tabs-mode nil
-              c-basic-offset 4
-              tab-always-indent 'complete
-              tab-width 4)
-
-;; Make Emacs split window horizontally by default
-(setq split-height-threshold nil
-	  split-width-threshold 120)
-
-;; Faster than the default scp (according to Emacs wiki)
-(require 'tramp)
-(setq tramp-default-method "ssh")
-
-;; Enable Interactively Do Things
-(require 'ido)
-(ido-mode t)
-;; And disable annoying auto file search
-(setq ido-auto-merge-work-directories-length -1)
-
-;; Hide dotfiles, backup files and autosave files in dired
-(require 'dired-x)
-(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
-(defun enable-dired-omit-mode ()
-  (dired-omit-mode 1))
-(add-hook 'dired-mode-hook 'enable-dired-omit-mode)
-
-;; But not for 'recover-session'
-(defadvice recover-session (around disable-dired-omit-for-recover activate)
-  (let ((dired-mode-hook dired-mode-hook))
-    (remove-hook 'dired-mode-hook 'enable-dired-omit-mode)
-    ad-do-it))
-
-;; Use a separate line for eshell working directory
-;; Seems to cause some sort of problem with the history though
-(require 'em-prompt)
-(setq eshell-prompt-regexp "[#$] "
-      eshell-prompt-function
-      (lambda ()
-        (concat (abbreviate-file-name (eshell/pwd))
-                (if (= (user-uid) 0) "\n# " "\n$ "))))
-
-;; Set up path and stuff for org-mode
-(require 'org)
-(setq org-directory "~/.emacs.d/personal-org/")
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-
-;; Some misc key bindings
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c b") 'org-switchb)
-
-;; Make it easier to use macro bindings when fn keys are default
-(global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
-(global-set-key (kbd "<f5>") 'kmacro-start-macro-or-insert-counter)
-
-(defun swap-windows ()
-  "Swap the buffer in the current window with the one in the next."
-  (interactive)
-  (let ((this-buffer (window-buffer))
-        (next-buffer (window-buffer (next-window))))
-    (set-window-buffer (selected-window) next-buffer)
-    (set-window-buffer (next-window) this-buffer)
-    (select-window (next-window))))
-(global-set-key (kbd "C-c o") 'swap-windows)
-
-;; Used in case eshell locks up
-;; (because of something with the prompt regexp I guess?
-(defun force-erase-buffer ()
-  "Force delete all text in the buffer"
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
-
-(defun force-kill-current-buffer ()
-  "Force kill current buffer"
-  (interactive)
-  (let ((inhibit-read-only))))
-
-;; Steve Yegge told me to add these :P
-;; Allows M-x if Alt key is not available
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-c C-m") 'execute-extended-command)
-(defun kill-region-or-backward-word ()
-  "If the region is active and non-empty, call `kill-region'.
-Otherwise, call `backward-kill-word'."
-  (interactive)
-  (call-interactively
-   (if (use-region-p) 'kill-region 'backward-kill-word)))
-(global-set-key (kbd "C-w") 'kill-region-or-backward-word)
-
-;; Enable set-goal-column
-(put 'set-goal-column 'disabled nil)
-
-(require 'magit)
-(setq magit-delete-by-moving-to-trash nil)
+(load "~/.emacs.d/lisp/set-variables.el")
+(load "~/.emacs.d/lisp/functions.el")
+(load "~/.emacs.d/lisp/mode-setup.el")
+(load "~/.emacs.d/lisp/bindings.el")
+(load "~/.emacs.d/lisp/hooks.el")
+(load "~/.emacs.d/lisp/hasklig.el")
+(load "~/.emacs.d/lisp/c++-stuff.el")
+(load "~/.emacs.d/lisp/theme.el")
 
 ;; Use .m as matlab instead of objective-c
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
@@ -176,47 +50,9 @@ Otherwise, call `backward-kill-word'."
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-(load "~/.emacs.d/hasklig.el")
-(load "~/.emacs.d/c++-stuff.el")
-(load-file "~/.emacs.d/theme.el")
-
-(defun dirlocals-flycheck-fix ()
-  (when (and buffer-file-name
-	     (string= (file-name-nondirectory buffer-file-name) ".dir-locals.el"))
-    (flycheck-mode -1)))
-
-;; Disable flycheck for .dir-local files
-(add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
-
-(require 'slime)
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-(setq inferior-lisp-program "sbcl")
-
-(autoload 'enable-paredit-mode "paredit"
-  "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-(add-hook 'clojurescript-mode-hook    #'enable-paredit-mode)
-(add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
-
-(require 'clj-refactor)
-
-(defun my-clojure-mode-hook ()
-  "Enable paredit and clj-refactor in clojure."
-  (require 'paredit)
-  (enable-paredit-mode)
-  (clj-refactor-mode 1))
-
-(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
-
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-
-;; Local Variables:
-;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
-;; End:
+;;; Enable some commands that are disabled by default
+;; The goal collumn is where you end up when you switch line
+;; (useful for editing tables)
+(put 'set-goal-column 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'downcase-region 'disabled nil)
