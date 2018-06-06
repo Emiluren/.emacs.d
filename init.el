@@ -41,13 +41,11 @@
 (load "~/.emacs.d/lisp/c++-stuff.el")
 (load "~/.emacs.d/lisp/theme.el")
 
-;; Use .m as matlab instead of objective-c
-(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode))
-
-;; Open the clfswm config file in lisp mode and xmobar in haskell mode
+(add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
+(add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
 
 ;;; Enable some commands that are disabled by default
 ;; The goal collumn is where you end up when you switch line
