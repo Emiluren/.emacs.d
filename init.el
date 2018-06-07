@@ -10,25 +10,21 @@
  x-wait-for-event-timeout nil
  custom-file "~/.emacs.d/lisp/custom.el"
  )
-(load custom-file)
+(load custom-file t)
 
 (add-to-list 'load-path "~/.emacs.d/lisp") ; All of my other elisp files
 (add-to-list 'load-path "~/Programmering/emacs/telega.el/") ; Telegram client
 
 ;; Load email address and stuff
-(let ((private-file "~/.emacs.d/lisp/private.el"))
-  (when (file-exists-p private-file)
-   (load private-file)))
+(load "~/.emacs.d/lisp/private.el" t)
 
 ;; Enable melpa repository
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 ;; If this is a new install we need to make sure that all packages are available
-(unless (file-directory-p "~/.emacs.d/elpa")
-  (package-refresh-contents))
-
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
 (require 'use-package)
