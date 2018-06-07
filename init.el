@@ -29,10 +29,22 @@
 (setq use-package-always-ensure t)
 (require 'use-package)
 
-;; Set up auto compilation
+;; Necessary to prevent warnings about undeclared functions during byte compilation
+(eval-when-compile
+  (setq use-package-expand-minimally byte-compile-current-file))
+
+;; TODO eventually move all packages to use package and remove custom file from git
+
+;; Set up auto compilation of all Elisp files
 (use-package auto-compile
+  :functions auto-compile-on-load-mode
   :config (auto-compile-on-load-mode))
-(setq load-prefer-newer t)
+(setq load-prefer-newer t) ; Make sure outdated byte code is not loaded
+
+;; dash - list utilities
+(use-package dash
+  :functions dash-enable-fontlock
+  :config (dash-enable-font-lock))
 
 (load "~/.emacs.d/lisp/set-variables.el")
 (load "~/.emacs.d/lisp/mode-setup.el")
