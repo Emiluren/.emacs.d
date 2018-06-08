@@ -23,6 +23,7 @@
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 ;; If this is a new install we need to make sure that all packages are available
+(package-activate 'use-package)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))

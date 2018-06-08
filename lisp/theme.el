@@ -1,5 +1,5 @@
 ;; Theme settings
-
+;; TODO: refactor to use use-package
 (require 'doom-themes)
 
 ;;; Code:

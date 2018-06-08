@@ -29,11 +29,79 @@
       (eshell/cd directory))))
 
 (use-package magit
+  :defer t
   :bind ("C-x g" . 'magit-status))
 
+;; Org
+(use-package org-mime
+  :defer t)
+
 (use-package org
+  :ensure org-plus-contrib
+  :defer t
   :bind
   (("C-c l" . 'org-store-link)
    ("C-c a" . 'org-agenda)
    ("C-c c" . 'org-capture)
    ("C-c b" . 'org-switchb)))
+
+;; Julia
+(use-package julia-mode
+  :defer t)
+
+(use-package julia-repl
+  :after julia-mode
+  :defer t)
+
+(use-package flycheck-julia
+  :after julia-mode
+  :defer t
+  :config
+  (flycheck-julia-setup))
+
+;; TODO: install these packages with use-package
+;; sly-quicklisp
+;; fish-completion
+;; fish-mode
+;; git-gutter
+;; yasnippet-snippets
+;; solaire-mode
+;; yasnippet
+;; sly
+;; company-rtags
+;; evil-numbers
+;; flycheck-rtags
+;; smex
+;; which-key
+;; cmake-ide
+;; cmake-mode
+;; company-lsp
+;; toml-mode
+;; lsp-mode
+;; lsp-rust
+;; lsp-ui
+;; yaml-mode
+;; flycheck
+;; flycheck-clojure
+;; flycheck-crystal
+;; flycheck-elixir
+;; flycheck-elm
+;; rust-mode
+;; markdown-mode
+;; crystal-mode
+;; doom-themes
+;; tao-theme
+;; alchemist
+;; elixir-mode
+;; apropospriate-theme
+;; glsl-mode
+;; clj-refactor
+;; geiser
+;; zenburn-theme
+;; undo-tree
+;; haskell-mode
+;; csharp-mode
+;; paredit
+;; parinfer
+;; nyan-mode
+;; cider

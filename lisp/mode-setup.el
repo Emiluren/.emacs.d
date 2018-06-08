@@ -30,8 +30,9 @@
 ;; "Completion function pcomplete-completions-at-point uses a
 ;; deprecated calling convention"
 ;; Is that because of this?
-(when (and (executable-find "fish")
-           (require 'fish-completion nil t))
-  (global-fish-completion-mode))
 
-(flycheck-julia-setup)
+;; Seems to mess some stuff up with eshell
+;; (when (and (executable-find "fish")
+;;            (require 'fish-completion nil t))
+;;   (global-fish-completion-mode))
+
