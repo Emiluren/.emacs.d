@@ -16,7 +16,7 @@
 (add-to-list 'load-path "~/Programmering/emacs/telega.el/") ; Telegram client
 
 ;; Load email address and stuff
-(load "~/.emacs.d/lisp/private.el" t)
+(load "private" t)
 
 ;; Enable melpa repository
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -27,7 +27,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 (eval-when-compile
@@ -43,16 +44,20 @@
 
 ;; dash - list utilities
 (use-package dash
-  :functions dash-enable-fontlock
-  :config (dash-enable-font-lock))
+  :config
+  (dash-enable-font-lock))
 
-(load "~/.emacs.d/lisp/set-variables.el")
-(load "~/.emacs.d/lisp/mode-setup.el")
-(load "~/.emacs.d/lisp/bindings.el")
-(load "~/.emacs.d/lisp/hooks.el")
-(load "~/.emacs.d/lisp/hasklig.el")
-(load "~/.emacs.d/lisp/c++-stuff.el")
-(load "~/.emacs.d/lisp/theme.el")
+(load "package-config")
+
+;; TODO: refactor these with use-package
+(load "set-variables")
+(load "mode-setup")
+(load "bindings")
+(load "hooks")
+
+(load "c++-stuff")
+(load "hasklig")
+(load "theme")
 
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))

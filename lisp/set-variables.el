@@ -35,6 +35,7 @@
 				  (if (= (user-uid) 0) "\n# " "\n$ ")))
  flycheck-emacs-lisp-load-path 'inherit
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
+ history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
  ido-enable-flex-matching t		   ; Fuzzy matching
  ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
@@ -48,6 +49,7 @@
  recentf-max-menu-items 25
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
+ sentence-end-double-space nil ; Sentences end with a single space
  sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil
@@ -61,10 +63,12 @@
 (setq gnus-directory "~/.emacs.d/mail"
       message-directory "~/.emacs.d/mail"
       gnus-select-method '(nnnil "")
-      gnus-secondary-select-methods '((nnimap "Skolmail"
+      gnus-secondary-select-methods '((nntp "news.gmane.org")
+				      (nnimap "Skolmail"
 					      (nnimap-address "outlook.office365.com")
 					      (nnimap-server-port 993)
 					      (nnimap-stream ssl)))
+      ;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
       ;; Make sure emails end up in sent folder after they have been sent
       ;; TODO: not working?
       ;; gnus-message-archive-group "nnimap+Skolmail:Skickade objekt"
