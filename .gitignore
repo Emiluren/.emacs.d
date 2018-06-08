@@ -16,3 +16,4 @@ personal-org/
 /smex-items
 /lisp/private.el
 *.elc
+image-dired/
