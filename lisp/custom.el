@@ -11,7 +11,8 @@
     (auto-compile sly-quicklisp fish-completion fish-mode org-mime org-plus-contrib md4rd git-gutter yasnippet-snippets solaire-mode yasnippet flycheck-julia julia-repl julia-mode sly company-rtags evil-numbers flycheck-rtags smex which-key cmake-ide cmake-mode company-lsp toml-mode lsp-mode lsp-rust lsp-ui yaml-mode flycheck flycheck-clojure flycheck-crystal flycheck-elixir flycheck-elm rust-mode markdown-mode crystal-mode doom-themes tao-theme alchemist elixir-mode apropospriate-theme glsl-mode clj-refactor geiser zenburn-theme undo-tree haskell-mode csharp-mode paredit use-package parinfer magit nyan-mode cider)))
  '(safe-local-variable-values
    (quote
-    ((cmake-ide-executable . "bin/MoA")
+    ((cmake-ide-build-dir . "build/debug")
+     (cmake-ide-executable . "bin/MoA")
      (cmake-ide-executable . "MoA")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -3,8 +3,17 @@
 (require 'company-rtags)
 (require 'flycheck-rtags)
 (require 'cmake-ide)
+(require 'gud)
+(require 'gdb-mi)
 
-(setq rtags-path "/home/em/.emacs.d/elpa/rtags-20180520.1327/rtags-2.18/bin/")
+(setq rtags-path
+      (format "%srtags-%s/bin/"
+	      (rtags-package-install-path)
+	      rtags-package-version))
+
+(unless (file-exists-p rtags-path)
+  (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
+    (rtags-install)))
 
 (setq rtags-completions-enabled t)
 (eval-after-load 'company
@@ -48,8 +57,6 @@
 
 (defun cmake-ide-start-or-switch-to-gdb ()
   (interactive)
-  (require 'gud)
-  (require 'gdb-mi)
   (if (and gud-comint-buffer (buffer-live-p gud-comint-buffer))
 	(gdb-display-gdb-buffer)
       (let ((default-directory (cide--locate-project-dir)))
@@ -66,3 +73,4 @@
 (add-hook 'compilation-finish-functions
 	  #'start-gdb-if-successfully-compiled)
 
+(provide 'my-c++-settings)

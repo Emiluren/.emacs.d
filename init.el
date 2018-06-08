@@ -55,7 +55,9 @@
 (load "bindings")
 (load "hooks")
 
-(load "c++-stuff")
+(add-hook 'c-mode-common-hook (lambda ()
+				(require 'my-c++-settings)))
+
 (load "hasklig")
 (load "theme")
 

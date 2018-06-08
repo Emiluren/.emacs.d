@@ -30,12 +30,13 @@
 (defun unset-face-attributes (face attributes &optional frame)
   (dolist (attr attributes)
     (set-face-attribute 'rtags-errline frame attr 'unspecified)))
-(dolist (props '((rtags-errline "red")
-		 (rtags-fixitline "yellow")))
-  (cl-destructuring-bind (face color) props
-    (unset-face-attributes face '(:foreground :background))
-    (set-face-attribute face nil :underline
-			`(:color ,color :style wave))))
+(with-eval-after-load "rtags"
+  (dolist (props '((rtags-errline "red")
+		   (rtags-fixitline "yellow")))
+    (cl-destructuring-bind (face color) props
+      (unset-face-attributes face '(:foreground :background))
+      (set-face-attribute face nil :underline
+			  `(:color ,color :style wave)))))
 
 (require 'em-prompt)
 ;; Make the eshell prompt slightly green so it stands out
