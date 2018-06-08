@@ -36,6 +36,11 @@
 
 ;; TODO eventually move all packages to use package and remove custom file from git
 
+(use-package benchmark-init
+  :demand t
+  ;; To disable collection of benchmark data after init is done.
+  :hook (after-init . benchmark-init/deactivate))
+
 ;; Set up auto compilation of all Elisp files
 (use-package auto-compile
   :functions auto-compile-on-load-mode

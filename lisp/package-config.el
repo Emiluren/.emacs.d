@@ -27,3 +27,13 @@
 		      (or directory "")
 		      hop)))
       (eshell/cd directory))))
+
+(use-package magit
+  :bind ("C-x g" . 'magit-status))
+
+(use-package org
+  :bind
+  (("C-c l" . 'org-store-link)
+   ("C-c a" . 'org-agenda)
+   ("C-c c" . 'org-capture)
+   ("C-c b" . 'org-switchb)))

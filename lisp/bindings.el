@@ -46,14 +46,8 @@
 ;; To easily close windows and bury buffers
 (global-set-key (kbd "s-q") #'quit-window)
 
-(require 'org)
 ;; Some misc key bindings
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c b") 'org-switchb)
 
 ;; Make it easier to use macro bindings when fn keys are default
 (global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
