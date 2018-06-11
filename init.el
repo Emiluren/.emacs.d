@@ -42,12 +42,6 @@
   ;; To disable collection of benchmark data after init is done.
   :hook (after-init . benchmark-init/deactivate))
 
-;; Set up auto compilation of all Elisp files
-(use-package auto-compile
-  :functions auto-compile-on-load-mode
-  :config (auto-compile-on-load-mode))
-(setq load-prefer-newer t) ; Make sure outdated byte code is not loaded
-
 ;; dash - list utilities
 (use-package dash
   :config
