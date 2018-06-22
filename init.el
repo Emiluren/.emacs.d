@@ -36,12 +36,10 @@
 (eval-when-compile
   (setq use-package-expand-minimally byte-compile-current-file))
 
-;; TODO eventually move all packages to use package and remove custom file from git
-
-(use-package benchmark-init
-  :demand t
-  ;; To disable collection of benchmark data after init is done.
-  :hook (after-init . benchmark-init/deactivate))
+;; (use-package benchmark-init
+;;   :demand t
+;;   ;; To disable collection of benchmark data after init is done.
+;;   :hook (after-init . benchmark-init/deactivate))
 
 ;; dash - list utilities
 (use-package dash
