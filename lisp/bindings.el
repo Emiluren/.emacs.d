@@ -8,18 +8,11 @@
 
 ;; Set up bindings to quickly open special files
 (global-set-key (kbd "C-c i") #'find-init-file)
-(global-set-key (kbd "C-c j")
-		(lambda ()
-		  (interactive)
-		  (dired "~/.emacs.d/lisp")))
+(global-set-key (kbd "C-c j") #'dired-lisp-dir)
 (global-set-key (kbd "C-c t") #'find-todo-file)
 
 ;; Open eshell quickly
 (global-set-key (kbd "C-c e") #'eshell)
-
-;; Better M-x (on top of Ido)
-(global-set-key (kbd "M-x") #'smex)
-(global-set-key (kbd "M-X") #'smex-major-mode-commands)
 
 ;; Set up multiple cursors (was added by clj-refactor)
 ;; (require 'multiple-cursors)
@@ -56,10 +49,6 @@
 (global-set-key (kbd "C-c o") 'swap-windows)
 (define-key ctl-x-4-map "t" #'toggle-frame-split)
 
-;; Steve Yegge told me to add these :P
-;; Allows M-x if Alt key is not available
-(global-set-key (kbd "C-x C-m") #'smex) ; smex improves execute-extended-command
-(global-set-key (kbd "C-c C-m") #'smex)
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
 
 ;; evil-numbers is used to increment/decrement numbers in region/at point
@@ -70,11 +59,6 @@
 ;; TODO: add some way of closing the window if no errors
 ;; And start gdb if not running
 (global-set-key (kbd "C-c C") #'cmake-ide-compile)
-
-;; Remove sly bindings I don't want
-(with-eval-after-load 'sly
-  (dolist (key '("E" "I" "x" "i"))
-    (define-key sly-prefix-map (kbd key) nil)))
 
 ;; Fix backspace when paredit is used in slime
 ;; TODO: Is this used? (should at least be changed to sly)

@@ -1,10 +1,20 @@
 (require 'rtags)
 (require 'company)
-(require 'company-rtags)
-(require 'flycheck-rtags)
-(require 'cmake-ide)
 (require 'gud)
 (require 'gdb-mi)
+
+(use-package rtags
+  :defer t)
+(use-package company-rtags
+  :defer t
+  :after (company rtags))
+(use-package flycheck-rtags
+  :defer t
+  :after (flycheck rtags))
+(use-package cmake-ide
+  :defer t)
+(use-package cmake-mode
+  :defer t)
 
 (setq rtags-path
       (format "%srtags-%s/bin/"

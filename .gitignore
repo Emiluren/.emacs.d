@@ -17,3 +17,4 @@ personal-org/
 /lisp/private.el
 *.elc
 image-dired/
+lisp/custom.el

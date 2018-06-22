@@ -15,6 +15,7 @@
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
                    (other . "my-c-style"))
+ calendar-week-start-day 1	    ; Week starts on monday
  column-number-mode t		    ; Enable column number in modeline
  ;; Company seems to work poorly with sly and gud/gdb
  ;; TODO: check with sly again
@@ -49,7 +50,7 @@
  recentf-max-menu-items 25
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
- sentence-end-double-space nil ; Sentences end with a single space
+ sentence-end-double-space nil	   ; Sentences end with a single space
  sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil

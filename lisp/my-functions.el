@@ -51,10 +51,12 @@ by user."
 
 (defun focus-gdb-buffer-when-stopped (gdb-result)
   (require 'bindat)
+  (require 'notifications)
   (unless (and (fboundp 'bindat-get-field)
 	       (string-equal (bindat-get-field gdb-result 'reason)
 			     "exited-normally"))
-    (raise-frame)
+    (notifications-notify :title "GDB"
+			  :body "Execution stopped.")
     ;; This is overwritten immediately by the source buffer
     ;; so not the best solution
     (require 'gdb-mi)
@@ -145,5 +147,9 @@ Otherwise, call `backward-kill-word'."
       (paredit-delete-region (region-beginning) (region-end))
     (when (fboundp 'paredit-backward-delete)
       (paredit-backward-delete arg))))
+
+(defun dired-lisp-dir ()
+  (interactive)
+  (dired "~/.emacs.d/lisp"))
 
 (provide 'my-functions)

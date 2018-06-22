@@ -10,6 +10,7 @@
  x-wait-for-event-timeout nil
  custom-file "~/.emacs.d/lisp/custom.el"
  )
+;; I don't use custom but package.el will write selected packages to it
 (load custom-file t)
 
 (add-to-list 'load-path "~/.emacs.d/lisp") ; All of my other elisp files
