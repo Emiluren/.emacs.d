@@ -31,6 +31,7 @@
 (setq use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
+(require 'bind-key)
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 (eval-when-compile

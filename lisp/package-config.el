@@ -72,7 +72,6 @@
   (setq org-journal-dir "~/.emacs.d/personal-org/dagbok")
   :custom
   (org-journal-file-format "%Y-%m-%d"))
-(message "in-package")
 
 (use-package sly ; Sylvester the Cat's Common Lisp IDE
   :defer t
