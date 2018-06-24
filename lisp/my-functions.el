@@ -152,4 +152,28 @@ Otherwise, call `backward-kill-word'."
   (interactive)
   (dired "~/.emacs.d/lisp"))
 
+(defun call-process-string-output (program &rest args)
+  (with-temp-buffer
+    (when (= 0 (apply #'call-process program nil t nil args))
+      (string-trim (buffer-string)))))
+
+(defvar bw-session-key nil)
+
+(defun bw-unlock ()
+  (interactive)
+  (let ((pass (read-passwd "Bitwarden password: ")))
+    (if (string-blank-p pass)
+	(message "Error: no password")
+      (let ((result (call-process-string-output
+		     "/usr/bin/bw" "unlock" "--raw" pass)))
+	(if result
+	    (setq bw-session-key result)
+	    (message "Bitwarden error: wrong password?"))))))
+
+(defun get-org-journal-password ()
+  (and bw-session-key
+       (call-process-string-output
+	"/usr/bin/bw" "get" "password" "org-journal"
+	"--session" bw-session-key)))
+
 (provide 'my-functions)

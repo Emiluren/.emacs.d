@@ -67,9 +67,28 @@
   :config
   (flycheck-julia-setup))
 
-(use-package org-journal
+;; To enter passwords in minibuffer instead of separate window
+(use-package pinentry
+  :demand t
   :config
-  (setq org-journal-dir "~/.emacs.d/personal-org/dagbok")
+  (setq epa-pinentry-mode 'loopback)
+  (pinentry-start))
+
+(use-package org-journal
+  :init
+  (defun insert-org-journal-password ()
+    (interactive)
+    (let ((pass (get-org-journal-password)))
+      (when pass
+	(insert pass))))
+  :bind* (("C-c P" . insert-org-journal-password))
+  :config
+  (setq org-journal-dir "~/.emacs.d/personal-org/dagbok"
+	org-journal-enable-encryption t
+
+	;; variables that are actually from other packages but used for encryption
+	org-crypt-disable-auto-save 'encrypt
+	org-tags-exclude-from-inheritance (quote ("crypt")))
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
@@ -155,4 +174,9 @@
 (use-package paredit
   :defer t)
 (use-package cider
+  :defer t)
+
+;; Use pacman from emacs
+;; TODO: Maybe try helm interface?
+(use-package system-packages
   :defer t)
