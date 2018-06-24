@@ -45,6 +45,12 @@
 (use-package org-mime
   :defer t)
 
+;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
+(defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
+(defvar gtd-projects-file "~/.emacs.d/personal-org/gtd/projects.org")
+(defvar gtd-reminder-file "~/.emacs.d/personal-org/gtd/reminder.org")
+(defvar gtd-someday-file "~/.emacs.d/personal-org/gtd/someday.org")
+
 (use-package org
   :ensure org-plus-contrib
   :defer t
@@ -52,7 +58,18 @@
   (("C-c l" . 'org-store-link)
    ("C-c a" . 'org-agenda)
    ("C-c c" . 'org-capture)
-   ("C-c b" . 'org-switchb)))
+   ("C-c b" . 'org-switchb))
+  :config
+  (setq org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
+	org-capture-templates '(("t" "Todo [inbox]" entry
+				 (file+headline gtd-inbox-file "Tasks")
+				 "* TODO %i%?")
+                              ("T" "Reminder" entry
+                               (file+headline gtd-reminder-file "Reminder")
+                               "* %i%? \n %U"))
+	org-refile-targets `((,gtd-projects-file :maxlevel . 3)
+			     (,gtd-someday-file :level . 1)
+			     (,gtd-reminder-file :maxlevel . 2))))
 
 (use-package julia-mode
   :defer t)
@@ -87,7 +104,8 @@
 	org-journal-enable-encryption t
 
 	;; variables that are actually from other packages but used for encryption
-	org-crypt-disable-auto-save 'encrypt
+	;; NOTE: encryption disabled for auto-save
+	org-crypt-disable-auto-save nil ; TODO change to encrypt if I can make bitwarden work with org-crypt
 	org-tags-exclude-from-inheritance (quote ("crypt")))
   :custom
   (org-journal-file-format "%Y-%m-%d"))
