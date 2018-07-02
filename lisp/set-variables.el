@@ -1,24 +1,26 @@
 ;; Keep closing paren for argument list indented to previous level
 (c-add-style "my-c-style"
              '("linux"
-	       (c-basic-offset . 4)
-	       (indent-tabs-mode . nil)	; Don't use tabs
-	       (c-offsets-alist
-		;; Keep the closing brace previous indentation
-		(arglist-close . 0))))
+               (c-basic-offset . 4)
+               (indent-tabs-mode . nil) ; Don't use tabs
+               (c-offsets-alist
+                ;; Keep the closing brace previous indentation
+                (arglist-close . 0))))
 
 (setq
- ;; Keep backup files in a separate folder
- backup-directory-alist '(("." . "~/.emacs.d/backups/"))
+ ;; Keep backup and autio save files in their own folders
+ ;; TODO: AUTO SAVE NOT WORKING!!!!!
+ auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "backups/")))
+ backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
  backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
  ;; Use eww to browse web pages by default
  browse-url-browser-function 'eww-browse-url
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
-		   (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
+                   (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
                    (other . "my-c-style"))
- calendar-week-start-day 1	    ; Week starts on monday
- column-number-mode t		    ; Enable column number in modeline
+ calendar-week-start-day 1          ; Week starts on monday
+ column-number-mode t               ; Enable column number in modeline
  ;; Company seems to work poorly with sly and gud/gdb
  ;; TODO: check with sly again
  company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
