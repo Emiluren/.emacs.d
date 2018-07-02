@@ -10,7 +10,7 @@
 
 ;; Set up highlighting of cursor/line
 (blink-cursor-mode -1)
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; Enable Interactively Do Things
 (require 'ido)

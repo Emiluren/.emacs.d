@@ -4,11 +4,12 @@
 (package-initialize)
 
 (setq
-;; Give emacs 100mb memory to use before trying to collect garbage
+ ;; Give emacs 100mb memory to use before trying to collect garbage
  gc-cons-threshold 100000000
  ;; Fix emacs 26 being slow
  x-wait-for-event-timeout nil
  custom-file "~/.emacs.d/lisp/custom.el"
+ global-font-lock-mode nil
  )
 ;; I don't use custom but package.el will write selected packages to it
 (load custom-file t)
