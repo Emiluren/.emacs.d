@@ -8,10 +8,6 @@
 	    ;; Don't line break
 	    (setq truncate-lines t)))
 
-;; Don't ask for confirmation when closing a buffer that is attached
-;; to a process
-(delete #'process-kill-buffer-query-function kill-buffer-query-functions)
-
 ;; Flycheck stuff
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)

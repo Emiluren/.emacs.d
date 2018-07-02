@@ -25,6 +25,7 @@
  ;; TODO: check with sly again
  company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
  company-idle-delay 0
+ confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
