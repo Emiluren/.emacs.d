@@ -18,3 +18,5 @@ personal-org/
 *.elc
 image-dired/
 lisp/custom.el
+.cache/
+backups/

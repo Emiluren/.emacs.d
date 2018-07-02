@@ -35,8 +35,6 @@
 
 ;; dired-x is required for dired-omit-mode
 (add-hook 'dired-load-hook (lambda () (require 'dired-x)))
-;; (require 'dired)
-;; (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
 
 ;; Do not use dired-omit-mode for 'recover-session'
 (defadvice recover-session (around disable-dired-omit-for-recover activate)

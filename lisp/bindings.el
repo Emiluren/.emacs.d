@@ -23,16 +23,6 @@
 
 (global-set-key (kbd "C-x F") 'ido-sudo-find-file) ; Open file as root
 
-;; Don't complete with enter or space  
-(with-eval-after-load 'company
-  ;; <return> is for gui Emacs; RET is for terminal Emacs
-  ;; [tab] is for gui and "TAB" is for terminal
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "SPC") nil)
-  (define-key company-active-map (kbd "TAB") 'company-complete-common-or-selection)
-  (define-key company-active-map [tab] 'company-complete-common-or-selection))
-
 ;; TODO: Fix kill-region-yank-and-indent
 ;; (global-set-key (kbd "C-y") #'kill-region-yank-and-indent)
 

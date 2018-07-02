@@ -10,16 +10,19 @@
 (setq
  ;; Keep backup files in a separate folder
  backup-directory-alist '(("." . "~/.emacs.d/backups/"))
+ backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
  ;; Use eww to browse web pages by default
  browse-url-browser-function 'eww-browse-url
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
+		   (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
                    (other . "my-c-style"))
  calendar-week-start-day 1	    ; Week starts on monday
  column-number-mode t		    ; Enable column number in modeline
  ;; Company seems to work poorly with sly and gud/gdb
  ;; TODO: check with sly again
  company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
+ company-idle-delay 0
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search t		; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
@@ -41,13 +44,15 @@
  ido-enable-flex-matching t		   ; Fuzzy matching
  ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
  ido-create-new-buffer 'always ; Create new buffers without confirmation
+ ido-use-virtual-buffers t
  inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
+ isearch-lazy-highlight-initial-delay ; Don't wait before highlighting searches
  magit-delete-by-moving-to-trash nil ; Delete files directly from magit
  minibuffer-auto-raise t	 ; Focus Emacs if minibuffer activates
  ;; Set up path and stuff for org-mode
  org-directory "~/.emacs.d/personal-org/"
  org-default-notes-file (concat org-directory "/notes.org")
- recentf-max-menu-items 25
+ recentf-max-menu-items 150
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
  sentence-end-double-space nil	   ; Sentences end with a single space

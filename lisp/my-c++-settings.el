@@ -37,7 +37,6 @@
 	  (lambda ()
 	    (setq-local eldoc-documentation-function #'rtags-eldoc)))
 
-(setq company-idle-delay 0)
 ;; (define-key c-mode-map [(tab)] 'company-complete)
 ;; (define-key c++-mode-map [(tab)] 'company-complete)
 (define-key c++-mode-map (kbd "M-.") #'rtags-find-symbol-at-point)

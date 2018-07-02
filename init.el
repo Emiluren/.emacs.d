@@ -61,6 +61,7 @@
 (load "hasklig")
 (load "theme")
 
+;; TODO: Move these to use use-package :mode instead
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
@@ -73,3 +74,4 @@
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)

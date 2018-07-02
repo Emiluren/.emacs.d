@@ -7,7 +7,6 @@
 
 (use-package ediff
   :defer t
-  :defines ediff-window-setup-function
   :functions ediff-window-setup-plain
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
@@ -151,6 +150,8 @@
   :config
   (which-key-mode 1))
 
+(use-package company)
+
 (use-package company-lsp
   :defer t)
 (use-package toml-mode
@@ -173,12 +174,26 @@
   :defer t)
 (use-package elixir-mode
   :defer t)
+(use-package fsharp-mode)
 (use-package glsl-mode
   :defer t)
 (use-package clj-refactor
   :defer t)
+
+;; Scheme IDE
 (use-package geiser
   :defer t)
+
+;; Media player daemon that can be used to control mopidy
+;; TODO enable again when mopidy setup is complete
+(use-package mpdel
+  :config
+  (mpdel-mode)
+
+  ;; Kill client process when emacs quits
+  (libmpdel-ensure-connection)
+  (set-process-query-on-exit-flag (libmpdel--process) nil)
+  )
 
 ;; Make undo easier to use
 (use-package undo-tree
@@ -189,12 +204,15 @@
   :defer t)
 (use-package csharp-mode
   :defer t)
+(use-package omnisharp
+  :after csharp-mode
+  :init
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-omnisharp))
+  :hook (csharp-mode . omnisharp-mode)
+  :bind ((:map csharp-mode-map
+	       ("M-." . omnisharp-go-to-definition))))
 (use-package paredit
   :defer t)
 (use-package cider
-  :defer t)
-
-;; Use pacman from emacs
-;; TODO: Maybe try helm interface?
-(use-package system-packages
   :defer t)
