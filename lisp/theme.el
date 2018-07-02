@@ -91,7 +91,8 @@
 
 (use-package yascroll
   :config
-  (global-yascroll-bar-mode))
+  (global-yascroll-bar-mode)
+  (setq yascroll:delay-to-hide nil))
 
 ;; punpun seems to not work with use-package
 ;; (unconventional feature name)
@@ -117,7 +118,7 @@
 ;; Disable menu and tool bar
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-;; (scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Use nyan-mode to replace scroll bar
 ;; (use-package nyan-mode
