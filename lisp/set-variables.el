@@ -46,7 +46,7 @@
  ido-create-new-buffer 'always ; Create new buffers without confirmation
  ido-use-virtual-buffers t
  inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
- isearch-lazy-highlight-initial-delay ; Don't wait before highlighting searches
+ lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
  magit-delete-by-moving-to-trash nil ; Delete files directly from magit
  minibuffer-auto-raise t	 ; Focus Emacs if minibuffer activates
  ;; Set up path and stuff for org-mode
