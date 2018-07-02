@@ -36,33 +36,33 @@
  ;; To make sudo work better in eshell
  eshell-prefer-lisp-functions t
  eshell-prompt-function (lambda ()
-			  (require 'em-dirs)
-			  (concat (abbreviate-file-name (eshell/pwd))
-				  (if (= (user-uid) 0) "\n# " "\n$ ")))
+                          (require 'em-dirs)
+                          (concat (abbreviate-file-name (eshell/pwd))
+                                  (if (= (user-uid) 0) "\n# " "\n$ ")))
  flycheck-emacs-lisp-load-path 'inherit
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
- ido-enable-flex-matching t		   ; Fuzzy matching
+ ido-enable-flex-matching t                ; Fuzzy matching
  ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
  ido-create-new-buffer 'always ; Create new buffers without confirmation
  ido-use-virtual-buffers t
  inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
  magit-delete-by-moving-to-trash nil ; Delete files directly from magit
- minibuffer-auto-raise t	 ; Focus Emacs if minibuffer activates
+ minibuffer-auto-raise t         ; Focus Emacs if minibuffer activates
  ;; Set up path and stuff for org-mode
  org-directory "~/.emacs.d/personal-org/"
  org-default-notes-file (concat org-directory "/notes.org")
  recentf-max-menu-items 150
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
- sentence-end-double-space nil	   ; Sentences end with a single space
+ sentence-end-double-space nil     ; Sentences end with a single space
  sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil
  split-width-threshold 120
- tab-always-indent 'complete		; Use tab to complete
+ tab-always-indent 'complete            ; Use tab to complete
  ;; Faster than the default scp (according to Emacs wiki)
  tramp-default-method "ssh"
  )
@@ -72,11 +72,11 @@
       message-directory "~/.emacs.d/mail"
       gnus-select-method '(nnnil "")
       gnus-secondary-select-methods '((nntp "news.gmane.org")
-				      (nnimap "Skolmail"
-					      (nnimap-address "outlook.office365.com")
-					      (nnimap-server-port 993)
-					      (nnimap-stream ssl)))
-      ;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
+                                      (nnimap "Skolmail"
+                                              (nnimap-address "outlook.office365.com")
+                                              (nnimap-server-port 993)
+                                              (nnimap-stream ssl)))
+					;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
       ;; Make sure emails end up in sent folder after they have been sent
       ;; TODO: not working?
       ;; gnus-message-archive-group "nnimap+Skolmail:Skickade objekt"
