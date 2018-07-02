@@ -24,7 +24,7 @@
  company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
  company-idle-delay 0
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
- dabbrev-case-fold-search t		; Make dabbrev case sensitive
+ dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  ;; Use a separate line for eshell working directory
  ;; Seems to cause some sort of problem with the history though
