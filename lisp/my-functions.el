@@ -39,16 +39,6 @@ by user."
          file
        (concat "/sudo::" file)))))
 
-(with-eval-after-load 'company
-  (defun company-complete-common-or-selection ()
-    "Insert the common part of all candidates, or selection if pressed again."
-    (interactive)
-    (when (company-manual-begin)
-      (let ((tick (buffer-chars-modified-tick)))
-        (call-interactively 'company-complete-common)
-        (when (eq tick (buffer-chars-modified-tick))
-          (call-interactively 'company-complete-selection))))))
-
 (defun focus-gdb-buffer-when-stopped (gdb-result)
   (require 'bindat)
   (require 'notifications)
