@@ -1,5 +1,7 @@
 (require 'my-functions)
 
+;; TODO: move everything to package-config
+
 ;; Make sure dir-locals.el is reloaded if the major mode changes
 (add-hook 'after-change-major-mode-hook 'hack-local-variables)
 
@@ -22,9 +24,6 @@
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
-;; Faster than flex completion. Seems to mess stuff up though
-;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
-(add-hook 'after-init-hook 'global-company-mode)
 
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)

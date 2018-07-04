@@ -1,3 +1,6 @@
+
+;; TODO: Organize this file somehow
+
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 ;; (eval-when-compile
 ;;   (setq use-package-expand-minimally byte-compile-current-file))
@@ -11,9 +14,12 @@
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
 
+;; TODO: add iterative reverse history search
+;; Check comint-history-isearch-backward-regexp.
 (use-package eshell
   :defer t
   :config
+  ;; TODO Create an lls command to run ls locally in tramp eshell
   (defun eshell/lcd (&optional directory)
     (eval-and-compile
       (require 'em-dirs)
@@ -70,6 +76,12 @@
 			     (,gtd-someday-file :level . 1)
 			     (,gtd-reminder-file :maxlevel . 2))))
 
+;; TODO: Maybe switch ido to helm
+;; helm-apropos is really cool
+(use-package ido
+  :config
+  (ido-mode t))
+
 (use-package julia-mode
   :defer t)
 
@@ -109,6 +121,8 @@
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
+;; Faster than flex completion. Seems to mess stuff up though
+;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
 (use-package sly ; Sylvester the Cat's Common Lisp IDE
   :defer t
   :bind
@@ -150,7 +164,21 @@
   :config
   (which-key-mode 1))
 
-(use-package company)
+(use-package company
+  :config
+  (setq
+   ;; Company seems to work poorly with sly and gud/gdb
+   ;; TODO: check with sly again
+   company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
+   company-idle-delay nil)
+
+  ;;(add-hook 'after-init-hook 'global-company-mode)
+  (global-company-mode)
+
+  :bind (:map company-mode-map
+  	 ("M-<tab>" . company-complete-common)
+  	 ("M-TAB" . company-complete-common))
+  )
 
 (use-package company-lsp
   :defer t)

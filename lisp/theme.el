@@ -94,8 +94,7 @@
   (global-yascroll-bar-mode)
   (setq yascroll:delay-to-hide nil))
 
-;; punpun seems to not work with use-package
-;; (unconventional feature name)
+;; punpun seems to not work with use-package (unconventional feature name)
 (unless (package-installed-p 'punpun-theme)
   (package-install 'punpun-theme))
 (load-theme 'punpun-light t)
@@ -107,6 +106,7 @@
 		    :foreground "dark gray")
 (set-face-attribute 'yascroll:thumb-text-area nil
 		    :background "dark gray")
+;; TODO: make company window faces monochrome to match punpun theme
 
 ;; (use-package apropospriate-theme
 ;;   :defer t)

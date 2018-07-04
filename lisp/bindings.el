@@ -9,7 +9,6 @@
 ;; Set up bindings to quickly open special files
 (global-set-key (kbd "C-c i") #'find-init-file)
 (global-set-key (kbd "C-c j") #'dired-lisp-dir)
-(global-set-key (kbd "C-c t") #'find-todo-file)
 
 ;; Open eshell quickly
 (global-set-key (kbd "C-c e") #'eshell)

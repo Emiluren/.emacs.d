@@ -1,3 +1,7 @@
+
+;; TODO: move all of this to package-config
+
+
 ;; Enable saving of minibuffer history
 (savehist-mode 1)
 
@@ -12,15 +16,11 @@
 (blink-cursor-mode -1)
 ;; (global-hl-line-mode 1)
 
-;; Enable Interactively Do Things
-(require 'ido)
-(ido-mode t)
-
 ;; Enable fish completion in shell and eshell
 ;; TODO: I got this message in eshell
 ;; "Completion function pcomplete-completions-at-point uses a
 ;; deprecated calling convention"
-;; Is that because of this?
+;; Is that because of this? (seems not to be, still not working)
 
 ;; Seems to mess some stuff up with eshell
 ;; (when (and (executable-find "fish")
