@@ -112,12 +112,11 @@
   :bind* (("C-c P" . insert-org-journal-password))
   :config
   (setq org-journal-dir "~/.emacs.d/personal-org/dagbok"
-	org-journal-enable-encryption t
+	;; org-journal-enable-encryption t
 
 	;; variables that are actually from other packages but used for encryption
-	;; NOTE: encryption disabled for auto-save
-	org-crypt-disable-auto-save nil ; TODO change to encrypt if I can make bitwarden work with org-crypt
-	org-tags-exclude-from-inheritance (quote ("crypt")))
+	;; org-tags-exclude-from-inheritance (quote ("crypt"))
+	)
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 

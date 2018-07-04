@@ -8,9 +8,10 @@
                 (arglist-close . 0))))
 
 (setq
- ;; Keep backup and autio save files in their own folders
- ;; TODO: AUTO SAVE NOT WORKING!!!!!
- auto-save-file-name-transforms `((".*" ,(concat user-emacs-directory "backups/")))
+ ;; Keep backup and auto save files in their own folders
+ ;; Also place remote files in /tmp like default
+ auto-save-file-name-transforms `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'" "/tmp/\\2" t)
+				  (".*" ,(concat user-emacs-directory "backups/") t))
  backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
  backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
  ;; Use eww to browse web pages by default
