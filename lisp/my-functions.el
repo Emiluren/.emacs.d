@@ -168,7 +168,8 @@ Otherwise, call `backward-kill-word'."
 
 (defun hide-ui-for-buffer ()
   (interactive)
-  (set-fringe-style 'no-fringes)
+  ;;(set-fringe-style 'no-fringes)
+  (set-fringe-style 'minimal)
   (setq mode-line-format nil
 	header-line-format nil))
 
