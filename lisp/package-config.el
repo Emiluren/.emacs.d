@@ -175,8 +175,8 @@
   (global-company-mode)
 
   :bind (:map company-mode-map
-  	 ("M-<tab>" . company-complete-common)
-  	 ("M-TAB" . company-complete-common))
+  	 ("M-<tab>" . company-manual-begin)
+  	 ("M-TAB" . company-manual-begin))
   )
 
 (use-package company-lsp
