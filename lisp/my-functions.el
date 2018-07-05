@@ -166,4 +166,10 @@ Otherwise, call `backward-kill-word'."
 	"/usr/bin/bw" "get" "password" "org-journal"
 	"--session" bw-session-key)))
 
+(defun hide-ui-for-buffer ()
+  (interactive)
+  (set-fringe-style 'no-fringes)
+  (setq mode-line-format nil
+	header-line-format nil))
+
 (provide 'my-functions)
