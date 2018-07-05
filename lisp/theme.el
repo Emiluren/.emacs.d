@@ -94,19 +94,26 @@
   (global-yascroll-bar-mode)
   (setq yascroll:delay-to-hide nil))
 
-;; punpun seems to not work with use-package (unconventional feature name)
-(unless (package-installed-p 'punpun-theme)
-  (package-install 'punpun-theme))
-(load-theme 'punpun-light t)
-(set-face-attribute 'minibuffer-prompt nil
-		    :background "gainsboro"
-		    :foreground "dim gray")
-(set-face-attribute 'yascroll:thumb-fringe nil
-		    :background "dark gray"
-		    :foreground "dark gray")
-(set-face-attribute 'yascroll:thumb-text-area nil
-		    :background "dark gray")
-;; TODO: make company window faces monochrome to match punpun theme
+(use-package minimal-theme
+  :no-require t
+  :config
+  (load-theme 'minimal-light t))
+
+;; (use-package punpun-theme
+;;   ;; punpun's package name is different from its feature name so
+;;   ;; (require 'punpun-theme) would fail
+;;   :no-require t
+;;   ;; TODO: make company window faces monochrome to match punpun theme
+;;   :config
+;;   (load-theme 'punpun-light t)
+;;   (set-face-attribute 'minibuffer-prompt nil
+;; 		      :background "gainsboro"
+;; 		      :foreground "dim gray")
+;;   (set-face-attribute 'yascroll:thumb-fringe nil
+;; 		      :background "dark gray"
+;; 		      :foreground "dark gray")
+;;   (set-face-attribute 'yascroll:thumb-text-area nil
+;; 		      :background "dark gray"))
 
 ;; (use-package apropospriate-theme
 ;;   :defer t)
