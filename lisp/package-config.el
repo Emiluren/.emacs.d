@@ -19,6 +19,18 @@
 (use-package eshell
   :defer t
   :config
+  (setq eshell-hist-ignoredups t
+	eshell-cmpl-ignore-case t
+	eshell-prompt-regexp "[#$] "
+	;; To make sudo work better in eshell
+	eshell-prefer-lisp-functions t
+	;; Use a separate line for eshell working directory
+	;; Seems to cause some sort of problem with the history though
+	;; (when used in combination with "flush output" or whatever?)
+	eshell-prompt-function (lambda ()
+				 (require 'em-dirs)
+				 (concat (abbreviate-file-name (eshell/pwd))
+					 (if (= (user-uid) 0) "\n# " "\n$ "))))
   ;; TODO Create an lls command to run ls locally in tramp eshell
   (defun eshell/lcd (&optional directory)
     (eval-and-compile

@@ -24,17 +24,6 @@
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
- ;; Use a separate line for eshell working directory
- ;; Seems to cause some sort of problem with the history though
- eshell-hist-ignoredups t
- eshell-cmpl-ignore-case t
- eshell-prompt-regexp "[#$] "
- ;; To make sudo work better in eshell
- eshell-prefer-lisp-functions t
- eshell-prompt-function (lambda ()
-                          (require 'em-dirs)
-                          (concat (abbreviate-file-name (eshell/pwd))
-                                  (if (= (user-uid) 0) "\n# " "\n$ ")))
  flycheck-emacs-lisp-load-path 'inherit
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
