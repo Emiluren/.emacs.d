@@ -133,8 +133,5 @@
 ;;   (nyan-mode 1)
 ;;   (setq nyan-wavy-trail t))
 
-;; Set the window title to something better
-(setq frame-title-format '("%b - Emacs"))
-
 ;; Show matching parens
 (show-paren-mode 1)
