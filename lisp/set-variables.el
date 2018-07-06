@@ -28,16 +28,8 @@
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
- ido-enable-flex-matching t                ; Fuzzy matching
- ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
- ido-create-new-buffer 'always ; Create new buffers without confirmation
- ido-use-virtual-buffers t
  inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
- magit-delete-by-moving-to-trash nil ; Delete files directly from magit
- ;; Set up path and stuff for org-mode
- org-directory "~/.emacs.d/personal-org/"
- org-default-notes-file (concat org-directory "/notes.org")
  recentf-max-menu-items 150
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t

@@ -56,11 +56,15 @@
 
 (use-package magit
   :defer t
-  :bind ("C-x g" . 'magit-status))
+  :bind ("C-x g" . 'magit-status)
+  :config
+  (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
+	))
 
 ;; Org
 (use-package org-mime
-  :defer t)
+  :defer t
+  :after org)
 
 ;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
 (defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
@@ -77,7 +81,9 @@
    ("C-c c" . 'org-capture)
    ("C-c b" . 'org-switchb))
   :config
-  (setq org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
+  (setq org-directory "~/.emacs.d/personal-org/"
+	org-default-notes-file (concat org-directory "/notes.org")
+	org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
 	org-capture-templates '(("t" "Todo [inbox]" entry
 				 (file+headline gtd-inbox-file "Tasks")
 				 "* TODO %i%?")
@@ -92,6 +98,10 @@
 ;; helm-apropos is really cool
 (use-package ido
   :config
+  (setq ido-enable-flex-matching t                ; Fuzzy matching
+	ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
+	ido-create-new-buffer 'always ; Create new buffers without confirmation
+	ido-use-virtual-buffers t)
   (ido-mode t))
 
 (use-package julia-mode
