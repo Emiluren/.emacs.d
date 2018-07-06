@@ -1,5 +1,5 @@
 
-;; TODO: Organize this file somehow
+;;; Utils
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 ;; (eval-when-compile
@@ -48,11 +48,25 @@
 		      hop)))
       (eshell/cd directory))))
 
+(use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
+(use-package fish-mode :defer t)
+
 (use-package flycheck)
-;; flycheck-clojure
-;; flycheck-crystal
-;; flycheck-elixir
-;; flycheck-elm
+
+;; Show git diff in fringe
+;; (use-package git-gutter
+;;   :config
+;;   (global-git-gutter-mode 1))
+
+;; TODO: Maybe switch ido to helm
+;; helm-apropos is really cool
+(use-package ido
+  :config
+  (setq ido-enable-flex-matching t                ; Fuzzy matching
+	ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
+	ido-create-new-buffer 'always ; Create new buffers without confirmation
+	ido-use-virtual-buffers t)
+  (ido-mode t))
 
 (use-package magit
   :defer t
@@ -60,6 +74,18 @@
   :config
   (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
 	))
+
+;; Media player daemon that can be used to control mopidy
+;; TODO enable again when mopidy setup is complete
+(use-package mpdel
+  :delight
+  :config
+  (mpdel-mode)
+
+  ;; Kill client process when emacs quits
+  (libmpdel-ensure-connection)
+  (set-process-query-on-exit-flag (libmpdel--process) nil)
+  )
 
 ;; Org
 (use-package org-mime
@@ -94,29 +120,6 @@
 			     (,gtd-someday-file :level . 1)
 			     (,gtd-reminder-file :maxlevel . 2))))
 
-;; TODO: Maybe switch ido to helm
-;; helm-apropos is really cool
-(use-package ido
-  :config
-  (setq ido-enable-flex-matching t                ; Fuzzy matching
-	ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
-	ido-create-new-buffer 'always ; Create new buffers without confirmation
-	ido-use-virtual-buffers t)
-  (ido-mode t))
-
-(use-package julia-mode
-  :defer t)
-
-(use-package julia-repl
-  :after julia-mode
-  :defer t)
-
-(use-package flycheck-julia
-  :after (julia-mode flycheck)
-  :defer t
-  :config
-  (flycheck-julia-setup))
-
 ;; To enter passwords in minibuffer instead of separate window
 (use-package pinentry
   :demand t
@@ -142,33 +145,15 @@
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
-;; Faster than flex completion. Seems to mess stuff up though
-;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
-(use-package sly ; Sylvester the Cat's Common Lisp IDE
-  :defer t
-  :bind
-  ((:map sly-prefix-map
-	 ("E" . nil)
-	 ("I" . nil)
-	 ("i" . nil)
-	 ("x" . nil))))
-
-(use-package sly-quicklisp
-  :defer t)
+;; Make undo easier to use
+(use-package undo-tree
+  :delight
+  :config
+  (global-undo-tree-mode))
 
 (use-package yasnippet)
 (use-package yasnippet-snippets
   :after yasnippet)
-
-(use-package fish-mode
-  :defer t)
-
-;; Show git diff in fringe
-;; (use-package git-gutter
-;;   :config
-;;   (global-git-gutter-mode 1))
-
-(use-package evil-numbers)
 
 ;; Better M-x (on top of Ido)
 (use-package smex
@@ -182,10 +167,12 @@
 
 ;; Show what keys can be pressed in the middle of a sequence
 (use-package which-key
+  :delight
   :config
   (which-key-mode 1))
 
 (use-package company
+  :delight
   :config
   (setq
    ;; Company seems to work poorly with sly and gud/gdb
@@ -198,70 +185,77 @@
 
   :bind (:map company-mode-map
   	 ("M-<tab>" . company-manual-begin)
-  	 ("M-TAB" . company-manual-begin))
-  )
+  	 ("M-TAB" . company-manual-begin)))
 
-(use-package company-lsp
-  :defer t)
-(use-package toml-mode
-  :defer t)
-(use-package lsp-mode
-  :defer t)
-(use-package lsp-rust
-  :defer t)
-(use-package lsp-ui
-  :defer t)
-(use-package yaml-mode
-  :defer t)
-(use-package rust-mode
-  :defer t)
-(use-package markdown-mode
-  :defer t)
-(use-package crystal-mode
-  :defer t)
-(use-package alchemist
-  :defer t)
-(use-package elixir-mode
-  :defer t)
-(use-package fsharp-mode)
-(use-package glsl-mode
-  :defer t)
-(use-package clj-refactor
-  :defer t)
+;;; Programming languages
 
-;; Scheme IDE
-(use-package geiser
-  :defer t)
+;; TODO: add these
+;; flycheck-clojure
+;; flycheck-crystal
+;; flycheck-elixir
+;; flycheck-elm
 
-;; Media player daemon that can be used to control mopidy
-;; TODO enable again when mopidy setup is complete
-(use-package mpdel
-  :config
-  (mpdel-mode)
-
-  ;; Kill client process when emacs quits
-  (libmpdel-ensure-connection)
-  (set-process-query-on-exit-flag (libmpdel--process) nil)
-  )
-
-;; Make undo easier to use
-(use-package undo-tree
-  :config
-  (global-undo-tree-mode))
-
-(use-package haskell-mode
-  :defer t)
 (use-package csharp-mode
-  :defer t)
-(use-package omnisharp
-  :after csharp-mode
-  :init
-  (eval-after-load 'company
-    '(add-to-list 'company-backends 'company-omnisharp))
-  :hook (csharp-mode . omnisharp-mode)
-  :bind ((:map csharp-mode-map
-	       ("M-." . omnisharp-go-to-definition))))
+  :defer t
+  :config
+  (use-package omnisharp
+    :after csharp-mode
+    :init
+    (eval-after-load 'company
+      '(add-to-list 'company-backends 'company-omnisharp))
+    :hook (csharp-mode . omnisharp-mode)
+    :bind ((:map csharp-mode-map	
+	 ("M-." . omnisharp-go-to-definition)))))
+
+(use-package clojure-mode
+  :defer t
+  :config
+  (use-package cider)
+  (use-package clj-refactor))
+
+(use-package crystal-mode :defer t)
+(use-package elixir-mode
+  :defer t
+  :config
+  (use-package alchemist :defer t))
+(use-package fsharp-mode :defer t)
+(use-package geiser :defer t) ; Scheme IDE
+(use-package glsl-mode :defer t)
+(use-package haskell-mode :defer t)
+(use-package julia-mode
+  :defer t
+  :config
+  (use-package flycheck-julia :config (flycheck-julia-setup))
+  (use-package julia-repl))
+(use-package markdown-mode :defer t)
+
 (use-package paredit
-  :defer t)
-(use-package cider
-  :defer t)
+  :defer t
+  :bind
+  ((:map paredit-mode-map
+	 ("\\" . nil)) ; Remove annoying \ escape
+   )
+  )
+(use-package rust-mode
+  :defer t
+  :config
+  (use-package lsp-mode)
+  (use-package lsp-rust)
+  (use-package lsp-ui)
+  (use-package company-lsp))
+
+;; Faster than flex completion. Seems to mess stuff up though
+;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
+(use-package sly ; Sylvester the Cat's Common Lisp IDE
+  :defer t
+  :bind
+  ((:map sly-prefix-map
+	 ("E" . nil)
+	 ("I" . nil)
+	 ("i" . nil)
+	 ("x" . nil)))
+  :config
+  (use-package sly-quicklisp))
+
+(use-package toml-mode :defer t)
+(use-package yaml-mode :defer t)
