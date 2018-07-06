@@ -46,6 +46,17 @@
 ;;   ;; To disable collection of benchmark data after init is done.
 ;;   :hook (after-init . benchmark-init/deactivate))
 
+(use-package exwm
+  :config
+
+  (require 'exwm-randr)
+  (exwm-randr-enable)
+
+  (require 'exwm-config)
+  (exwm-config-default)
+
+  (async-shell-command "compton" "*compton*"))
+
 ;; dash - list utilities
 (use-package dash
   :config
