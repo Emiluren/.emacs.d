@@ -50,12 +50,17 @@
   :config
 
   (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist '(1 "HDMI1"))
   (exwm-randr-enable)
 
   (require 'exwm-config)
   (exwm-config-default)
 
-  (async-shell-command "compton" "*compton*"))
+  (async-shell-command "compton --config ~/.config/compton.conf" "*compton*")
+
+  ;; Show time and battery in mode-line
+  (display-time)
+  (display-battery-mode))
 
 ;; dash - list utilities
 (use-package dash

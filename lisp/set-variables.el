@@ -14,8 +14,6 @@
 				  (".*" ,(concat user-emacs-directory "backups/") t))
  backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
  backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
- ;; Use eww to browse web pages by default
- browse-url-browser-function 'eww-browse-url
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
                    (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
