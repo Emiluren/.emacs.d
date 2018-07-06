@@ -35,7 +35,6 @@
  inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
  magit-delete-by-moving-to-trash nil ; Delete files directly from magit
- minibuffer-auto-raise t         ; Focus Emacs if minibuffer activates
  ;; Set up path and stuff for org-mode
  org-directory "~/.emacs.d/personal-org/"
  org-default-notes-file (concat org-directory "/notes.org")
