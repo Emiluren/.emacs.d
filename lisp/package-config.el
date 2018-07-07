@@ -169,10 +169,10 @@
    ("C-c C-m" . #'smex)))
 
 ;; Show what keys can be pressed in the middle of a sequence
-(use-package which-key
-  :delight
-  :config
-  (which-key-mode 1))
+;; (use-package which-key
+;;   :delight
+;;   :config
+;;   (which-key-mode 1))
 
 (use-package company
   :delight

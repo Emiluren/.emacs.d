@@ -2,6 +2,8 @@
 (eval-when-compile
   (setq use-package-expand-minimally byte-compile-current-file))
 
+;; TODO: maybe change mode-line color for char-mode?
+
 (use-package exwm
   :preface
     (defun increase-brightness ()
@@ -51,6 +53,12 @@
     (exwm-input-set-key (kbd "s-j") #'windmove-down)
     (exwm-input-set-key (kbd "s-k") #'windmove-up)
     (exwm-input-set-key (kbd "s-l") #'windmove-right))
+
+  ;; To move to other frames
+  (add-to-list 'load-path "~/.emacs.d/unpackaged")
+  (require 'framemove)
+  (setq framemove-hook-into-windmove t) ; TODO: Seems to move between workspaces, hmm...
+
   (exwm-input-set-key (kbd "s-;") #'other-frame)
   (exwm-input-set-key (kbd "<XF86MonBrightnessUp>") #'increase-brightness)
   (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") #'decrease-brightness)

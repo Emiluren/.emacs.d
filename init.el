@@ -55,8 +55,9 @@
       focus-follows-mouse t
       resize-mini-windows nil)
 
-;; TODO: make this run only when needed somehow
-(load "window-manager")
+;; Only start exwm if running as a daemon
+(when (daemonp)
+  (load "window-manager"))
 
 ;; dash - list utilities
 (use-package dash
