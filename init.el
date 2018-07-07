@@ -4,7 +4,6 @@
 (package-initialize)
 
 ;; TODO: move all gitignore files to .not_in_git
-;; TODO: Maybe change M-/ to hippie-expand
 
 (setq
  ;; Give emacs 100mb memory to use before trying to collect garbage

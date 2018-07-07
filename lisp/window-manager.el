@@ -66,8 +66,11 @@
   (require 'exwm-config)
   (exwm-config-default)
 
-  ;; TODO move this to when the first frame is created
-  ;;(async-shell-command "compton --config ~/.config/compton.conf" "*compton*")
+  (add-hook 'exwm-init-hook
+	    (lambda ()
+	      (start-process-shell-command
+	       "compton" "*compton*"
+	       "compton --config ~/.config/compton.conf")))
 
   ;; Enable moving of windows to other workspaces
   (setq exwm-workspace-show-all-buffers t

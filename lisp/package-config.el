@@ -1,4 +1,6 @@
 
+;; TODO: untabify
+
 ;;; Utils
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
@@ -7,6 +9,11 @@
 
 (use-package aurel
   :defer t)
+
+(use-package dired-du
+  :config
+  (setq dired-listing-switches "-alh")
+  (setq dired-du-size-format t))
 
 (use-package ediff
   :defer t
@@ -67,6 +74,21 @@
 ;; (use-package git-gutter
 ;;   :config
 ;;   (global-git-gutter-mode 1))
+
+(use-package hippie-exp
+  :bind ("M-/" . 'hippie-expand)
+  :config
+  (setq hippie-expand-try-functions-list
+        '(try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-expand-line
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol)))
 
 ;; TODO: Maybe switch ido to helm
 ;; helm-apropos is really cool

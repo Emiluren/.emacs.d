@@ -1,6 +1,7 @@
 *~
 elpa/
-eshell/
+eshell/history
+eshell/lastdir
 /ido.last
 /tramp
 url/
