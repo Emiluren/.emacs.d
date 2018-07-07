@@ -19,18 +19,19 @@
 (use-package eshell
   :defer t
   :config
+  (add-to-list 'eshell-modules-list 'eshell-tramp) ; To make eshell use eshell/sudo instead of /usr/bin/sudo
   (setq eshell-hist-ignoredups t
+	eshell-prefer-lisp-functions t ; Make sudo work better in eshell
 	eshell-cmpl-ignore-case t
-	eshell-prompt-regexp "[#$] "
-	;; To make sudo work better in eshell
-	eshell-prefer-lisp-functions t
+	eshell-cmpl-cycle-completions nil ; Complete common part first and then list possible completions
 	;; Use a separate line for eshell working directory
 	;; Seems to cause some sort of problem with the history though
 	;; (when used in combination with "flush output" or whatever?)
 	eshell-prompt-function (lambda ()
 				 (require 'em-dirs)
 				 (concat (abbreviate-file-name (eshell/pwd))
-					 (if (= (user-uid) 0) "\n# " "\n$ "))))
+					 (if (= (user-uid) 0) "\n# " "\n$ ")))
+	eshell-prompt-regexp "[#$] ")
   ;; TODO Create an lls command to run ls locally in tramp eshell
   (defun eshell/lcd (&optional directory)
     (eval-and-compile
@@ -49,6 +50,12 @@
       (eshell/cd directory))))
 
 (use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
+
+(use-package fish-completion
+  :if (executable-find "fish")
+  :config
+  (global-fish-completion-mode))
+
 (use-package fish-mode :defer t)
 
 (use-package flycheck
