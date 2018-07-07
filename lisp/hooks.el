@@ -13,6 +13,7 @@
 ;; Flycheck stuff
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil)))
 
 ;; Set up rust lsp stuff
 (with-eval-after-load 'lsp-mode

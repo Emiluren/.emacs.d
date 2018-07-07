@@ -51,7 +51,10 @@
 (use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
 (use-package fish-mode :defer t)
 
-(use-package flycheck)
+(use-package flycheck
+  :config
+  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
+	flycheck-emacs-lisp-load-path 'inherit))
 
 ;; Show git diff in fringe
 ;; (use-package git-gutter
@@ -234,8 +237,8 @@
   :bind
   ((:map paredit-mode-map
 	 ("\\" . nil)) ; Remove annoying \ escape
-   )
-  )
+   ))
+
 (use-package rust-mode
   :defer t
   :config

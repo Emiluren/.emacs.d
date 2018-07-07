@@ -24,7 +24,6 @@
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
- flycheck-emacs-lisp-load-path 'inherit
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
