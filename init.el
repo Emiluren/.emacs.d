@@ -52,60 +52,11 @@
 ;;(setq frame-title-format '("%b - Emacs"))
 
 (setq mouse-autoselect-window t
-      focus-follows-mouse t)
+      focus-follows-mouse t
+      resize-mini-windows nil)
 
-(defun setup-as-wm ()
-  (use-package exwm
-    :config
-
-    (require 'exwm-randr)
-    (setq exwm-randr-workspace-output-plist '(1 "HDMI1"))
-    (add-hook 'exwm-randr-screen-change-hook
-              (lambda ()
-		(start-process-shell-command
-		 "xrandr" nil "xrandr --output HDMI1 --auto")))
-    (exwm-randr-enable)
-
-    (add-hook 'exwm-manage-finish-hook
-	      (lambda ()
-		(when (and exwm-class-name
-			   (string= exwm-class-name "Firefox"))
-		  (exwm-input-set-local-simulation-keys
-		   '(([?\C-b] . [left])
-		     ([?\C-f] . [right])
-		     ([?\C-p] . [up])
-		     ([?\C-n] . [down])
-		     ([?\C-a] . [home])
-		     ([?\C-e] . [end])
-		     ([?\M-v] . [prior])
-		     ([?\C-v] . [next])
-		     ([?\C-d] . [delete])
-		     ([?\C-k] . [S-end delete])
-		     ([?\C-s] . ?\C-f) ; find
-		     ([?\M-w] . ?\C-c) ; copy
-		     ([?\C-y] . ?\C-v) ; paste
-		     )))))
-
-    ;;(setq exwm-workspace-minibuffer-position 'bottom) ; Hide minibuffer when idle
-    (require 'exwm-config)
-    (exwm-config-default)
-
-    ;; TODO move this to when the first frame is created
-    ;;(async-shell-command "compton --config ~/.config/compton.conf" "*compton*")
-
-    ;; Enable moving of windows to other workspaces
-    (setq exwm-workspace-show-all-buffers t
-	  exwm-layout-show-all-buffers t))
-  (use-package symon
-    :config
-    (setq symon-monitors '(symon-linux-memory-monitor
-			   symon-linux-cpu-monitor
-			   symon-linux-battery-monitor
-			   symon-current-time-monitor))
-    (symon-mode)))
-
-;; TODO: make this work in daemon mode
-(setup-as-wm)
+;; TODO: make this run only when needed somehow
+(load "window-manager")
 
 ;; dash - list utilities
 (use-package dash
