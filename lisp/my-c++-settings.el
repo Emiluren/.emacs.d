@@ -18,8 +18,8 @@
 
 (setq rtags-path
       (format "%srtags-%s/bin/"
-	      (rtags-package-install-path)
-	      rtags-package-version))
+              (rtags-package-install-path)
+              rtags-package-version))
 
 (unless (file-exists-p rtags-path)
   (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
@@ -34,8 +34,8 @@
 
 ;; TODO: Should rtags be used for all c-modes?
 (add-hook 'c-mode-common-hook
-	  (lambda ()
-	    (setq-local eldoc-documentation-function #'rtags-eldoc)))
+          (lambda ()
+            (setq-local eldoc-documentation-function #'rtags-eldoc)))
 
 ;; (define-key c-mode-map [(tab)] 'company-complete)
 ;; (define-key c++-mode-map [(tab)] 'company-complete)
@@ -57,29 +57,29 @@
   (require 'gud)
   (let ((build-dir (cide--build-dir)))
     (if (and (boundp 'cmake-ide-build-dir)
-	     (boundp 'cmake-ide-executable))
-	(concat "gdb -i=mi "
-		(file-name-as-directory (symbol-value 'cmake-ide-build-dir))
-		(symbol-value 'cmake-ide-executable))
+             (boundp 'cmake-ide-executable))
+        (concat "gdb -i=mi "
+                (file-name-as-directory (symbol-value 'cmake-ide-build-dir))
+                (symbol-value 'cmake-ide-executable))
       ;; Fall back to last command
       (car gud-gdb-history))))
 
 (defun cmake-ide-start-or-switch-to-gdb ()
   (interactive)
   (if (and gud-comint-buffer (buffer-live-p gud-comint-buffer))
-	(gdb-display-gdb-buffer)
+        (gdb-display-gdb-buffer)
       (let ((default-directory (cide--locate-project-dir)))
-	(gdb "gdb -i=mi"))))
+        (gdb "gdb -i=mi"))))
 
 (defun start-gdb-if-successfully-compiled (buffer msg)
   ;; Compilation mode is used for some other stuff (grep, etc) so we
   ;; need to check the buffer name
   (when (and
-	 (string-match "^finished" msg)
-	 (string= (buffer-name buffer) "*compilation*"))
+         (string-match "^finished" msg)
+         (string= (buffer-name buffer) "*compilation*"))
     (cmake-ide-start-or-switch-to-gdb)))
 
 (add-hook 'compilation-finish-functions
-	  #'start-gdb-if-successfully-compiled)
+          #'start-gdb-if-successfully-compiled)
 
 (provide 'my-c++-settings)

@@ -11,7 +11,7 @@
  ;; Keep backup and auto save files in their own folders
  ;; Also place remote files in /tmp like default
  auto-save-file-name-transforms `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'" "/tmp/\\2" t)
-				  (".*" ,(concat user-emacs-directory "backups/") t))
+                                  (".*" ,(concat user-emacs-directory "backups/") t))
  backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
  backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
  c-default-style '((java-mode . "java")
@@ -51,7 +51,7 @@
                                               (nnimap-address "outlook.office365.com")
                                               (nnimap-server-port 993)
                                               (nnimap-stream ssl)))
-					;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
+                                        ;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
       ;; Make sure emails end up in sent folder after they have been sent
       ;; TODO: not working?
       ;; gnus-message-archive-group "nnimap+Skolmail:Skickade objekt"
@@ -62,9 +62,9 @@
       smtpmail-stream-type 'starttls)
 
 (setq-default
- ;; Make line wraps happen at word boundaries
- word-wrap t
+ word-wrap t ; Make line wraps happen at word boundaries
  dired-omit-mode t ; Hide dotfiles, backup files and autosave files in dired
+ indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  )
 
 (with-eval-after-load 'dired-x

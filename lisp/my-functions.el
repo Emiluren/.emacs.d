@@ -43,10 +43,10 @@ by user."
   (require 'bindat)
   (require 'notifications)
   (unless (and (fboundp 'bindat-get-field)
-	       (string-equal (bindat-get-field gdb-result 'reason)
-			     "exited-normally"))
+               (string-equal (bindat-get-field gdb-result 'reason)
+                             "exited-normally"))
     (notifications-notify :title "GDB"
-			  :body "Execution stopped.")
+                          :body "Execution stopped.")
     ;; This is overwritten immediately by the source buffer
     ;; so not the best solution
     (require 'gdb-mi)
@@ -132,8 +132,8 @@ Otherwise, call `backward-kill-word'."
   (interactive "P")
   (require 'paredit)
   (if (and (fboundp 'paredit-delete-region)
-	   delete-active-region
-	   (region-active-p))
+           delete-active-region
+           (region-active-p))
       (paredit-delete-region (region-beginning) (region-end))
     (when (fboundp 'paredit-backward-delete)
       (paredit-backward-delete arg))))
@@ -153,24 +153,24 @@ Otherwise, call `backward-kill-word'."
   (interactive)
   (let ((pass (read-passwd "Bitwarden password: ")))
     (if (string-blank-p pass)
-	(message "Error: no password")
+        (message "Error: no password")
       (let ((result (call-process-string-output
-		     "/usr/bin/bw" "unlock" "--raw" pass)))
-	(if result
-	    (setq bw-session-key result)
-	    (message "Bitwarden error: wrong password?"))))))
+                     "/usr/bin/bw" "unlock" "--raw" pass)))
+        (if result
+            (setq bw-session-key result)
+            (message "Bitwarden error: wrong password?"))))))
 
 (defun get-org-journal-password ()
   (and bw-session-key
        (call-process-string-output
-	"/usr/bin/bw" "get" "password" "org-journal"
-	"--session" bw-session-key)))
+        "/usr/bin/bw" "get" "password" "org-journal"
+        "--session" bw-session-key)))
 
 (defun hide-ui-for-buffer ()
   (interactive)
   ;;(set-fringe-style 'no-fringes)
   (set-fringe-style 'minimal)
   (setq mode-line-format nil
-	header-line-format nil))
+        header-line-format nil))
 
 (provide 'my-functions)

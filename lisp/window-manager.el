@@ -23,32 +23,32 @@
   (setq exwm-randr-workspace-output-plist '(1 "HDMI1"))
   (add-hook 'exwm-randr-screen-change-hook
             (lambda ()
-	      (start-process-shell-command
-	       "xrandr" nil "xrandr --output HDMI1 --auto")))
+              (start-process-shell-command
+               "xrandr" nil "xrandr --output HDMI1 --auto")))
   (exwm-randr-enable)
 
   (require 'exwm-input) ; To silence warning about set-local-sim...
   (defun firefox-hook ()
     (when (and exwm-class-name
-	       (string= exwm-class-name "Firefox"))
+               (string= exwm-class-name "Firefox"))
       (exwm-input-set-local-simulation-keys
        '(([?\C-b] . [left])
-	 ([?\C-f] . [right])
-	 ([?\C-p] . [up])
-	 ([?\C-n] . [down])
-	 ([?\M-v] . [prior])
-	 ([?\C-v] . [next])
-	 ([?\C-d] . [delete])
-	 ([?\C-k] . [S-end delete])
-	 ([?\C-s] . ?\C-f) ; find
-	 ([?\M-w] . ?\C-c) ; copy
-	 ([?\C-y] . ?\C-v) ; paste
-	 ([?\M-<] . [home])
-	 ([?\M->] . [end])
-	 ([?\C-g] . [esc]) ; TODO: [EXWM] Invalid key: <esc>
-	 ;; ([?\C-l] . ?\M-left) ; Go back
-	 ;; ([?\C-r] . ?\M-right) ; Go forward
-	 ))))
+         ([?\C-f] . [right])
+         ([?\C-p] . [up])
+         ([?\C-n] . [down])
+         ([?\M-v] . [prior])
+         ([?\C-v] . [next])
+         ([?\C-d] . [delete])
+         ([?\C-k] . [S-end delete])
+         ([?\C-s] . ?\C-f) ; find
+         ([?\M-w] . ?\C-c) ; copy
+         ([?\C-y] . ?\C-v) ; paste
+         ([?\M-<] . [home])
+         ([?\M->] . [end])
+         ([?\C-g] . [esc]) ; TODO: [EXWM] Invalid key: <esc>
+         ;; ([?\C-l] . ?\M-left) ; Go back
+         ;; ([?\C-r] . ?\M-right) ; Go forward
+         ))))
   (add-hook 'exwm-manage-finish-hook #'firefox-hook)
 
   (use-package windmove
@@ -76,10 +76,10 @@
     (exec "amixer -D pulse sset Master toggle"))
 
   (add-hook 'exwm-init-hook
-	    (lambda ()
-	      (start-process-shell-command
-	       "compton" "*compton*"
-	       "compton --config ~/.config/compton.conf")))
+            (lambda ()
+              (start-process-shell-command
+               "compton" "*compton*"
+               "compton --config ~/.config/compton.conf")))
 
   ;;(setq exwm-workspace-minibuffer-position 'bottom) ; Hide minibuffer when idle
 
@@ -139,12 +139,12 @@
 
   ;; Enable moving of windows to other workspaces
   (setq exwm-workspace-show-all-buffers t
-	exwm-layout-show-all-buffers t))
+        exwm-layout-show-all-buffers t))
 
 (use-package symon
   :config
   (setq symon-monitors '(symon-linux-memory-monitor
-			 symon-linux-cpu-monitor
-			 symon-linux-battery-monitor
-			 symon-current-time-monitor))
+                         symon-linux-cpu-monitor
+                         symon-linux-battery-monitor
+                         symon-current-time-monitor))
   (symon-mode))

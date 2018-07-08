@@ -6,9 +6,9 @@
 (add-hook 'after-change-major-mode-hook 'hack-local-variables)
 
 (add-hook 'prog-mode-hook
-	  (lambda ()
-	    ;; Don't line break
-	    (setq truncate-lines t)))
+          (lambda ()
+            ;; Don't line break
+            (setq truncate-lines t)))
 
 ;; Flycheck stuff
 (require 'flycheck)

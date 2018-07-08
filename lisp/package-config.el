@@ -1,6 +1,3 @@
-
-;; TODO: untabify
-
 ;;; Utils
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
@@ -28,32 +25,32 @@
   :config
   (add-to-list 'eshell-modules-list 'eshell-tramp) ; To make eshell use eshell/sudo instead of /usr/bin/sudo
   (setq eshell-hist-ignoredups t
-	eshell-prefer-lisp-functions t ; Make sudo work better in eshell
-	eshell-cmpl-ignore-case t
-	eshell-cmpl-cycle-completions nil ; Complete common part first and then list possible completions
-	;; Use a separate line for eshell working directory
-	;; Seems to cause some sort of problem with the history though
-	;; (when used in combination with "flush output" or whatever?)
-	eshell-prompt-function (lambda ()
-				 (require 'em-dirs)
-				 (concat (abbreviate-file-name (eshell/pwd))
-					 (if (= (user-uid) 0) "\n# " "\n$ ")))
-	eshell-prompt-regexp "[#$] ")
+        eshell-prefer-lisp-functions t ; Make sudo work better in eshell
+        eshell-cmpl-ignore-case t
+        eshell-cmpl-cycle-completions nil ; Complete common part first and then list possible completions
+        ;; Use a separate line for eshell working directory
+        ;; Seems to cause some sort of problem with the history though
+        ;; (when used in combination with "flush output" or whatever?)
+        eshell-prompt-function (lambda ()
+                                 (require 'em-dirs)
+                                 (concat (abbreviate-file-name (eshell/pwd))
+                                         (if (= (user-uid) 0) "\n# " "\n$ ")))
+        eshell-prompt-regexp "[#$] ")
   ;; TODO Create an lls command to run ls locally in tramp eshell
   (defun eshell/lcd (&optional directory)
     (eval-and-compile
       (require 'em-dirs)
       (require 'tramp))
     (if (file-remote-p default-directory)
-	(with-parsed-tramp-file-name default-directory nil
-	  (eshell/cd (tramp-make-tramp-file-name
-		      method
-		      user
-		      domain
-		      host
-		      port
-		      (or directory "")
-		      hop)))
+        (with-parsed-tramp-file-name default-directory nil
+          (eshell/cd (tramp-make-tramp-file-name
+                      method
+                      user
+                      domain
+                      host
+                      port
+                      (or directory "")
+                      hop)))
       (eshell/cd directory))))
 
 (use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
@@ -68,7 +65,7 @@
 (use-package flycheck
   :config
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
-	flycheck-emacs-lisp-load-path 'inherit))
+        flycheck-emacs-lisp-load-path 'inherit))
 
 ;; Show git diff in fringe
 ;; (use-package git-gutter
@@ -95,9 +92,9 @@
 (use-package ido
   :config
   (setq ido-enable-flex-matching t                ; Fuzzy matching
-	ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
-	ido-create-new-buffer 'always ; Create new buffers without confirmation
-	ido-use-virtual-buffers t)
+        ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
+        ido-create-new-buffer 'always ; Create new buffers without confirmation
+        ido-use-virtual-buffers t)
   (ido-mode t))
 
 (use-package magit
@@ -105,7 +102,7 @@
   :bind ("C-x g" . 'magit-status)
   :config
   (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
-	))
+        ))
 
 ;; Media player daemon that can be used to control mopidy
 ;; TODO enable again when mopidy setup is complete
@@ -140,17 +137,17 @@
    ("C-c b" . 'org-switchb))
   :config
   (setq org-directory "~/.emacs.d/personal-org/"
-	org-default-notes-file (concat org-directory "/notes.org")
-	org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
-	org-capture-templates '(("t" "Todo [inbox]" entry
-				 (file+headline gtd-inbox-file "Tasks")
-				 "* TODO %i%?")
+        org-default-notes-file (concat org-directory "/notes.org")
+        org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
+        org-capture-templates '(("t" "Todo [inbox]" entry
+                                 (file+headline gtd-inbox-file "Tasks")
+                                 "* TODO %i%?")
                               ("T" "Reminder" entry
                                (file+headline gtd-reminder-file "Reminder")
                                "* %i%? \n %U"))
-	org-refile-targets `((,gtd-projects-file :maxlevel . 3)
-			     (,gtd-someday-file :level . 1)
-			     (,gtd-reminder-file :maxlevel . 2))))
+        org-refile-targets `((,gtd-projects-file :maxlevel . 3)
+                             (,gtd-someday-file :level . 1)
+                             (,gtd-reminder-file :maxlevel . 2))))
 
 ;; To enter passwords in minibuffer instead of separate window
 (use-package pinentry
@@ -165,15 +162,15 @@
     (interactive)
     (let ((pass (get-org-journal-password)))
       (when pass
-	(insert pass))))
+        (insert pass))))
   :bind* (("C-c P" . insert-org-journal-password))
   :config
   (setq org-journal-dir "~/.emacs.d/personal-org/dagbok"
-	;; org-journal-enable-encryption t
+        ;; org-journal-enable-encryption t
 
-	;; variables that are actually from other packages but used for encryption
-	;; org-tags-exclude-from-inheritance (quote ("crypt"))
-	)
+        ;; variables that are actually from other packages but used for encryption
+        ;; org-tags-exclude-from-inheritance (quote ("crypt"))
+        )
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
@@ -216,8 +213,8 @@
   (global-company-mode)
 
   :bind (:map company-mode-map
-  	 ("M-<tab>" . company-manual-begin)
-  	 ("M-TAB" . company-manual-begin)))
+         ("M-<tab>" . company-manual-begin)
+         ("M-TAB" . company-manual-begin)))
 
 ;;; Programming languages
 
@@ -236,8 +233,8 @@
     (eval-after-load 'company
       '(add-to-list 'company-backends 'company-omnisharp))
     :hook (csharp-mode . omnisharp-mode)
-    :bind ((:map csharp-mode-map	
-	 ("M-." . omnisharp-go-to-definition)))))
+    :bind ((:map csharp-mode-map        
+         ("M-." . omnisharp-go-to-definition)))))
 
 (use-package clojure-mode
   :defer t
@@ -265,7 +262,7 @@
   :defer t
   :bind
   ((:map paredit-mode-map
-	 ("\\" . nil)) ; Remove annoying \ escape
+         ("\\" . nil)) ; Remove annoying \ escape
    ))
 
 (use-package rust-mode
@@ -282,10 +279,10 @@
   :defer t
   :bind
   ((:map sly-prefix-map
-	 ("E" . nil)
-	 ("I" . nil)
-	 ("i" . nil)
-	 ("x" . nil)))
+         ("E" . nil)
+         ("I" . nil)
+         ("i" . nil)
+         ("x" . nil)))
   :config
   (use-package sly-quicklisp))
 

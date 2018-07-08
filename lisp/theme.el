@@ -11,7 +11,7 @@
 ;;   :demand t
 ;;   :config
 ;;   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
-;; 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;      doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
 ;;   ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
 ;;   ;; may have their own settings.
@@ -27,17 +27,17 @@
 ;;   (with-eval-after-load "lsp-methods"
 ;;     (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
 ;;       (doom-themes-set-faces 'doom-one
-;; 	(lsp-face-highlight-read :background brighter-bg)
-;; 	(lsp-face-highlight-textual :background brighter-bg)
-;; 	(lsp-face-highlight-write :background brighter-bg))))
+;;      (lsp-face-highlight-read :background brighter-bg)
+;;      (lsp-face-highlight-textual :background brighter-bg)
+;;      (lsp-face-highlight-write :background brighter-bg))))
 
 ;;   (with-eval-after-load "rtags"
 ;;     (dolist (props '((rtags-errline "red")
-;; 		     (rtags-fixitline "yellow")))
+;;                   (rtags-fixitline "yellow")))
 ;;       (cl-destructuring-bind (face color) props
-;; 	(unset-face-attributes face '(:foreground :background))
-;; 	(set-face-attribute face nil :underline
-;; 			    `(:color ,color :style wave)))))
+;;      (unset-face-attributes face '(:foreground :background))
+;;      (set-face-attribute face nil :underline
+;;                          `(:color ,color :style wave)))))
 
 ;;   (with-eval-after-load "em-prompt"
 ;;     ;; Make the eshell prompt slightly green so it stands out
@@ -47,12 +47,12 @@
 ;;   :after doom-themes
 ;;   :demand t
 ;;   :hook ((after-change-major-mode . turn-on-solaire-mode)
-;; 	 (ediff-prepare-buffer . solaire-mode)
-;; 	 ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-;; 	 ;; itself off every time Emacs reverts the file
-;; 	 (after-revert . turn-on-solaire-mode)
-;; 	 ;; highlight the minibuffer when it is activated:
-;; 	 (minibuffer-setup . solaire-mode-in-minibuffer))
+;;       (ediff-prepare-buffer . solaire-mode)
+;;       ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+;;       ;; itself off every time Emacs reverts the file
+;;       (after-revert . turn-on-solaire-mode)
+;;       ;; highlight the minibuffer when it is activated:
+;;       (minibuffer-setup . solaire-mode-in-minibuffer))
 
 ;;   :config
 ;;   ;; if the bright and dark background colors are the wrong way around, use this
@@ -81,7 +81,7 @@
 ;;            (mapcar (lambda (face)
 ;;                      (set-face-background face visible-color)
 ;;                      (set-face-attribute face nil :height (face-attribute 'default :height)))
-;; 		   faces-to-toggle)))))
+;;                 faces-to-toggle)))))
 
 ;; (use-package zenburn-theme
 ;;   :defer t)
@@ -107,13 +107,13 @@
 ;;   :config
 ;;   (load-theme 'punpun-light t)
 ;;   (set-face-attribute 'minibuffer-prompt nil
-;; 		      :background "gainsboro"
-;; 		      :foreground "dim gray")
+;;                    :background "gainsboro"
+;;                    :foreground "dim gray")
 ;;   (set-face-attribute 'yascroll:thumb-fringe nil
-;; 		      :background "dark gray"
-;; 		      :foreground "dark gray")
+;;                    :background "dark gray"
+;;                    :foreground "dark gray")
 ;;   (set-face-attribute 'yascroll:thumb-text-area nil
-;; 		      :background "dark gray"))
+;;                    :background "dark gray"))
 
 ;; (use-package apropospriate-theme
 ;;   :defer t)
