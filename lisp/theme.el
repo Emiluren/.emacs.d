@@ -1,5 +1,7 @@
 ;; Theme settings
 
+;; TODO maybe move this to package-config as well
+
 ;; Remove extreme highlighting of rtags errors
 ;; (Does not quite seem to be working?)
 ;; Try running it after rtags has been loaded

@@ -7,6 +7,35 @@
 (use-package aurel
   :defer t)
 
+(use-package company
+  :delight
+  :config
+  (setq
+   ;; Company seems to work poorly with sly and gud/gdb
+   ;; TODO: check with sly again
+   company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
+   company-idle-delay nil)
+
+  ;;(add-hook 'after-init-hook 'global-company-mode)
+  (global-company-mode)
+
+  :bind (:map company-mode-map
+         ("M-<tab>" . company-manual-begin)
+         ("M-TAB" . company-manual-begin)))
+
+(use-package deferred
+  :config
+  (require 'inertial-scroll)
+  (inertias-global-minor-mode 1)
+  (setq inertias-global-minor-mode-map
+      (inertias-define-keymap
+       '(
+         ;; Mouse wheel scrolling
+         ("<wheel-up>"   . inertias-down-wheel)
+         ("<wheel-down>" . inertias-up-wheel)
+         ("<mouse-4>"    . inertias-down-wheel)
+         ("<mouse-5>"    . inertias-up-wheel)))))
+
 (use-package dired-du
   :config
   (setq dired-listing-switches "-alh")
@@ -149,13 +178,6 @@
                              (,gtd-someday-file :level . 1)
                              (,gtd-reminder-file :maxlevel . 2))))
 
-;; To enter passwords in minibuffer instead of separate window
-(use-package pinentry
-  :demand t
-  :config
-  (setq epa-pinentry-mode 'loopback)
-  (pinentry-start))
-
 (use-package org-journal
   :init
   (defun insert-org-journal-password ()
@@ -174,15 +196,27 @@
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
-;; Make undo easier to use
-(use-package undo-tree
-  :delight
+;; To enter passwords in minibuffer instead of separate window
+(use-package pinentry
+  :demand t
   :config
-  (global-undo-tree-mode))
+  (setq epa-pinentry-mode 'loopback)
+  (pinentry-start))
 
-(use-package yasnippet)
-(use-package yasnippet-snippets
-  :after yasnippet)
+;; Prettier modeline
+(use-package powerline
+  :config
+  (powerline-default-theme)
+  (set-face-attribute 'powerline-active1 nil
+                      :background "gray"
+                      :foreground "black")
+  (set-face-attribute 'powerline-active2 nil
+                      :background "light gray"
+                      :foreground "black")
+  (set-face-attribute 'powerline-inactive1 nil
+                      :background "light gray")
+  (set-face-attribute 'powerline-inactive2 nil
+                      :background "white smoke"))
 
 ;; Better M-x (on top of Ido)
 (use-package smex
@@ -194,27 +228,21 @@
    ("C-x C-m" . #'smex)
    ("C-c C-m" . #'smex)))
 
+;; Make undo easier to use
+(use-package undo-tree
+  :delight
+  :config
+  (global-undo-tree-mode))
+
+(use-package yasnippet)
+(use-package yasnippet-snippets
+  :after yasnippet)
+
 ;; Show what keys can be pressed in the middle of a sequence
 ;; (use-package which-key
 ;;   :delight
 ;;   :config
 ;;   (which-key-mode 1))
-
-(use-package company
-  :delight
-  :config
-  (setq
-   ;; Company seems to work poorly with sly and gud/gdb
-   ;; TODO: check with sly again
-   company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
-   company-idle-delay nil)
-
-  ;;(add-hook 'after-init-hook 'global-company-mode)
-  (global-company-mode)
-
-  :bind (:map company-mode-map
-         ("M-<tab>" . company-manual-begin)
-         ("M-TAB" . company-manual-begin)))
 
 ;;; Programming languages
 

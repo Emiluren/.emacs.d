@@ -19,6 +19,9 @@
 (add-to-list 'load-path "~/.emacs.d/lisp") ; All of my other elisp files
 (add-to-list 'load-path "~/Programmering/emacs/telega.el/") ; Telegram client
 
+(let ((default-directory  "~/.emacs.d/unpackaged/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 ;; Load email address and stuff
 (load "private" t)
 
@@ -48,15 +51,15 @@
 ;;   :hook (after-init . benchmark-init/deactivate))
 
 ;; Set the window title to something better
-;;(setq frame-title-format '("%b - Emacs"))
+(setq frame-title-format '("%b - Emacs"))
 
 (setq mouse-autoselect-window t
       focus-follows-mouse t
       resize-mini-windows nil)
 
-;; Only start exwm if running as a daemon
-(when (daemonp)
-  (load "window-manager"))
+;; To start exwm if running as a daemon
+;; (when (daemonp)
+;;   (load "window-manager"))
 
 ;; dash - list utilities
 (use-package dash
