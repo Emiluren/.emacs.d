@@ -68,8 +68,17 @@
 
 (load "package-config")
 
+;; Enable saving of minibuffer history
+(savehist-mode 1)
+
+;; Delete selected text when entering new if region is active
+(delete-selection-mode 1)
+
+;; Set up highlighting of cursor/line
+(blink-cursor-mode -1)
+(global-hl-line-mode 1)
+
 (load "set-variables")
-(load "mode-setup")
 (load "bindings")
 (load "hooks")
 

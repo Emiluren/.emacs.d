@@ -208,6 +208,11 @@
   :config
   (powerline-default-theme))
 
+(use-package recentf
+  :config
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 150))
+
 ;; Better M-x (on top of Ido)
 (use-package smex
   :bind
@@ -224,22 +229,7 @@
   :config
   (global-undo-tree-mode))
 
-(use-package windmove
-  :config
-  (defun my/funcall-name (function-name)
-    (funcall (symbol-function (intern function-name))))
-  (defun my/move-inside-emacs (dir-string)
-    (condition-case nil
-        (my/funcall-name (concat "windmove-" dir-string))
-      (error nil)))
-  (defun my/move-in-i3-or-emacs (direction)
-    "Move between windows, either Emacs or i3.
-
-If any Emacs frame is focused, use windmove to go in a direction.
-If Emacs is not focused or windmove fails, move with i3 instead."
-    (let ((dir-string (symbol-name direction)))
-      (unless nil ;;(my/move-inside-emacs dir-string)
-        (start-process "i3-msg" nil "i3-msg" "focus" dir-string)))))
+(use-package windmove) ; Used by the focus_emacs_or_wm.py script
 
 (use-package yasnippet)
 (use-package yasnippet-snippets
@@ -319,7 +309,9 @@ If Emacs is not focused or windmove fails, move with i3 instead."
          ("i" . nil)
          ("x" . nil)))
   :config
-  (use-package sly-quicklisp))
+  (use-package sly-quicklisp)
+  (setq inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
+        ))
 
 (use-package toml-mode :defer t)
 (use-package yaml-mode :defer t)

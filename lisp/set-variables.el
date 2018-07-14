@@ -27,9 +27,7 @@
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
- inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
- recentf-max-menu-items 150
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
  sentence-end-double-space nil     ; Sentences end with a single space
