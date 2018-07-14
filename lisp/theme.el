@@ -85,9 +85,14 @@
 ;;                      (set-face-attribute face nil :height (face-attribute 'default :height)))
 ;;                 faces-to-toggle)))))
 
-(use-package leuven
+;; (use-package leuven
+;;   :config
+;;   (load-theme leuven t))
+
+(use-package solarized-theme
+  :no-require t
   :config
-  (load-theme leuven t))
+  (load-theme 'solarized-light t))
 
 ;; (use-package zenburn-theme
 ;;   :defer t)
