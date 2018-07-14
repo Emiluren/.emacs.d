@@ -69,11 +69,20 @@
 
   ;; TODO: not sure this is working
   (exwm-input-set-key (kbd "<XF86AudioLowerVolume>")
-    (exec "amixer -D pulse sset Master 3%-"))
+                      (lambda ()
+                        (interactive)
+                        (start-process-shell-command
+                         "amixer" nil "amixer -D pulse sset Master 3%-")))
   (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>")
-    (exec "amixer -D pulse sset Master 3%+"))
+                      (lambda ()
+                        (interactive)
+                        (start-process-shell-command
+                         "amixer" nil "amixer -D pulse sset Master 3%+")))
   (exwm-input-set-key (kbd "<XF86AudioMute>")
-    (exec "amixer -D pulse sset Master toggle"))
+                      (lambda ()
+                        (interactive)
+                        (start-process-shell-command
+                         "amixer" nil "amixer -D pulse sset Master toggle")))
 
   (add-hook 'exwm-init-hook
             (lambda ()
