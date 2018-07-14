@@ -85,6 +85,10 @@
 ;;                      (set-face-attribute face nil :height (face-attribute 'default :height)))
 ;;                 faces-to-toggle)))))
 
+(use-package leuven
+  :config
+  (load-theme leuven t))
+
 ;; (use-package zenburn-theme
 ;;   :defer t)
 ;; (use-package tao-theme
@@ -96,10 +100,20 @@
   (global-yascroll-bar-mode)
   (setq yascroll:delay-to-hide nil))
 
-(use-package minimal-theme
-  :no-require t
-  :config
-  (load-theme 'minimal-light t))
+;; (use-package minimal-theme
+;;   :no-require t
+;;   :config
+;;   (load-theme 'minimal-light t)
+;;   (set-face-attribute 'powerline-active1 nil
+;;                       :background "gray"
+;;                       :foreground "black")
+;;   (set-face-attribute 'powerline-active2 nil
+;;                       :background "light gray"
+;;                       :foreground "black")
+;;   (set-face-attribute 'powerline-inactive1 nil
+;;                       :background "light gray")
+;;   (set-face-attribute 'powerline-inactive2 nil
+;;                       :background "white smoke"))
 
 ;; (use-package punpun-theme
 ;;   ;; punpun's package name is different from its feature name so

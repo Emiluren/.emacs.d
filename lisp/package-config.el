@@ -206,17 +206,7 @@
 ;; Prettier modeline
 (use-package powerline
   :config
-  (powerline-default-theme)
-  (set-face-attribute 'powerline-active1 nil
-                      :background "gray"
-                      :foreground "black")
-  (set-face-attribute 'powerline-active2 nil
-                      :background "light gray"
-                      :foreground "black")
-  (set-face-attribute 'powerline-inactive1 nil
-                      :background "light gray")
-  (set-face-attribute 'powerline-inactive2 nil
-                      :background "white smoke"))
+  (powerline-default-theme))
 
 ;; Better M-x (on top of Ido)
 (use-package smex
