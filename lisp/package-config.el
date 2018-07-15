@@ -51,6 +51,7 @@
 ;; Check comint-history-isearch-backward-regexp.
 (use-package eshell
   :defer t
+  :bind* ("C-c e" . eshell)
   :config
   (add-to-list 'eshell-modules-list 'eshell-tramp) ; To make eshell use eshell/sudo instead of /usr/bin/sudo
   (setq eshell-hist-ignoredups t

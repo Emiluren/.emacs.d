@@ -7,18 +7,8 @@
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;; Set up bindings to quickly open special files
-(global-set-key (kbd "C-c i") #'find-init-file)
+(bind-key* "C-c i" #'find-init-file)
 (global-set-key (kbd "C-c j") #'dired-lisp-dir)
-
-;; Open eshell quickly
-(global-set-key (kbd "C-c e") #'eshell)
-
-;; Set up multiple cursors (was added by clj-refactor)
-;; (require 'multiple-cursors)
-;; (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-;; (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-;; (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 (global-set-key (kbd "C-x F") 'ido-sudo-find-file) ; Open file as root
 
@@ -27,9 +17,6 @@
 
 ;; To easily close windows and bury buffers
 (global-set-key (kbd "s-q") #'quit-window)
-
-;; Some misc key bindings
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Make it easier to use macro bindings when fn keys are default
 (global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
