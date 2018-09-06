@@ -14,14 +14,15 @@
    ;; Company seems to work poorly with sly and gud/gdb
    ;; TODO: check with sly again
    company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
-   company-idle-delay nil)
+   company-idle-delay 0)
 
   ;;(add-hook 'after-init-hook 'global-company-mode)
   (global-company-mode)
 
-  :bind (:map company-mode-map
-         ("M-<tab>" . company-manual-begin)
-         ("M-TAB" . company-manual-begin)))
+  ;; :bind (:map company-mode-map
+  ;;             ("M-<tab>" . company-complete-common-or-cycle)
+  ;;             ("M-TAB" . company-complete-common-or-cycle))
+  )
 
 (use-package deferred
   :config
@@ -95,7 +96,8 @@
 (use-package flycheck
   :config
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
-        flycheck-emacs-lisp-load-path 'inherit))
+        flycheck-emacs-lisp-load-path 'inherit
+        flycheck-ghc-args '("-dynamic")))
 
 ;; Show git diff in fringe
 ;; (use-package git-gutter
@@ -126,6 +128,8 @@
         ido-create-new-buffer 'always ; Create new buffers without confirmation
         ido-use-virtual-buffers t)
   (ido-mode t))
+
+(use-package idris-mode)
 
 (use-package magit
   :defer t
@@ -207,12 +211,63 @@
 ;; Prettier modeline
 (use-package powerline
   :config
-  (powerline-default-theme))
+  (setq-default mode-line-format
+                '("%e"
+                  (:eval
+                   (let* ((active (powerline-selected-window-active))
+                          (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
+                          (mode-line (if active 'mode-line 'mode-line-inactive))
+                          (face0 (if active 'powerline-active0 'powerline-inactive0))
+                          (face1 (if active 'powerline-active1 'powerline-inactive1))
+                          (face2 (if active 'powerline-active2 'powerline-inactive2))
+                          (separator-left (intern (format "powerline-%s-%s"
+							  (powerline-current-separator)
+                                                          (car powerline-default-separator-dir))))
+                          (separator-right (intern (format "powerline-%s-%s"
+                                                           (powerline-current-separator)
+                                                           (cdr powerline-default-separator-dir))))
+                          (lhs (list (powerline-raw "%*" face0 'l)
+                                     (when powerline-display-buffer-size
+                                       (powerline-buffer-size face0 'l))
+                                     (when powerline-display-mule-info
+                                       (powerline-raw mode-line-mule-info face0 'l))
+                                     (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
+                                     (when (and (boundp 'which-func-mode) which-func-mode)
+                                       (powerline-raw which-func-format face0 'l))
+                                     (powerline-raw " " face0)
+                                     (funcall separator-left face0 face1)
+                                     (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
+                                       (powerline-raw erc-modified-channels-object face1 'l))
+                                     (powerline-major-mode face1 'l)
+                                     (powerline-process face1)
+                                     (powerline-narrow face1 'l)
+                                     (powerline-raw " " face1)
+                                     (funcall separator-left face1 face2)
+                                     (when (bound-and-true-p nyan-mode)
+                                       (powerline-raw (list (nyan-create)) face2 'l))))
+                          (rhs (list (powerline-raw global-mode-string face2 'r)
+                                     (funcall separator-right face2 face1)
+				     (unless window-system
+				       (powerline-raw (char-to-string #xe0a1) face1 'l))
+				     (powerline-raw "%4l" face1 'l)
+				     (powerline-raw ":" face1 'l)
+				     (powerline-raw "%3c" face1 'r)
+				     (funcall separator-right face1 face0)
+				     (powerline-raw " " face0)
+				     (powerline-raw "%6p" face0 'r)
+                                     (when powerline-display-hud
+                                       (powerline-hud face0 face2))
+				     (powerline-fill face0 0)
+				     )))
+		     (concat (powerline-render lhs)
+			     (powerline-fill face2 (powerline-width rhs))
+			     (powerline-render rhs)))))))
 
 (use-package recentf
+  :init
+  (setq recentf-max-menu-items 150)
   :config
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 150))
+  (recentf-mode 1))
 
 ;; Better M-x (on top of Ido)
 (use-package smex
@@ -230,17 +285,26 @@
   :config
   (global-undo-tree-mode))
 
-(use-package windmove) ; Used by the focus_emacs_or_wm.py script
+(use-package windmove
+  :bind* (("s-h" . windmove-left)
+          ("s-j" . windmove-down)
+          ("s-k" . windmove-up)
+          ("s-l" . windmove-right))
+  :config
+  ;; To move to other frames
+  (add-to-list 'load-path "~/.emacs.d/unpackaged")
+  (require 'framemove)
+  (setq framemove-hook-into-windmove t))
 
 (use-package yasnippet)
 (use-package yasnippet-snippets
   :after yasnippet)
 
 ;; Show what keys can be pressed in the middle of a sequence
-;; (use-package which-key
-;;   :delight
-;;   :config
-;;   (which-key-mode 1))
+(use-package which-key
+  :delight
+  :config
+  (which-key-mode 1))
 
 ;;; Programming languages
 
@@ -260,13 +324,20 @@
       '(add-to-list 'company-backends 'company-omnisharp))
     :hook (csharp-mode . omnisharp-mode)
     :bind ((:map csharp-mode-map        
-         ("M-." . omnisharp-go-to-definition)))))
+                 ("M-." . omnisharp-go-to-definition))
+           ;; (:map company-mode-map
+           ;;       ("." . (lambda ()
+           ;;                (interactive)
+           ;;                (insert ".")
+           ;;                (company-manual-begin))))
+    )))
 
 (use-package clojure-mode
   :defer t
   :config
   (use-package cider)
-  (use-package clj-refactor))
+  (use-package clj-refactor)
+  (setq cider-repl-use-pretty-printing t))
 
 (use-package crystal-mode :defer t)
 (use-package elixir-mode
@@ -276,7 +347,13 @@
 (use-package fsharp-mode :defer t)
 (use-package geiser :defer t) ; Scheme IDE
 (use-package glsl-mode :defer t)
-(use-package haskell-mode :defer t)
+
+(use-package haskell-mode
+  :defer t
+  :bind
+  (:map haskell-mode-map
+        ("M-." . haskell-mode-jump-to-def)))
+
 (use-package julia-mode
   :defer t
   :config

@@ -61,7 +61,6 @@
 
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
- dired-omit-mode t ; Hide dotfiles, backup files and autosave files in dired
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  )
 

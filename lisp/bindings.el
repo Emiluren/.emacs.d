@@ -16,7 +16,7 @@
 ;; (global-set-key (kbd "C-y") #'kill-region-yank-and-indent)
 
 ;; To easily close windows and bury buffers
-(global-set-key (kbd "s-q") #'quit-window)
+;;(global-set-key (kbd "s-q") #'quit-window)
 
 ;; Make it easier to use macro bindings when fn keys are default
 (global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)

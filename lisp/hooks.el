@@ -30,7 +30,7 @@
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
 
 ;; dired-x is required for dired-omit-mode
-(add-hook 'dired-load-hook (lambda () (require 'dired-x)))
+(add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
 
 ;; Do not use dired-omit-mode for 'recover-session'
 (defadvice recover-session (around disable-dired-omit-for-recover activate)

@@ -2,6 +2,9 @@
 
 ;; TODO maybe move this to package-config as well
 
+;; Smaller font
+(set-face-attribute 'default nil :height 100)
+
 ;; Remove extreme highlighting of rtags errors
 ;; (Does not quite seem to be working?)
 ;; Try running it after rtags has been loaded

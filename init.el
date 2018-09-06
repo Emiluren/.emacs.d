@@ -78,6 +78,9 @@
 (blink-cursor-mode -1)
 (global-hl-line-mode 1)
 
+;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
+(winner-mode 1)
+
 (load "set-variables")
 (load "bindings")
 (load "hooks")
