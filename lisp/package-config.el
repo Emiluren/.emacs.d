@@ -24,19 +24,6 @@
   ;;             ("M-TAB" . company-complete-common-or-cycle))
   )
 
-(use-package deferred
-  :config
-  (require 'inertial-scroll)
-  (inertias-global-minor-mode 1)
-  (setq inertias-global-minor-mode-map
-      (inertias-define-keymap
-       '(
-         ;; Mouse wheel scrolling
-         ("<wheel-up>"   . inertias-down-wheel)
-         ("<wheel-down>" . inertias-up-wheel)
-         ("<mouse-4>"    . inertias-down-wheel)
-         ("<mouse-5>"    . inertias-up-wheel)))))
-
 (use-package dired-du
   :config
   (setq dired-listing-switches "-alh")
@@ -137,18 +124,6 @@
   :config
   (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
         ))
-
-;; Media player daemon that can be used to control mopidy
-;; TODO enable again when mopidy setup is complete
-(use-package mpdel
-  :delight
-  :config
-  (mpdel-mode)
-
-  ;; Kill client process when emacs quits
-  (libmpdel-ensure-connection)
-  (set-process-query-on-exit-flag (libmpdel--process) nil)
-  )
 
 ;; Org
 (use-package org-mime
@@ -351,8 +326,11 @@
 (use-package haskell-mode
   :defer t
   :bind
-  (:map haskell-mode-map
-        ("M-." . haskell-mode-jump-to-def)))
+  ;; (:map haskell-mode-map
+  ;;       ("M-." . haskell-mode-jump-to-def))
+  :config
+  (use-package intero
+    :hook (haskell-mode . intero-mode)))
 
 (use-package julia-mode
   :defer t
@@ -371,10 +349,19 @@
 (use-package rust-mode
   :defer t
   :config
-  (use-package lsp-mode)
-  (use-package lsp-rust)
-  (use-package lsp-ui)
-  (use-package company-lsp))
+  (use-package eglot
+    :hook (rust-mode . eglot)))
+
+;; ;; Set up rust lsp stuff
+;; (with-eval-after-load 'lsp-mode
+;;   (require 'lsp-ui)
+;;   (require 'lsp-rust)
+;;   (setq lsp-rust-rls-command '("rustup" "run" "stable" "rls"))
+;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;;   (add-hook 'rust-mode-hook #'lsp-rust-enable))
+
+;; (require 'company-lsp)
+;; (push 'company-lsp company-backends)
 
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))

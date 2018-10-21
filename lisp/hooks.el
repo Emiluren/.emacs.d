@@ -15,17 +15,6 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil)))
 
-;; Set up rust lsp stuff
-(with-eval-after-load 'lsp-mode
-  (require 'lsp-ui)
-  (require 'lsp-rust)
-  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (add-hook 'rust-mode-hook #'lsp-rust-enable))
-
-(require 'company-lsp)
-(push 'company-lsp company-backends)
-
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
 
