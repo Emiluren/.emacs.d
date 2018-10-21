@@ -34,6 +34,7 @@ codepoints starting from codepoint-start."
         (append my-hasklig-ligatures prettify-symbols-alist))
   (prettify-symbols-mode))
 
-(when (window-system)
+(when (and (window-system)
+           (find-font (font-spec :name "Hasklig")))
   (set-frame-font "Hasklig")
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
