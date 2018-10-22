@@ -79,7 +79,8 @@
          (string= (buffer-name buffer) "*compilation*"))
     (cmake-ide-start-or-switch-to-gdb)))
 
-(add-hook 'compilation-finish-functions
-          #'start-gdb-if-successfully-compiled)
+;; TODO: make into an interactive function that runs compile and then starts gdb
+;; (add-hook 'compilation-finish-functions
+;;           #'start-gdb-if-successfully-compiled)
 
 (provide 'my-c++-settings)

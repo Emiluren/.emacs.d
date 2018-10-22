@@ -10,11 +10,6 @@
             ;; Don't line break
             (setq truncate-lines t)))
 
-;; Flycheck stuff
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil)))
-
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
 

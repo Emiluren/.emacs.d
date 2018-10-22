@@ -4,9 +4,6 @@
 ;; (eval-when-compile
 ;;   (setq use-package-expand-minimally byte-compile-current-file))
 
-(use-package aurel
-  :defer t)
-
 (use-package company
   :delight
   :config
@@ -84,12 +81,10 @@
   :config
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
         flycheck-emacs-lisp-load-path 'inherit
-        flycheck-ghc-args '("-dynamic")))
-
-;; Show git diff in fringe
-;; (use-package git-gutter
-;;   :config
-;;   (global-git-gutter-mode 1))
+        flycheck-ghc-args '("-dynamic")
+        flycheck-global-modes '(not rust-mode))
+  (global-flycheck-mode)
+  (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
 (use-package hippie-exp
   :bind ("M-/" . 'hippie-expand)
@@ -183,61 +178,6 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 
-;; Prettier modeline
-(use-package powerline
-  :config
-  (setq-default mode-line-format
-                '("%e"
-                  (:eval
-                   (let* ((active (powerline-selected-window-active))
-                          (mode-line-buffer-id (if active 'mode-line-buffer-id 'mode-line-buffer-id-inactive))
-                          (mode-line (if active 'mode-line 'mode-line-inactive))
-                          (face0 (if active 'powerline-active0 'powerline-inactive0))
-                          (face1 (if active 'powerline-active1 'powerline-inactive1))
-                          (face2 (if active 'powerline-active2 'powerline-inactive2))
-                          (separator-left (intern (format "powerline-%s-%s"
-							  (powerline-current-separator)
-                                                          (car powerline-default-separator-dir))))
-                          (separator-right (intern (format "powerline-%s-%s"
-                                                           (powerline-current-separator)
-                                                           (cdr powerline-default-separator-dir))))
-                          (lhs (list (powerline-raw "%*" face0 'l)
-                                     (when powerline-display-buffer-size
-                                       (powerline-buffer-size face0 'l))
-                                     (when powerline-display-mule-info
-                                       (powerline-raw mode-line-mule-info face0 'l))
-                                     (powerline-buffer-id `(mode-line-buffer-id ,face0) 'l)
-                                     (when (and (boundp 'which-func-mode) which-func-mode)
-                                       (powerline-raw which-func-format face0 'l))
-                                     (powerline-raw " " face0)
-                                     (funcall separator-left face0 face1)
-                                     (when (and (boundp 'erc-track-minor-mode) erc-track-minor-mode)
-                                       (powerline-raw erc-modified-channels-object face1 'l))
-                                     (powerline-major-mode face1 'l)
-                                     (powerline-process face1)
-                                     (powerline-narrow face1 'l)
-                                     (powerline-raw " " face1)
-                                     (funcall separator-left face1 face2)
-                                     (when (bound-and-true-p nyan-mode)
-                                       (powerline-raw (list (nyan-create)) face2 'l))))
-                          (rhs (list (powerline-raw global-mode-string face2 'r)
-                                     (funcall separator-right face2 face1)
-				     (unless window-system
-				       (powerline-raw (char-to-string #xe0a1) face1 'l))
-				     (powerline-raw "%4l" face1 'l)
-				     (powerline-raw ":" face1 'l)
-				     (powerline-raw "%3c" face1 'r)
-				     (funcall separator-right face1 face0)
-				     (powerline-raw " " face0)
-				     (powerline-raw "%6p" face0 'r)
-                                     (when powerline-display-hud
-                                       (powerline-hud face0 face2))
-				     (powerline-fill face0 0)
-				     )))
-		     (concat (powerline-render lhs)
-			     (powerline-fill face2 (powerline-width rhs))
-			     (powerline-render rhs)))))))
-
 (use-package recentf
   :init
   (setq recentf-max-menu-items 150)
@@ -253,12 +193,6 @@
    ;; Allows M-x if Alt key is not available
    ("C-x C-m" . #'smex)
    ("C-c C-m" . #'smex)))
-
-;; Make undo easier to use
-(use-package undo-tree
-  :delight
-  :config
-  (global-undo-tree-mode))
 
 (use-package windmove
   :bind* (("s-h" . windmove-left)
@@ -288,6 +222,11 @@
 ;; flycheck-crystal
 ;; flycheck-elixir
 ;; flycheck-elm
+
+(use-package auctex
+  :defer t
+  :config
+  (use-package cdlatex))
 
 (use-package csharp-mode
   :defer t
@@ -350,18 +289,8 @@
   :defer t
   :config
   (use-package eglot
-    :hook (rust-mode . eglot)))
-
-;; ;; Set up rust lsp stuff
-;; (with-eval-after-load 'lsp-mode
-;;   (require 'lsp-ui)
-;;   (require 'lsp-rust)
-;;   (setq lsp-rust-rls-command '("rustup" "run" "stable" "rls"))
-;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-;;   (add-hook 'rust-mode-hook #'lsp-rust-enable))
-
-;; (require 'company-lsp)
-;; (push 'company-lsp company-backends)
+    ;; eglot is a general lsp package
+    :hook (rust-mode . eglot-ensure)))
 
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
