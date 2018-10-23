@@ -53,10 +53,6 @@
 (setq mouse-autoselect-window t
       focus-follows-mouse t)
 
-;; To start exwm if running as a daemon
-;; (when (daemonp)
-;;   (load "window-manager"))
-
 ;; dash - list utilities
 (use-package dash
   :config
