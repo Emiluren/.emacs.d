@@ -51,8 +51,7 @@
 (setq frame-title-format '("%b - Emacs"))
 
 (setq mouse-autoselect-window t
-      focus-follows-mouse t
-      resize-mini-windows nil)
+      focus-follows-mouse t)
 
 ;; To start exwm if running as a daemon
 ;; (when (daemonp)
