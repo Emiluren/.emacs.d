@@ -550,7 +550,7 @@ Functions that are only used for C++ mode.
     :defer t
     :config
     (use-package cider)
-    (use-package clj-refactor)
+    ;;(use-package clj-refactor)
     (setq cider-repl-use-pretty-printing t))
 
   (use-package crystal-mode :defer t)

@@ -120,19 +120,6 @@ by user."
     (when (fboundp 'gdb-display-gdb-buffer)
       (gdb-display-gdb-buffer))))
 
-;; TODO: Maybe change this to only use yank
-;; seems to mess up yank pop
-(defun kill-region-yank-and-indent ()
-  "Yank and then indent the newly formed region according to mode."
-  (interactive)
-  (setq this-command 'yank)
-  (let ((yank-text (current-kill 0)))
-    (when (region-active-p)
-      (call-interactively #'kill-region))
-    (insert-for-yank yank-text))
-  (when mark-active
-    (call-interactively 'indent-region)))
-
 (defun swap-windows ()
   "Swap the buffer in the current window with the one in the next."
   (interactive)
@@ -179,14 +166,6 @@ Otherwise, call `backward-kill-word'."
     (and buffer-file-name
          (string= (funcall f buffer-file-name) name))))
 
-;; Add stumpwm-mode to eval expressions in stumpish
-(add-to-list 'load-path "~/.stumpwm.d/modules/util/swm-emacs")
-(defun turn-on-stumpwm-mode-for-init-file ()
-  (when (buffer-file-name= "init.lisp" #'abbreviate-file-name)
-    (require 'stumpwm-mode)
-    (when (fboundp 'stumpwm-mode)
-      (stumpwm-mode 1))))
-
 ;; Disable flycheck for .dir-local files
 (defun dirlocals-flycheck-fix ()
   (when (buffer-file-name= ".dir-locals.el")
@@ -203,40 +182,10 @@ Otherwise, call `backward-kill-word'."
     (when (fboundp 'paredit-backward-delete)
       (paredit-backward-delete arg))))
 
-(defun dired-lisp-dir ()
-  (interactive)
-  (dired "~/.emacs.d/lisp"))
-
 (defun call-process-string-output (program &rest args)
   (with-temp-buffer
     (when (= 0 (apply #'call-process program nil t nil args))
       (string-trim (buffer-string)))))
-
-(defvar bw-session-key nil)
-
-(defun bw-unlock ()
-  (interactive)
-  (let ((pass (read-passwd "Bitwarden password: ")))
-    (if (string-blank-p pass)
-        (message "Error: no password")
-      (let ((result (call-process-string-output
-                     "/usr/bin/bw" "unlock" "--raw" pass)))
-        (if result
-            (setq bw-session-key result)
-            (message "Bitwarden error: wrong password?"))))))
-
-(defun get-org-journal-password ()
-  (and bw-session-key
-       (call-process-string-output
-        "/usr/bin/bw" "get" "password" "org-journal"
-        "--session" bw-session-key)))
-
-(defun hide-ui-for-buffer ()
-  (interactive)
-  ;;(set-fringe-style 'no-fringes)
-  (set-fringe-style 'minimal)
-  (setq mode-line-format nil
-        header-line-format nil))
 
 (require 'gud)
 (require 'gdb-mi)
@@ -567,7 +516,7 @@ Otherwise, call `backward-kill-word'."
   :defer t
   :config
   (use-package cider)
-  (use-package clj-refactor)
+  ;;(use-package clj-refactor)
   (setq cider-repl-use-pretty-printing t))
 
 (use-package crystal-mode :defer t)
@@ -723,15 +672,8 @@ Otherwise, call `backward-kill-word'."
 
 ;; Set up bindings to quickly open special files
 (bind-key* "C-c i" #'find-init-file)
-(global-set-key (kbd "C-c j") #'dired-lisp-dir)
 
 (global-set-key (kbd "C-x F") 'ido-sudo-find-file) ; Open file as root
-
-;; TODO: Fix kill-region-yank-and-indent
-;; (global-set-key (kbd "C-y") #'kill-region-yank-and-indent)
-
-;; To easily close windows and bury buffers
-;;(global-set-key (kbd "s-q") #'quit-window)
 
 ;; Make it easier to use macro bindings when fn keys are default
 (global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
