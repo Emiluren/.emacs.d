@@ -51,12 +51,7 @@
 (setq frame-title-format '("%b - Emacs"))
 
 (setq mouse-autoselect-window t
-      focus-follows-mouse t
-      resize-mini-windows nil)
-
-;; To start exwm if running as a daemon
-;; (when (daemonp)
-;;   (load "window-manager"))
+      focus-follows-mouse t)
 
 ;; dash - list utilities
 (use-package dash
@@ -516,7 +511,7 @@ Otherwise, call `backward-kill-word'."
   :defer t
   :config
   (use-package cider)
-  (use-package clj-refactor)
+  ;;(use-package clj-refactor)
   (setq cider-repl-use-pretty-printing t))
 
 (use-package crystal-mode :defer t)
