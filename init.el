@@ -166,17 +166,6 @@ Otherwise, call `backward-kill-word'."
   (when (buffer-file-name= ".dir-locals.el")
     (flycheck-mode -1)))
 
-;; Necessary since paredit ignores delete-active-region
-(defun paredit-backward-delete-or-delete-region (&optional arg)
-  (interactive "P")
-  (require 'paredit)
-  (if (and (fboundp 'paredit-delete-region)
-           delete-active-region
-           (region-active-p))
-      (paredit-delete-region (region-beginning) (region-end))
-    (when (fboundp 'paredit-backward-delete)
-      (paredit-backward-delete arg))))
-
 (defun call-process-string-output (program &rest args)
   (with-temp-buffer
     (when (= 0 (apply #'call-process program nil t nil args))
@@ -252,6 +241,10 @@ Otherwise, call `backward-kill-word'."
   :functions ediff-window-setup-plain
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
+
+(use-package electric
+  :config
+  (electric-pair-mode 1))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
@@ -542,13 +535,6 @@ Otherwise, call `backward-kill-word'."
 
 (use-package markdown-mode :defer t)
 
-(use-package paredit
-  :defer t
-  :bind
-  ((:map paredit-mode-map
-         ("\\" . nil)) ; Remove annoying \ escape
-   ))
-
 (use-package rust-mode
   :defer t
   :config
@@ -688,19 +674,6 @@ Otherwise, call `backward-kill-word'."
 ;; And start gdb if not running
 (global-set-key (kbd "C-c C") #'cmake-ide-compile)
 
-;; Fix backspace when paredit is used in slime
-;; TODO: Is this used? (should at least be changed to sly)
-;; (defun override-slime-repl-bindings-with-paredit ()
-;;   (define-key slime-repl-mode-map
-;;     (read-kbd-macro paredit-backward-delete-key) nil)
-;;   (define-key slime-repl-mode-map
-;;     (kbd "M-S-r") #'slime-repl-previous-matching-input))
-
-;; Define some easier keys to traverse sexps with paredit
-(with-eval-after-load "paredit"
-  (define-key paredit-mode-map (kbd "DEL")
-    #'paredit-backward-delete-or-delete-region))
-
 ;; TODO: move everything to package-config
 
 ;; Make sure dir-locals.el is reloaded if the major mode changes
@@ -724,23 +697,9 @@ Otherwise, call `backward-kill-word'."
 
 (add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
 
-(autoload 'enable-paredit-mode "paredit"
-  "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-;;(add-hook 'sly-mode-hook              #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-(add-hook 'clojurescript-mode-hook    #'enable-paredit-mode)
-(add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
-;;(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
-
 ;; Does not work with Emacs 26 yet
 ;; (require 'clj-refactor)
 
-(add-hook 'clojure-mode-hook #'enable-paredit-mode)
 (add-hook 'julia-mode-hook 'julia-repl-mode)
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
