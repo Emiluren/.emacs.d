@@ -784,9 +784,6 @@ Some of the stuff under here should also be moved to it's package configuration
     (let ((dired-omit-mode nil))
       ad-do-it))
 
-  ;; TODO: Make sure this runs after sly for the keybindings to be correct
-  (add-hook 'lisp-mode-hook #'turn-on-stumpwm-mode-for-init-file)
-
   (add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
 
   (autoload 'enable-paredit-mode "paredit"
