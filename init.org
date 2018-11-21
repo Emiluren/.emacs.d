@@ -542,6 +542,9 @@ Functions that are only used for C++ mode.
     (setq cider-repl-use-pretty-printing t))
 
   (use-package crystal-mode :defer t)
+  (use-package elm-mode :defer t
+    :config
+    (use-package flycheck-elm))
   (use-package elixir-mode
     :defer t
     :config
@@ -580,6 +583,7 @@ Functions that are only used for C++ mode.
   ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
   (use-package sly ; Sylvester the Cat's Common Lisp IDE
     :defer t
+    :hook (lisp-mode . sly-mode)
     :bind
     ((:map sly-prefix-map
            ("E" . nil)
@@ -592,6 +596,11 @@ Functions that are only used for C++ mode.
           ))
 
   (use-package toml-mode :defer t)
+
+  (use-package typescript-mode
+    :config
+    (use-package tide))
+
   (use-package yaml-mode :defer t)
 
 #+END_SRC

@@ -508,6 +508,9 @@ Otherwise, call `backward-kill-word'."
   (setq cider-repl-use-pretty-printing t))
 
 (use-package crystal-mode :defer t)
+(use-package elm-mode :defer t
+  :config
+  (use-package flycheck-elm))
 (use-package elixir-mode
   :defer t
   :config
@@ -546,6 +549,7 @@ Otherwise, call `backward-kill-word'."
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
 (use-package sly ; Sylvester the Cat's Common Lisp IDE
   :defer t
+  :hook (lisp-mode . sly-mode)
   :bind
   ((:map sly-prefix-map
          ("E" . nil)
@@ -558,6 +562,11 @@ Otherwise, call `backward-kill-word'."
         ))
 
 (use-package toml-mode :defer t)
+
+(use-package typescript-mode
+  :config
+  (use-package tide))
+
 (use-package yaml-mode :defer t)
 
 ;; Enable saving of minibuffer history
