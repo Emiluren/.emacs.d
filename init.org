@@ -101,7 +101,7 @@ I don't use custom but package.el will write selected packages to it.
 
   (defun find-init-file ()
     (interactive)
-    (find-file "~/.emacs.d/init.el"))
+    (find-file "~/.emacs.d/init.org"))
 
   (defun find-todo-file ()
     (interactive)
@@ -411,6 +411,11 @@ Functions that are only used for C++ mode.
           )
     :custom
     (org-journal-file-format "%Y-%m-%d"))
+
+  ;; Better pdf viewing (docview is kind of blurry), can also edit pdfs
+  (use-package pdf-tools
+    :config
+    (pdf-loader-install))
 
   ;; To enter passwords in minibuffer instead of separate window
   (use-package pinentry
