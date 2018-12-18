@@ -739,6 +739,10 @@ the configuration of their respective packages.
   ;; And start gdb if not running
   (global-set-key (kbd "C-c C") #'cmake-ide-compile)
 
+  ;; Unbind Pesky Sleep Button
+  (global-unset-key [(control z)])
+  (global-unset-key [(control x)(control z)])
+
 #+END_SRC
 
 ** Hooks

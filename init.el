@@ -81,7 +81,7 @@
 
 (defun find-init-file ()
   (interactive)
-  (find-file "~/.emacs.d/init.el"))
+  (find-file "~/.emacs.d/init.org"))
 
 (defun find-todo-file ()
   (interactive)
@@ -383,6 +383,11 @@ Otherwise, call `backward-kill-word'."
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
+;; Better pdf viewing (docview is kind of blurry), can also edit pdfs
+(use-package pdf-tools
+  :config
+  (pdf-loader-install))
+
 ;; To enter passwords in minibuffer instead of separate window
 (use-package pinentry
   :demand t
@@ -682,6 +687,10 @@ Otherwise, call `backward-kill-word'."
 ;; TODO: add some way of closing the window if no errors
 ;; And start gdb if not running
 (global-set-key (kbd "C-c C") #'cmake-ide-compile)
+
+;; Unbind Pesky Sleep Button
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
 
 ;; TODO: move everything to package-config
 
