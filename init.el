@@ -171,6 +171,14 @@ Otherwise, call `backward-kill-word'."
     (when (= 0 (apply #'call-process program nil t nil args))
       (string-trim (buffer-string)))))
 
+(defun visual-line-range ()
+  "Return a cons cell of the range between the start and end of the visual line.
+Indended to be used for highlighting of only the visual line in hl-line mode"
+  (save-excursion
+    (cons
+     (progn (beginning-of-visual-line) (point))
+     (progn (end-of-visual-line) (point)))))
+
 (require 'gud)
 (require 'gdb-mi)
 
@@ -583,6 +591,7 @@ Otherwise, call `backward-kill-word'."
 ;; Set up highlighting of cursor/line
 (blink-cursor-mode -1)
 (global-hl-line-mode 1)
+(setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
 
 ;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
 (winner-mode 1)
@@ -687,6 +696,10 @@ Otherwise, call `backward-kill-word'."
 ;; TODO: add some way of closing the window if no errors
 ;; And start gdb if not running
 (global-set-key (kbd "C-c C") #'cmake-ide-compile)
+
+;; Go to start and end of visual line instead of wrapped line
+(global-set-key (kbd "C-a") #'beginning-of-visual-line)
+(global-set-key (kbd "C-e") #'end-of-visual-line)
 
 ;; Unbind Pesky Sleep Button
 (global-unset-key [(control z)])
