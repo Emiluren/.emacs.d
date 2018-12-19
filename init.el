@@ -636,6 +636,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  tab-always-indent 'complete            ; Use tab to complete
  ;; Faster than the default scp (according to Emacs wiki)
  tramp-default-method "ssh"
+ visible-bell 1 ; Turn off annoying sound
  )
 
 ;; Set up gnus
