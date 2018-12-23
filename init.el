@@ -177,7 +177,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (save-excursion
     (cons
      (progn (beginning-of-visual-line) (point))
-     (progn (end-of-visual-line) (point)))))
+     (progn (beginning-of-visual-line 2) (point)))))
 
 (require 'gud)
 (require 'gdb-mi)
@@ -798,6 +798,7 @@ codepoints starting from codepoint-start."
 
 ;; TODO: Move these to use use-package :mode instead
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)) ; perl by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
