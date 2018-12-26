@@ -174,10 +174,14 @@ Otherwise, call `backward-kill-word'."
 (defun visual-line-range ()
   "Return a cons cell of the range between the start and end of the visual line.
 Indended to be used for highlighting of only the visual line in hl-line mode"
-  (save-excursion
-    (cons
-     (progn (beginning-of-visual-line) (point))
-     (progn (beginning-of-visual-line 2) (point)))))
+  (if truncate-lines
+      (cons
+       (line-beginning-position)
+       (line-beginning-position 2))
+      (save-excursion
+        (cons
+         (progn (beginning-of-visual-line) (point))
+         (progn (beginning-of-visual-line 2) (point))))))
 
 (require 'gud)
 (require 'gdb-mi)
