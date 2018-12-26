@@ -703,8 +703,18 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (global-set-key (kbd "C-c C") #'cmake-ide-compile)
 
 ;; Go to start and end of visual line instead of wrapped line
-(global-set-key (kbd "C-a") #'beginning-of-visual-line)
-(global-set-key (kbd "C-e") #'end-of-visual-line)
+(global-set-key (kbd "C-a")
+                (lambda ()
+                  (interactive)
+                  (if truncate-lines
+                      (beginning-of-line)
+                    (beginning-of-visual-line))))
+(global-set-key (kbd "C-e")
+                (lambda ()
+                  (interactive)
+                  (if truncate-lines
+                      (end-of-line)
+                    (end-of-visual-line))))
 
 ;; Unbind Pesky Sleep Button
 (global-unset-key [(control z)])
