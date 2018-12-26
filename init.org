@@ -890,5 +890,3 @@ Set up some auto modes and enable some useful disabled commands.
   (put 'downcase-region 'disabled nil)
   (put 'scroll-left 'disabled nil)
 #+END_SRC
-
-* TODO move all gitignore files to .not_in_git
