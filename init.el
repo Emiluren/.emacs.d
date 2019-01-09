@@ -665,6 +665,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
+ flycheck-clang-language-standard "c++17"
  )
 
 (with-eval-after-load 'dired-x
