@@ -747,9 +747,10 @@ the configuration of their respective packages.
   (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
 
   ;; evil-numbers is used to increment/decrement numbers in region/at point
-  (require 'evil-numbers)
-  (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
-  (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt)
+  (use-package evil-numbers
+    :config
+    (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
+    (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
   ;; TODO: add some way of closing the window if no errors
   ;; And start gdb if not running
@@ -861,9 +862,11 @@ Use the hasklig font but only in haskell mode if it's installed.
 Set up color theme and other visual stuff.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package leuven-theme
-    :config
-    (load-theme 'leuven t))
+  ;; (use-package leuven-theme
+  ;;   :config
+  ;;   (load-theme 'leuven t))
+
+  (load-theme 'tango-dark t)
 
   (use-package yascroll
     :config
