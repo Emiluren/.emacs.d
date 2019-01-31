@@ -254,6 +254,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
 
+;; Smartparens is not enabled in minibuffers currently
 (use-package electric
   :config
   (electric-pair-mode 1))
@@ -312,6 +313,18 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-flycheck-mode)
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
+(use-package helm
+  :bind
+  (("M-x" . helm-M-x)
+   ("C-x C-m" . helm-M-x)
+   ("C-c C-m" . helm-M-x)
+   ("C-x r b" . helm-filtered-bookmarks)
+   ("C-x C-f" . helm-find-files)
+   ("C-x b" . helm-buffers-list))
+  :config
+  (require 'helm-config)
+  (helm-mode 1))
+
 (use-package hippie-exp
   :bind ("M-/" . 'hippie-expand)
   :config
@@ -327,19 +340,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol)))
 
-;; TODO: Maybe switch ido to helm
-;; helm-apropos is really cool
-(use-package ido
-  :config
-  (setq ido-enable-flex-matching t                ; Fuzzy matching
-        ido-auto-merge-work-directories-length -1 ; And disable annoying auto file search
-        ido-create-new-buffer 'always ; Create new buffers without confirmation
-        ido-use-virtual-buffers t)
-  (ido-mode t))
-
 (use-package magit
   :defer t
-  :bind ("C-x g" . 'magit-status)
+  :bind ("C-x g" . magit-status)
   :config
   (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
         ))
@@ -457,15 +460,17 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
   )
 
-;; Better M-x (on top of Ido)
-(use-package smex
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq flycheck-clang-language-standard "c++17")))
+
+(use-package smartparens
   :bind
-  (("M-x" . #'smex)
-   ("M-X" . #'smex-major-mode-commands)
-   ;; Steve Yegge told me to add these :P
-   ;; Allows M-x if Alt key is not available
-   ("C-x C-m" . #'smex)
-   ("C-c C-m" . #'smex)))
+  (:map smartparens-mode-map)
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-strict-mode)
+  (sp-use-smartparens-bindings))
 
 (use-package windmove
   :bind* (("s-h" . windmove-left)
@@ -562,11 +567,21 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     ;; eglot is a general lsp package
     :hook (rust-mode . eglot-ensure)))
 
+;; Slime currently has to be used for cepl/livesupport
+(use-package slime
+  :defer t
+  :hook (lisp-mode . slime-mode)
+  :config
+  (require 'slime-autoloads)
+  (setq slime-contribs '(slime-fancy)
+        slime-lisp-implementations '((sbcl
+                                      ("sbcl" "--core" "/home/em/sbcl.core-for-slime")))))
+
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
 (use-package sly ; Sylvester the Cat's Common Lisp IDE
   :defer t
-  :hook (lisp-mode . sly-mode)
+  ;;:hook (lisp-mode . sly-mode)
   :bind
   ((:map sly-prefix-map
          ("E" . nil)
@@ -594,7 +609,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Set up highlighting of cursor/line
 (blink-cursor-mode -1)
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 (setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
 
 ;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
@@ -665,7 +680,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
- flycheck-clang-language-standard "c++17"
  )
 
 (with-eval-after-load 'dired-x
