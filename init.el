@@ -3,6 +3,7 @@
 ;; Added by Package.el. Do not remove
 (package-initialize)
 
+;;; Initialization
 (setq
  ;; Give emacs 100mb memory to use before trying to collect garbage
  gc-cons-threshold 100000000
@@ -11,9 +12,11 @@
  global-font-lock-mode nil
  )
 
+;; I don't use custom but package.el will write selected packages to it.
 (setq custom-file "~/.emacs.d/lisp/custom.el")
 (load custom-file t)
 
+;;; Package repository init
 ;; Unpackaged is my folder for stuff I have not written but is not on melpa.
 ;; Mostly from the Emacs wiki
 (let ((default-directory "~/.emacs.d/unpackaged/"))
@@ -58,6 +61,7 @@
   :config
   (dash-enable-font-lock))
 
+;;; Defing functions
 (defun push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
    Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
@@ -81,7 +85,7 @@
 
 (defun find-init-file ()
   (interactive)
-  (find-file "~/.emacs.d/init.org"))
+  (find-file "~/.emacs.d/init.el"))
 
 (defun find-todo-file ()
   (interactive)
@@ -183,6 +187,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
          (progn (beginning-of-visual-line) (point))
          (progn (beginning-of-visual-line 2) (point))))))
 
+;;; C++ functions
+;; Functions that are only used for C++ mode.
+
 (require 'gud)
 (require 'gdb-mi)
 
@@ -217,8 +224,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; (add-hook 'compilation-finish-functions
 ;;           #'start-gdb-if-successfully-compiled)
 
-
-
+;;; General package configuration
+;;; Tools
 (use-package cmake-ide
   :defer t
   :config
@@ -494,6 +501,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (which-key-mode 1))
 
+;;; Programming languages
 ;; TODO: add these
 ;; flycheck-clojure
 ;; flycheck-crystal
@@ -602,6 +610,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package yaml-mode :defer t)
 
+;;; Set global builtin modes
 ;; Enable saving of minibuffer history
 (savehist-mode 1)
 
@@ -615,6 +624,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
 (winner-mode 1)
+
+;;; Set variables
+;; Set variables that don't fit better under Package config (or that I
+;; haven't had the time to move yet).
 
 ;; Keep closing paren for argument list indented to previous level
 (c-add-style "my-c-style"
@@ -689,6 +702,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Use y/n instead of longer yes/no
 ;; (fset 'yes-or-no-p 'y-or-n-p)
 
+;;; Bindings
+;; Similar to the variables set above. Some of these should be moved to
+;; the configuration of their respective packages.
+
 (global-set-key (kbd "C-`") #'push-mark-no-activate) ; Push current position to mark ring
 (global-set-key (kbd "M-`") 'jump-to-mark) ; Pop last mark from mark ring and jump to it
 (define-key global-map [remap exchange-point-and-mark]
@@ -737,6 +754,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])
 
+;;; ** Hooks
+;; Some of the stuff under here should also be moved to it's package configuration
 ;; TODO: move everything to package-config
 
 ;; Make sure dir-locals.el is reloaded if the major mode changes
@@ -765,6 +784,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (add-hook 'julia-mode-hook 'julia-repl-mode)
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
+
+;;; Ligature font
+;; Use the hasklig font but only in haskell mode if it's installed.
 
 (require 'dash)
 
@@ -807,6 +829,8 @@ codepoints starting from codepoint-start."
   (set-frame-font "Hasklig")
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
 
+;;; Theme
+;; Set up color theme and other visual stuff.
 (use-package doom-themes
   :demand t
   :config
@@ -884,6 +908,9 @@ codepoints starting from codepoint-start."
 
 ;; Show matching parens
 (show-paren-mode 1)
+
+;;; ** Final init
+;; Set up some auto modes and enable some useful disabled commands.
 
 ;; TODO: Move these to use use-package :mode instead
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
