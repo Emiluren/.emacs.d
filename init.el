@@ -465,12 +465,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
             (setq flycheck-clang-language-standard "c++17")))
 
 (use-package smartparens
-  :bind
-  (:map smartparens-mode-map)
+  :hook (minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
   :config
   (require 'smartparens-config)
-  (smartparens-global-strict-mode)
-  (sp-use-smartparens-bindings))
+  (smartparens-global-mode 1)
+  :custom
+  (sp-override-key-bindings '(("M-<backspace>" . nil)))
+  (sp-base-key-bindings 'sp))
 
 (use-package windmove
   :bind* (("s-h" . windmove-left)
@@ -865,7 +866,7 @@ codepoints starting from codepoint-start."
 ;;   :config
 ;;   (load-theme 'leuven t))
 
-(load-theme 'tango-dark t)
+;; (load-theme 'tango-dark t)
 
 (use-package yascroll
   :config

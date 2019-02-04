@@ -494,12 +494,13 @@ Functions that are only used for C++ mode.
               (setq flycheck-clang-language-standard "c++17")))
 
   (use-package smartparens
-    :bind
-    (:map smartparens-mode-map)
+    :hook (minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
     :config
     (require 'smartparens-config)
-    (smartparens-global-strict-mode)
-    (sp-use-smartparens-bindings))
+    (smartparens-global-mode 1)
+    :custom
+    (sp-override-key-bindings '(("M-<backspace>" . nil)))
+    (sp-base-key-bindings 'sp))
 
   (use-package windmove
     :bind* (("s-h" . windmove-left)
@@ -935,7 +936,7 @@ Set up color theme and other visual stuff.
   ;;   :config
   ;;   (load-theme 'leuven t))
 
-  (load-theme 'tango-dark t)
+  ;; (load-theme 'tango-dark t)
 
   (use-package yascroll
     :config
