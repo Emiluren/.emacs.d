@@ -407,6 +407,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Better pdf viewing (docview is kind of blurry), can also edit pdfs
 (use-package pdf-tools
+  :bind (:map pdf-view-mode-map
+         ("n" . image-forward-hscroll)
+         ("e" . pdf-view-next-line-or-next-page)
+         ("i" . pdf-view-previous-line-or-previous-page)
+         ("o" . image-backward-hscroll))
   :config
   (pdf-loader-install))
 
@@ -565,9 +570,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (use-package flycheck-julia :config (flycheck-julia-setup))
   (use-package julia-repl))
 
-(use-package idris-mode)
+(use-package idris-mode :defer t)
 
 (use-package markdown-mode :defer t)
+
+(use-package racket-mode :defer t)
 
 (use-package rust-mode
   :defer t
@@ -640,11 +647,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (setq
  ;; Keep backup and auto save files in their own folders
- ;; Also place remote files in /tmp like default
+ ;; Also place remote files in /tmp by default (there is something wrong with sudo)
  auto-save-file-name-transforms `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'" "/tmp/\\2" t)
                                   (".*" ,(concat user-emacs-directory "backups/") t))
  backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
  backward-delete-char-untabify-method nil ; Don't convert tabs to spaces when deleting
+ case-replace nil ;; Replace with case from replacement string
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
                    (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
@@ -915,6 +923,7 @@ codepoints starting from codepoint-start."
 ;; TODO: Move these to use use-package :mode instead
 (add-to-list 'auto-mode-alist '("\\.m\\'" . octave-mode)) ; objective-c by default
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)) ; perl by default
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)) ; scheme by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
