@@ -323,8 +323,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package helm
   :bind
   (("M-x" . helm-M-x)
-   ("C-x C-m" . helm-M-x)
-   ("C-c C-m" . helm-M-x)
+   ;;("C-x C-m" . helm-M-x) ; Used for encoding by default
+   ;;("C-c C-m" . helm-M-x)
    ("C-x r b" . helm-filtered-bookmarks)
    ("C-x C-f" . helm-find-files)
    ("C-x b" . helm-buffers-list))
@@ -385,7 +385,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                                "* %i%? \n %U"))
         org-refile-targets `((,gtd-projects-file :maxlevel . 3)
                              (,gtd-someday-file :level . 1)
-                             (,gtd-reminder-file :maxlevel . 2))))
+                             (,gtd-reminder-file :maxlevel . 2))
+        org-latex-packages-alist '(("margin=2cm" "geometry" nil))))
 
 (use-package org-journal
   :init
@@ -567,7 +568,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;;       ("M-." . haskell-mode-jump-to-def))
   :config
   (use-package intero
-    :hook (haskell-mode . intero-mode)))
+    :config
+    (intero-global-mode 1)))
 
 (use-package julia-mode
   :defer t
@@ -594,7 +596,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     ;; eglot is a general lsp package
     :hook (rust-mode . eglot-ensure)))
 
-;; Slime currently has to be used for cepl/livesupport
+;; Slime currently has to be used for cepl/livesupport (Don't remember why)
 (use-package slime
   :defer t
   :hook (lisp-mode . slime-mode)
@@ -606,19 +608,19 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
-(use-package sly ; Sylvester the Cat's Common Lisp IDE
-  :defer t
-  ;;:hook (lisp-mode . sly-mode)
-  :bind
-  ((:map sly-prefix-map
-         ("E" . nil)
-         ("I" . nil)
-         ("i" . nil)
-         ("x" . nil)))
-  :config
-  (use-package sly-quicklisp)
-  (setq inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
-        ))
+;; (use-package sly ; Sylvester the Cat's Common Lisp IDE
+;;   :defer t
+;;   ;;:hook (lisp-mode . sly-mode)
+;;   :bind
+;;   ((:map sly-prefix-map
+;;          ("E" . nil)
+;;          ("I" . nil)
+;;          ("i" . nil)
+;;          ("x" . nil)))
+;;   :config
+;;   (use-package sly-quicklisp)
+;;   (setq inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
+;;         ))
 
 (use-package toml-mode :defer t)
 
@@ -856,9 +858,7 @@ codepoints starting from codepoint-start."
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
      doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-  ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-  ;; may have their own settings.
-  (load-theme 'doom-one t)
+  (load-theme 'doom-one-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)

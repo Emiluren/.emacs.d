@@ -21,3 +21,4 @@ image-dired/
 lisp/custom.el
 .cache/
 backups/
+/transient/
