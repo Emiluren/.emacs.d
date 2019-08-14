@@ -29,6 +29,10 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
+;; This is required because of a bug in Emacs 26.2
+;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; If this is a new install we need to make sure that all packages are available
 (package-activate 'use-package)
 (unless (package-installed-p 'use-package)
