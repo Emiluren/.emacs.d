@@ -526,6 +526,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package auctex
   :defer t
   :config
+  ;; Latex templates?
   (use-package cdlatex))
 
 (use-package csharp-mode
@@ -862,7 +863,7 @@ codepoints starting from codepoint-start."
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
      doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-  (load-theme 'doom-one-light t)
+  (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -951,3 +952,4 @@ codepoints starting from codepoint-start."
 (put 'narrow-to-page 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
+(put 'upcase-region 'disabled nil)
