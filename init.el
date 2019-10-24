@@ -430,8 +430,35 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package recentf
   :init
   (setq recentf-max-menu-items 150)
+  ;; Magic advice to rename entries in recentf when moving files in
+  ;; dired.
+  (defun rjs/recentf-rename-notify (oldname newname &rest args)
+    (if (file-directory-p newname)
+        (rjs/recentf-rename-directory oldname newname)
+      (rjs/recentf-rename-file oldname newname)))
+
+  (defun rjs/recentf-rename-file (oldname newname)
+    (setq recentf-list
+          (mapcar (lambda (name)
+                    (if (string-equal name oldname)
+                        newname
+                      oldname))
+                  recentf-list)))
+
+  (defun rjs/recentf-rename-directory (oldname newname)
+    ;; oldname, newname and all entries of recentf-list should already
+    ;; be absolute and normalised so I think this can just test whether
+    ;; oldname is a prefix of the element.
+    (setq recentf-list
+          (mapcar (lambda (name)
+                    (if (string-prefix-p oldname name)
+                        (concat newname (substring name (length oldname)))
+                      name))
+                  recentf-list)))
   :config
-  (recentf-mode 1))
+  (recentf-mode 1)
+  (run-at-time nil (* 5 60) 'recentf-save-list)
+  (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify))
 
 ;; RTags is used in C++
 (use-package rtags
