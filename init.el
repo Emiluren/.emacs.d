@@ -634,9 +634,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :hook (lisp-mode . slime-mode)
   :config
   (require 'slime-autoloads)
-  (setq slime-contribs '(slime-fancy)
-        slime-lisp-implementations '((sbcl
-                                      ("sbcl" "--core" "/home/em/sbcl.core-for-slime")))))
+  (setq slime-contribs '(slime-fancy))
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (when (file-exists-p "/home/emil/sbcl.core-for-slime")
+    (setq slime-lisp-implementations '((sbcl
+                                        ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
 
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
@@ -968,6 +970,7 @@ codepoints starting from codepoint-start."
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)) ; perl by default
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)) ; scheme by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
+(add-to-list 'auto-mode-alist '(".sbclrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 (add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
