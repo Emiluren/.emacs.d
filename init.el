@@ -515,7 +515,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (smartparens-global-mode 1)
   :custom
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
-  (sp-base-key-bindings 'sp))
+  (sp-base-key-bindings 'paredit))
 
 (use-package undo-tree
   :config
@@ -555,6 +555,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   ;; Latex templates?
   (use-package cdlatex))
+
+(when (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
+  (add-to-list 'load-path "~/programmering/Carp/emacs")
+  (require 'carp-mode)
+  (require 'inf-carp-mode)
+  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
 (use-package csharp-mode
   :defer t
