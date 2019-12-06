@@ -60,6 +60,9 @@
 (setq mouse-autoselect-window t
       focus-follows-mouse t)
 
+;; Don't accelerate scroll speed
+(setq mouse-wheel-progressive-speed nil)
+
 ;; dash - list utilities
 (use-package dash
   :config
