@@ -44,6 +44,7 @@
 (require 'bind-key)
 
 (use-package delight)
+(delight '((auto-revert-mode nil "autorevert") (eldoc-mode nil "eldoc")))
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 (eval-when-compile
@@ -328,6 +329,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
 (use-package helm
+  :delight
   :bind
   (("M-x" . helm-M-x)
    ;;("C-x C-m" . helm-M-x) ; Used for encoding by default
@@ -512,6 +514,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
             (setq flycheck-clang-language-standard "c++17")))
 
 (use-package smartparens
+  :delight
   :hook (minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
   :config
   (require 'smartparens-config)
@@ -521,6 +524,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (sp-base-key-bindings 'paredit))
 
 (use-package undo-tree
+  :delight
   :config
   (setq undo-tree-enable-undo-in-region nil)
   (global-undo-tree-mode 1))
