@@ -44,6 +44,7 @@
 (require 'bind-key)
 
 (use-package delight)
+(delight '((auto-revert-mode nil "autorevert") (eldoc-mode nil "eldoc")))
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
 (eval-when-compile
@@ -59,6 +60,9 @@
 
 (setq mouse-autoselect-window t
       focus-follows-mouse t)
+
+;; Don't accelerate scroll speed
+(setq mouse-wheel-progressive-speed nil)
 
 ;; dash - list utilities
 (use-package dash
@@ -325,6 +329,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
 (use-package helm
+  :delight
   :bind
   (("M-x" . helm-M-x)
    ;;("C-x C-m" . helm-M-x) ; Used for encoding by default
@@ -509,15 +514,17 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
             (setq flycheck-clang-language-standard "c++17")))
 
 (use-package smartparens
+  :delight
   :hook (minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
   :config
   (require 'smartparens-config)
   (smartparens-global-mode 1)
   :custom
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
-  (sp-base-key-bindings 'sp))
+  (sp-base-key-bindings 'paredit))
 
 (use-package undo-tree
+  :delight
   :config
   (setq undo-tree-enable-undo-in-region nil)
   (global-undo-tree-mode 1))
@@ -555,6 +562,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   ;; Latex templates?
   (use-package cdlatex))
+
+(when (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
+  (add-to-list 'load-path "~/programmering/Carp/emacs")
+  (require 'carp-mode)
+  (require 'inf-carp-mode)
+  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
 (use-package csharp-mode
   :defer t
@@ -640,9 +653,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :hook (lisp-mode . slime-mode)
   :config
   (require 'slime-autoloads)
-  (setq slime-contribs '(slime-fancy)
-        slime-lisp-implementations '((sbcl
-                                      ("sbcl" "--core" "/home/em/sbcl.core-for-slime")))))
+  (setq slime-contribs '(slime-fancy))
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (when (file-exists-p "/home/emil/sbcl.core-for-slime")
+    (setq slime-lisp-implementations '((sbcl
+                                        ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
 
 ;; Faster than flex completion. Seems to mess stuff up though
 ;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
@@ -890,58 +905,67 @@ codepoints starting from codepoint-start."
 
 ;;; Theme
 ;; Set up color theme and other visual stuff.
-(use-package doom-themes
-  :demand t
+;; (use-package doom-themes
+;;   :demand t
+;;   :config
+;;   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
+;;      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+;;   (load-theme 'doom-one t)
+
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config)
+
+;;   ;; Prevent lsp-face-highlight from being too distracting
+;;   (with-eval-after-load "lsp-methods"
+;;     (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
+;;       (doom-themes-set-faces 'doom-one
+;;      (lsp-face-highlight-read :background brighter-bg)
+;;      (lsp-face-highlight-textual :background brighter-bg)
+;;      (lsp-face-highlight-write :background brighter-bg))))
+
+;;   (with-eval-after-load "rtags"
+;;     (dolist (props '((rtags-errline "red")
+;;                   (rtags-fixitline "yellow")))
+;;       (cl-destructuring-bind (face color) props
+;;      (unset-face-attributes face '(:foreground :background))
+;;      (set-face-attribute face nil :underline
+;;                          `(:color ,color :style wave)))))
+
+;;   (with-eval-after-load "em-prompt"
+;;     ;; Make the eshell prompt slightly green so it stands out
+;;     (set-face-foreground 'eshell-prompt "#9ccca4")))
+
+;; (use-package solaire-mode
+;;   :after doom-themes
+;;   :demand t
+;;   :hook ((after-change-major-mode . turn-on-solaire-mode)
+;;       (ediff-prepare-buffer . solaire-mode)
+;;       ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+;;       ;; itself off every time Emacs reverts the file
+;;       (after-revert . turn-on-solaire-mode)
+;;       ;; highlight the minibuffer when it is activated:
+;;       (minibuffer-setup . solaire-mode-in-minibuffer))
+
+;;   :config
+;;   ;; if the bright and dark background colors are the wrong way around, use this
+;;   ;; to switch the backgrounds of the `default` and `solaire-default-face` faces.
+;;   ;; This should be used *after* you load the active theme!
+;;   ;;
+;;   ;; NOTE: This is necessary for themes in the doom-themes package!
+;;   (solaire-mode-swap-bg))
+
+(use-package eink-theme
   :config
-  (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
-     doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'eink t)
+  (set-face-attribute 'font-lock-comment-face nil :weight 'light))
 
-  (load-theme 'doom-one t)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-
-  ;; Prevent lsp-face-highlight from being too distracting
-  (with-eval-after-load "lsp-methods"
-    (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
-      (doom-themes-set-faces 'doom-one
-     (lsp-face-highlight-read :background brighter-bg)
-     (lsp-face-highlight-textual :background brighter-bg)
-     (lsp-face-highlight-write :background brighter-bg))))
-
-  (with-eval-after-load "rtags"
-    (dolist (props '((rtags-errline "red")
-                  (rtags-fixitline "yellow")))
-      (cl-destructuring-bind (face color) props
-     (unset-face-attributes face '(:foreground :background))
-     (set-face-attribute face nil :underline
-                         `(:color ,color :style wave)))))
-
-  (with-eval-after-load "em-prompt"
-    ;; Make the eshell prompt slightly green so it stands out
-    (set-face-foreground 'eshell-prompt "#9ccca4")))
-
-(use-package solaire-mode
-  :after doom-themes
-  :demand t
-  :hook ((after-change-major-mode . turn-on-solaire-mode)
-      (ediff-prepare-buffer . solaire-mode)
-      ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-      ;; itself off every time Emacs reverts the file
-      (after-revert . turn-on-solaire-mode)
-      ;; highlight the minibuffer when it is activated:
-      (minibuffer-setup . solaire-mode-in-minibuffer))
-
+(use-package paren-face
   :config
-  ;; if the bright and dark background colors are the wrong way around, use this
-  ;; to switch the backgrounds of the `default` and `solaire-default-face` faces.
-  ;; This should be used *after* you load the active theme!
-  ;;
-  ;; NOTE: This is necessary for themes in the doom-themes package!
-  (solaire-mode-swap-bg))
+  (global-paren-face-mode))
 
 ;; (use-package leuven-theme
 ;;   :config
@@ -974,6 +998,7 @@ codepoints starting from codepoint-start."
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)) ; perl by default
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . racket-mode)) ; scheme by default
 (add-to-list 'auto-mode-alist '("clfswmrc" . lisp-mode))
+(add-to-list 'auto-mode-alist '(".sbclrc" . lisp-mode))
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 (add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
