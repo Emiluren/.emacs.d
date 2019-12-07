@@ -581,6 +581,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;;(use-package clj-refactor)
   (setq cider-repl-use-pretty-printing t))
 
+;; Load carp-mode (must happen after clojure-mode is loaded)
+(add-to-list 'load-path "~/Programmering/carp/Carp/emacs")
+(require 'carp-mode)
+(require 'inf-carp-mode)
+(add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode))
+
 (use-package crystal-mode :defer t)
 (use-package elm-mode :defer t
   :config
