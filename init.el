@@ -270,9 +270,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
 
 ;; Smartparens is not enabled in minibuffers currently
-(use-package electric
-  :config
-  (electric-pair-mode 1))
+;; MESSES WITH SMARTPARENS IF ENABLED SIMULTANEOUSLY
+;; (use-package electric
+;;   :config
+;;   (electric-pair-mode 1))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
