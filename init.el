@@ -26,7 +26,7 @@
 (load "~/lisp/private.el" t)
 
 ;; Enable melpa repository
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 ;; This is required because of a bug in Emacs 26.2
@@ -272,7 +272,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Smartparens is not enabled in minibuffers currently
 (use-package electric
   :config
-  (electric-pair-mode 1))
+  (electric-pair-mode -1))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
@@ -364,7 +364,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         ))
 
 ;; Org
-(use-package org-mime
+(use-package org-mime ; Send html email using org-mode export
   :defer t
   :after org)
 
@@ -395,7 +395,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         org-refile-targets `((,gtd-projects-file :maxlevel . 3)
                              (,gtd-someday-file :level . 1)
                              (,gtd-reminder-file :maxlevel . 2))
-        org-latex-packages-alist '(("margin=2cm" "geometry" nil))))
+        org-latex-packages-alist '(("margin=2cm" "geometry" nil))
+        org-clock-persist 'history)
+  (org-clock-persistence-insinuate))
 
 (use-package org-journal
   :init
@@ -1002,6 +1004,8 @@ codepoints starting from codepoint-start."
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 (add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
+(add-to-list 'auto-mode-alist '("config.work" . conf-space-mode))
+(add-to-list 'auto-mode-alist '("config.base" . conf-space-mode))
 
 ;;; Enable some commands that are disabled by default
 ;; The goal collumn is where you end up when you switch line
