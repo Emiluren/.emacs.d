@@ -270,10 +270,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
 
 ;; Smartparens is not enabled in minibuffers currently
-(use-package electric
-  :config
-  ;; MESSES WITH SMARTPARENS IF ENABLED SIMULTANEOUSLY
-  (electric-pair-mode -1))
+;; (use-package electric
+;;   :config
+;;   ;; MESSES WITH SMARTPARENS IF ENABLED SIMULTANEOUSLY
+;;   (electric-pair-mode -1))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
@@ -629,7 +629,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :defer t
   :config
   (use-package flycheck-julia :config (flycheck-julia-setup))
-  (use-package julia-repl))
+  (use-package julia-repl
+    :hook julia-mode))
 
 (use-package idris-mode :defer t)
 
@@ -855,11 +856,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     ad-do-it))
 
 (add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
-
-;; Does not work with Emacs 26 yet
-;; (require 'clj-refactor)
-
-(add-hook 'julia-mode-hook 'julia-repl-mode)
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;; Ligature font
@@ -912,9 +908,10 @@ codepoints starting from codepoint-start."
   :demand t
   :config
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
-     doom-themes-enable-italic t) ; if nil, italics is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
   (load-theme 'doom-one t)
+  (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
