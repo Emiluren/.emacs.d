@@ -731,7 +731,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
- electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
@@ -771,6 +770,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
+ electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  )
 
 (with-eval-after-load 'dired-x
