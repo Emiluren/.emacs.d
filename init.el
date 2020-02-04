@@ -311,7 +311,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                       hop)))
       (eshell/cd directory))))
 
-(use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
+;; evil-numbers is used to increment/decrement numbers in region/at point
+(use-package evil-numbers
+  :config
+  (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 (use-package fish-completion
   :if (executable-find "fish")
@@ -531,17 +535,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :bind (("C-/" . undo-fu-only-undo)
          ("C-?" . undo-fu-only-redo)))
 
-(use-package windmove
-  :bind* (("s-h" . windmove-left)
-          ("s-j" . windmove-down)
-          ("s-k" . windmove-up)
-          ("s-l" . windmove-right))
-  :config
-  ;; To move to other frames
-  (add-to-list 'load-path "~/.emacs.d/unpackaged")
-  (require 'framemove)
-  (setq framemove-hook-into-windmove t))
-
 (use-package yasnippet)
 (use-package yasnippet-snippets
   :after yasnippet)
@@ -565,12 +558,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;; Latex templates?
   (use-package cdlatex))
 
-(when (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
-  (add-to-list 'load-path "~/programmering/Carp/emacs")
-  (require 'carp-mode)
-  (require 'inf-carp-mode)
-  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
-
 (use-package csharp-mode
   :defer t
   :config
@@ -582,11 +569,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :hook (csharp-mode . omnisharp-mode)
     :bind ((:map csharp-mode-map        
                  ("M-." . omnisharp-go-to-definition))
-           ;; (:map company-mode-map
-           ;;       ("." . (lambda ()
-           ;;                (interactive)
-           ;;                (insert ".")
-           ;;                (company-manual-begin))))
     )))
 
 (use-package clojure-mode
@@ -597,12 +579,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq cider-repl-use-pretty-printing t))
 
 ;; Load carp-mode (must happen after clojure-mode is loaded)
-(add-to-list 'load-path "~/Programmering/carp/Carp/emacs")
-(require 'carp-mode)
-(require 'inf-carp-mode)
-(add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode))
+(when (or (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
+          (file-exists-p "~/Programmering/carp/Carp/emacs/carp-mode.el"))
+  (add-to-list 'load-path "~/Programmering/carp/Carp/emacs")
+  (add-to-list 'load-path "~/programmering/Carp/emacs")
+  (require 'carp-mode)
+  (require 'inf-carp-mode)
+  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
-(use-package crystal-mode :defer t)
 (use-package elm-mode :defer t
   :config
   (use-package flycheck-elm))
@@ -616,9 +600,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package haskell-mode
   :defer t
-  :bind
-  ;; (:map haskell-mode-map
-  ;;       ("M-." . haskell-mode-jump-to-def))
   :config
   (use-package intero
     :config
@@ -802,12 +783,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (define-key ctl-x-4-map "t" #'toggle-frame-split)
 
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
-
-;; evil-numbers is used to increment/decrement numbers in region/at point
-(use-package evil-numbers
-  :config
-  (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
-  (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 ;; TODO: add some way of closing the window if no errors
 ;; And start gdb if not running
