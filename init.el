@@ -526,11 +526,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
   (sp-base-key-bindings 'paredit))
 
-(use-package undo-tree
+(use-package undo-fu
   :delight
-  :config
-  (setq undo-tree-enable-undo-in-region nil)
-  (global-undo-tree-mode 1))
+  :bind (("C-/" . undo-fu-only-undo)
+         ("C-?" . undo-fu-only-redo)))
 
 (use-package windmove
   :bind* (("s-h" . windmove-left)
