@@ -311,7 +311,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                       hop)))
       (eshell/cd directory))))
 
-(use-package evil-numbers) ; Binds "C-c +" and "C-c -" to increase decrease numbers in region
+;; evil-numbers is used to increment/decrement numbers in region/at point
+(use-package evil-numbers
+  :config
+  (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
+  (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 (use-package fish-completion
   :if (executable-find "fish")
@@ -526,22 +530,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
   (sp-base-key-bindings 'paredit))
 
-(use-package undo-tree
+(use-package undo-fu
   :delight
-  :config
-  (setq undo-tree-enable-undo-in-region nil)
-  (global-undo-tree-mode 1))
-
-(use-package windmove
-  :bind* (("s-h" . windmove-left)
-          ("s-j" . windmove-down)
-          ("s-k" . windmove-up)
-          ("s-l" . windmove-right))
-  :config
-  ;; To move to other frames
-  (add-to-list 'load-path "~/.emacs.d/unpackaged")
-  (require 'framemove)
-  (setq framemove-hook-into-windmove t))
+  :bind (("C-/" . undo-fu-only-undo)
+         ("C-?" . undo-fu-only-redo)))
 
 (use-package yasnippet)
 (use-package yasnippet-snippets
@@ -566,12 +558,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;; Latex templates?
   (use-package cdlatex))
 
-(when (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
-  (add-to-list 'load-path "~/programmering/Carp/emacs")
-  (require 'carp-mode)
-  (require 'inf-carp-mode)
-  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
-
 (use-package csharp-mode
   :defer t
   :config
@@ -583,11 +569,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :hook (csharp-mode . omnisharp-mode)
     :bind ((:map csharp-mode-map        
                  ("M-." . omnisharp-go-to-definition))
-           ;; (:map company-mode-map
-           ;;       ("." . (lambda ()
-           ;;                (interactive)
-           ;;                (insert ".")
-           ;;                (company-manual-begin))))
     )))
 
 (use-package clojure-mode
@@ -598,12 +579,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq cider-repl-use-pretty-printing t))
 
 ;; Load carp-mode (must happen after clojure-mode is loaded)
-(add-to-list 'load-path "~/Programmering/carp/Carp/emacs")
-(require 'carp-mode)
-(require 'inf-carp-mode)
-(add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode))
+(when (or (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
+          (file-exists-p "~/Programmering/carp/Carp/emacs/carp-mode.el"))
+  (add-to-list 'load-path "~/Programmering/carp/Carp/emacs")
+  (add-to-list 'load-path "~/programmering/Carp/emacs")
+  (require 'carp-mode)
+  (require 'inf-carp-mode)
+  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
-(use-package crystal-mode :defer t)
 (use-package elm-mode :defer t
   :config
   (use-package flycheck-elm))
@@ -617,9 +600,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package haskell-mode
   :defer t
-  :bind
-  ;; (:map haskell-mode-map
-  ;;       ("M-." . haskell-mode-jump-to-def))
   :config
   (use-package intero
     :config
@@ -734,7 +714,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
- electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
@@ -774,6 +753,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
+ electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  )
 
 (with-eval-after-load 'dired-x
@@ -805,12 +785,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (define-key ctl-x-4-map "t" #'toggle-frame-split)
 
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
-
-;; evil-numbers is used to increment/decrement numbers in region/at point
-(use-package evil-numbers
-  :config
-  (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
-  (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 ;; TODO: add some way of closing the window if no errors
 ;; And start gdb if not running
