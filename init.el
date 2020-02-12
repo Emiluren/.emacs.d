@@ -709,6 +709,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                    (other . "my-c-style"))
  calendar-week-start-day 1          ; Week starts on monday
  column-number-mode t               ; Enable column number in modeline
+ confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
