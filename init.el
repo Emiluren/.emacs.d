@@ -629,7 +629,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (add-to-list 'project-find-functions #'my-project-try-cargo-toml)
   (use-package eglot
     ;; eglot is a general lsp package
-    :hook (rust-mode . eglot-ensure)))
+    :hook (rust-mode . eglot-ensure)
+    :custom
+    (eglot-confirm-server-initiated-edits nil)))
 
 ;; Slime currently has to be used for cepl/livesupport (Don't remember why)
 (use-package slime
