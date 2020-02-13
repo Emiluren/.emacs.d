@@ -730,6 +730,25 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  visible-bell 1 ; Turn off annoying sound
  )
 
+(defun in-wayland-p ()
+  (= (call-process-shell-command "pgrep -x sway") 0))
+
+(when (in-wayland-p)
+  (setq wl-copy-process nil)
+  (defun wl-copy (text)
+    (setq wl-copy-process (make-process :name "wl-copy"
+                                        :buffer nil
+                                        :command '("wl-copy" "-f" "-n")
+                                        :connection-type 'pipe))
+    (process-send-string wl-copy-process text)
+    (process-send-eof wl-copy-process))
+  (defun wl-paste ()
+    (if (and wl-copy-process (process-live-p wl-copy-process))
+        nil ; should return nil if we're the current paste owner
+      (shell-command-to-string "wl-paste -n | tr -d \r")))
+  (setq interprogram-cut-function 'wl-copy)
+  (setq interprogram-paste-function 'wl-paste))
+
 ;; Set up gnus
 (setq gnus-directory "~/.emacs.d/mail"
       message-directory "~/.emacs.d/mail"
