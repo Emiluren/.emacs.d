@@ -401,7 +401,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                              (,gtd-someday-file :level . 1)
                              (,gtd-reminder-file :maxlevel . 2))
         org-latex-packages-alist '(("margin=2cm" "geometry" nil))
-        org-clock-persist 'history)
+        org-clock-persist 'history
+        org-startup-folded nil)
   (org-clock-persistence-insinuate))
 
 (use-package org-journal
