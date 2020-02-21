@@ -853,7 +853,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     ad-do-it))
 
 (add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;; Ligature font
 ;; Use the hasklig font but only in haskell mode if it's installed.
