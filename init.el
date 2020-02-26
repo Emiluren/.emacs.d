@@ -43,19 +43,89 @@
 ;;   ;; To disable collection of benchmark data after init is done.
 ;;   :hook (after-init . benchmark-init/deactivate))
 
-;; Set the window title to something better
-(setq frame-title-format '("%b - Emacs"))
-
-(setq mouse-autoselect-window t
-      focus-follows-mouse t)
-
-;; Don't accelerate scroll speed
-(setq mouse-wheel-progressive-speed nil)
-
-;; dash - list utilities
-(use-package dash
+;;; Theme
+;; Set up color theme and other visual stuff.
+(use-package doom-themes
+  :demand t
   :config
-  (dash-enable-font-lock))
+  (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+
+  (load-theme 'doom-one t)
+  (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config)
+
+  ;; Prevent lsp-face-highlight from being too distracting
+  (with-eval-after-load "lsp-methods"
+    (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
+      (doom-themes-set-faces 'doom-one
+     (lsp-face-highlight-read :background brighter-bg)
+     (lsp-face-highlight-textual :background brighter-bg)
+     (lsp-face-highlight-write :background brighter-bg))))
+
+  (with-eval-after-load "rtags"
+    (dolist (props '((rtags-errline "red")
+                  (rtags-fixitline "yellow")))
+      (cl-destructuring-bind (face color) props
+     (unset-face-attributes face '(:foreground :background))
+     (set-face-attribute face nil :underline
+                         `(:color ,color :style wave)))))
+
+  (with-eval-after-load "em-prompt"
+    ;; Make the eshell prompt slightly green so it stands out
+    (set-face-foreground 'eshell-prompt "#9ccca4")))
+
+(use-package solaire-mode
+  :after doom-themes
+  :demand t
+  :hook ((after-change-major-mode . turn-on-solaire-mode)
+         (ediff-prepare-buffer . solaire-mode)
+         ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+         ;; itself off every time Emacs reverts the file
+         (after-revert . turn-on-solaire-mode)
+         ;; highlight the minibuffer when it is activated:
+         (minibuffer-setup . solaire-mode-in-minibuffer))
+
+  :config
+  ;; if the bright and dark background colors are the wrong way around, use this
+  ;; to switch the backgrounds of the `default` and `solaire-default-face` faces.
+  ;; This should be used *after* you load the active theme!
+  ;;
+  ;; NOTE: This is necessary for themes in the doom-themes package!
+  (solaire-mode-swap-bg))
+
+;; (use-package leuven-theme
+;;   :config
+;;   (load-theme 'leuven t))
+
+;; (load-theme 'tango-dark t)
+
+;; Make parentheses
+(use-package paren-face
+  :config
+  (global-paren-face-mode))
+
+(use-package yascroll
+  :config
+  (global-yascroll-bar-mode)
+  (setq yascroll:delay-to-hide nil))
+
+;; Without this the cursor would be black and very hard to see on
+;; a dark background
+(set-mouse-color "white")
+
+;; Disable menu and tool bar
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; Show matching parens
+(show-paren-mode 1)
 
 ;;; Defing functions
 (defun push-mark-no-activate ()
@@ -627,11 +697,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  dabbrev-case-fold-search nil ; Make dabbrev case sensitive
  enable-recursive-minibuffers t ; Enable minibuffer commands while using other minibuffer commands
+ frame-title-format '("%b - Emacs") ; Set the window title to something better
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
  inhibit-startup-screen t
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
+ mouse-wheel-progressive-speed nil ; Don't accelerate scroll speed
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
  sentence-end-double-space nil ; Sentences end with a single space
@@ -644,6 +716,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  tramp-default-method "ssh"
  visible-bell 1 ; Turn off annoying sound
  )
+
+(setq mouse-autoselect-window t
+      focus-follows-mouse t)
 
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
@@ -720,9 +795,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (global-unset-key [(control x)(control z)])
 
 ;;; ** Hooks
-;; Some of the stuff under here should also be moved to it's package configuration
-;; TODO: move everything to package-config
-
 ;; Make sure dir-locals.el is reloaded if the major mode changes
 (add-hook 'after-change-major-mode-hook 'hack-local-variables)
 
@@ -747,7 +819,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;;; Ligature font
 ;; Use the hasklig font but only in haskell mode if it's installed.
 
-(require 'dash)
+;; dash - list utilities
+(use-package dash
+  :ensure t
+  :config
+  (dash-enable-font-lock))
 
 ;; The code in this file comes from https://github.com/Profpatsch/blog/blob/master/posts/ligature-emulation-in-emacs/post.md
 (defun my-correct-symbol-bounds (pretty-alist)
@@ -787,96 +863,6 @@ codepoints starting from codepoint-start."
            (find-font (font-spec :name "Hasklig")))
   (set-frame-font "Hasklig")
   (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
-
-;;; Theme
-;; Set up color theme and other visual stuff.
-(use-package doom-themes
-  :demand t
-  :config
-  (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-  (load-theme 'doom-one t)
-  (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-
-  ;; Prevent lsp-face-highlight from being too distracting
-  (with-eval-after-load "lsp-methods"
-    (let ((brighter-bg (doom-lighten (face-background 'default) 0.05)))
-      (doom-themes-set-faces 'doom-one
-     (lsp-face-highlight-read :background brighter-bg)
-     (lsp-face-highlight-textual :background brighter-bg)
-     (lsp-face-highlight-write :background brighter-bg))))
-
-  (with-eval-after-load "rtags"
-    (dolist (props '((rtags-errline "red")
-                  (rtags-fixitline "yellow")))
-      (cl-destructuring-bind (face color) props
-     (unset-face-attributes face '(:foreground :background))
-     (set-face-attribute face nil :underline
-                         `(:color ,color :style wave)))))
-
-  (with-eval-after-load "em-prompt"
-    ;; Make the eshell prompt slightly green so it stands out
-    (set-face-foreground 'eshell-prompt "#9ccca4")))
-
-(use-package solaire-mode
-  :after doom-themes
-  :demand t
-  :hook ((after-change-major-mode . turn-on-solaire-mode)
-         (ediff-prepare-buffer . solaire-mode)
-         ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-         ;; itself off every time Emacs reverts the file
-         (after-revert . turn-on-solaire-mode)
-         ;; highlight the minibuffer when it is activated:
-         (minibuffer-setup . solaire-mode-in-minibuffer))
-
-  :config
-  ;; if the bright and dark background colors are the wrong way around, use this
-  ;; to switch the backgrounds of the `default` and `solaire-default-face` faces.
-  ;; This should be used *after* you load the active theme!
-  ;;
-  ;; NOTE: This is necessary for themes in the doom-themes package!
-  (solaire-mode-swap-bg))
-
-;; (use-package eink-theme
-;;   :config
-;;   (load-theme 'eink t)
-;;   (set-face-attribute 'font-lock-comment-face nil :weight 'light)
-;;   (set-face-attribute 'mode-line nil :height 1.0)
-;;   (set-face-attribute 'mode-line-inactive nil :height 1.0))
-
-(use-package paren-face
-  :config
-  (global-paren-face-mode))
-
-;; (use-package leuven-theme
-;;   :config
-;;   (load-theme 'leuven t))
-
-;; (load-theme 'tango-dark t)
-
-(use-package yascroll
-  :config
-  (global-yascroll-bar-mode)
-  (setq yascroll:delay-to-hide nil))
-
-;; Without this the cursor would be black and very hard to see on
-;; a dark background
-(set-mouse-color "white")
-
-;; Disable menu and tool bar
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-;; Show matching parens
-(show-paren-mode 1)
 
 ;;; ** Final init
 ;; Set up some auto modes and enable some useful disabled commands.
