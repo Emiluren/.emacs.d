@@ -414,7 +414,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (use-package swiper
     :straight t
     :bind (("C-s" . swiper-isearch)
-           ("C-r" . swiper-isearch-backward))))
+           ("C-r" . swiper-isearch-backward)))
+  (use-package smex :straight t)) ; Smex is for command history
 
 (use-package magit
   :straight t
