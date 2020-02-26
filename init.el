@@ -388,19 +388,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-flycheck-mode)
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
-(use-package helm
-  :delight
-  :bind
-  (("M-x" . helm-M-x)
-   ;;("C-x C-m" . helm-M-x) ; Used for encoding by default
-   ;;("C-c C-m" . helm-M-x)
-   ("C-x r b" . helm-filtered-bookmarks)
-   ("C-x C-f" . helm-find-files)
-   ("C-x b" . helm-buffers-list))
-  :config
-  (require 'helm-config)
-  (helm-mode 1))
-
 (use-package hippie-exp
   :bind ("M-/" . 'hippie-expand)
   :config
@@ -415,6 +402,19 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           try-expand-line
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol)))
+
+(use-package ivy
+  :straight t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (use-package counsel
+    :straight t
+    :config (counsel-mode 1))
+  (use-package swiper
+    :straight t
+    :bind (("C-s" . swiper-isearch)
+           ("C-r" . swiper-isearch-backward))))
 
 (use-package magit
   :straight t
@@ -437,7 +437,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (defvar gtd-someday-file "~/.emacs.d/personal-org/gtd/someday.org")
 
 (use-package org
-  :straight 'org-plus-contrib
+  :straight org-plus-contrib
   :defer t
   :bind
   (("C-c l" . 'org-store-link)
@@ -562,7 +562,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode 1)
+  (smartparens-global-strict-mode 1)
   :custom
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
   (sp-base-key-bindings 'paredit))
