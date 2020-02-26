@@ -4,15 +4,7 @@
 (package-initialize)
 
 ;;; Initialization
-(setq
- ;; Give emacs 100mb memory to use before trying to collect garbage
- gc-cons-threshold 100000000
- ;; Fix emacs 26 being slow
- x-wait-for-event-timeout nil
- global-font-lock-mode nil
- )
-
-;; I don't use custom but package.el will write selected packages to it.
+;; I don't use custom but directory variables will be marked as safe there.
 (setq custom-file "~/.emacs.d/lisp/custom.el")
 (load custom-file t)
 
@@ -28,10 +20,6 @@
 ;; Enable melpa repository
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-
-;; This is required because of a bug in Emacs 26.2
-;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; If this is a new install we need to make sure that all packages are available
 (package-activate 'use-package)
@@ -249,14 +237,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
    ;; TODO: check with sly again
    company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
    company-idle-delay 0)
-
-  ;;(add-hook 'after-init-hook 'global-company-mode)
-  (global-company-mode)
-
-  ;; :bind (:map company-mode-map
-  ;;             ("M-<tab>" . company-complete-common-or-cycle)
-  ;;             ("M-TAB" . company-complete-common-or-cycle))
-  )
+  (global-company-mode))
 
 (use-package dired-du
   :config
@@ -316,13 +297,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
-
-(use-package fish-completion
-  :if (executable-find "fish")
-  :config
-  (global-fish-completion-mode))
-
-(use-package fish-mode :defer t)
 
 (use-package flycheck
   :config
@@ -406,20 +380,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (org-clock-persistence-insinuate))
 
 (use-package org-journal
-  :init
-  (defun insert-org-journal-password ()
-    (interactive)
-    (let ((pass (get-org-journal-password)))
-      (when pass
-        (insert pass))))
-  :bind* (("C-c P" . insert-org-journal-password))
   :config
-  (setq org-journal-dir "~/.emacs.d/personal-org/dagbok"
-        ;; org-journal-enable-encryption t
-
-        ;; variables that are actually from other packages but used for encryption
-        ;; org-tags-exclude-from-inheritance (quote ("crypt"))
-        )
+  (setq org-journal-dir "~/.emacs.d/personal-org/dagbok")
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
@@ -536,41 +498,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :bind (("C-/" . undo-fu-only-undo)
          ("C-?" . undo-fu-only-redo)))
 
-(use-package yasnippet)
-(use-package yasnippet-snippets
-  :after yasnippet)
-
 ;; Show what keys can be pressed in the middle of a sequence
 (use-package which-key
   :delight
   :config
   (which-key-mode 1))
 
-;;; Programming languages
-;; TODO: add these
-;; flycheck-clojure
-;; flycheck-crystal
-;; flycheck-elixir
-;; flycheck-elm
-
 (use-package auctex
-  :defer t
-  :config
-  ;; Latex templates?
-  (use-package cdlatex))
-
-(use-package csharp-mode
-  :defer t
-  :config
-  (use-package omnisharp
-    :after csharp-mode
-    :init
-    (eval-after-load 'company
-      '(add-to-list 'company-backends 'company-omnisharp))
-    :hook (csharp-mode . omnisharp-mode)
-    :bind ((:map csharp-mode-map        
-                 ("M-." . omnisharp-go-to-definition))
-    )))
+  :defer t)
 
 (use-package clojure-mode
   :defer t
@@ -591,11 +526,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package elm-mode :defer t
   :config
   (use-package flycheck-elm))
-(use-package elixir-mode
-  :defer t
-  :config
-  (use-package alchemist :defer t))
-(use-package fsharp-mode :defer t)
 (use-package geiser :defer t) ; Scheme IDE
 (use-package glsl-mode :defer t)
 
@@ -614,9 +544,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :hook julia-mode))
 
 (use-package idris-mode :defer t)
-
 (use-package markdown-mode :defer t)
-
 (use-package racket-mode :defer t)
 
 (use-package rust-mode
@@ -646,28 +574,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (setq slime-lisp-implementations '((sbcl
                                         ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
 
-;; Faster than flex completion. Seems to mess stuff up though
-;;'(sly-complete-symbol-function (quote sly-simple-complete-symbol))
-;; (use-package sly ; Sylvester the Cat's Common Lisp IDE
-;;   :defer t
-;;   ;;:hook (lisp-mode . sly-mode)
-;;   :bind
-;;   ((:map sly-prefix-map
-;;          ("E" . nil)
-;;          ("I" . nil)
-;;          ("i" . nil)
-;;          ("x" . nil)))
-;;   :config
-;;   (use-package sly-quicklisp)
-;;   (setq inferior-lisp-program "sbcl"  ; Use sbcl for CL repls
-;;         ))
-
 (use-package toml-mode :defer t)
-
 (use-package typescript-mode
   :config
   (use-package tide))
-
 (use-package yaml-mode :defer t)
 
 ;;; Set global builtin modes
@@ -708,29 +618,37 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  case-replace nil ;; Replace with case from replacement string
  c-default-style '((java-mode . "java")
                    (awk-mode . "awk")
-                   (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it specifically
+                   (csharp-mode . "my-c-style") ; csharp-mode will automatically override the style if we don't set it explicitly
                    (other . "my-c-style"))
- calendar-week-start-day 1          ; Week starts on monday
- column-number-mode t               ; Enable column number in modeline
+ calendar-week-start-day 1 ; Week starts on monday
+ column-number-mode t ; Enable column number in modeline
  confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
- dabbrev-case-fold-search nil           ; Make dabbrev case sensitive
+ dabbrev-case-fold-search nil ; Make dabbrev case sensitive
+ enable-recursive-minibuffers t ; Enable minibuffer commands while using other minibuffer commands
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
+ inhibit-startup-screen t
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
- sentence-end-double-space nil     ; Sentences end with a single space
+ sentence-end-double-space nil ; Sentences end with a single space
  sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil
  split-width-threshold 120
- tab-always-indent 'complete            ; Use tab to complete
+ tab-always-indent 'complete ; Use tab to complete
  ;; Faster than the default scp (according to Emacs wiki)
  tramp-default-method "ssh"
  visible-bell 1 ; Turn off annoying sound
+ )
+
+(setq-default
+ word-wrap t ; Make line wraps happen at word boundaries
+ indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
+ electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  )
 
 (defun in-wayland-p ()
@@ -752,36 +670,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq interprogram-cut-function 'wl-copy)
   (setq interprogram-paste-function 'wl-paste))
 
-;; Set up gnus
-(setq gnus-directory "~/.emacs.d/mail"
-      message-directory "~/.emacs.d/mail"
-      gnus-select-method '(nnnil "")
-      gnus-secondary-select-methods '((nntp "news.gmane.org")
-                                      (nnimap "Skolmail"
-                                              (nnimap-address "outlook.office365.com")
-                                              (nnimap-server-port 993)
-                                              (nnimap-stream ssl)))
-                                        ;gnus-interactive-exit nil ; stop prompt but do I want it for updates or something?
-      ;; Make sure emails end up in sent folder after they have been sent
-      ;; TODO: not working?
-      ;; gnus-message-archive-group "nnimap+Skolmail:Skickade objekt"
-      ;; Settings for sending email
-      message-send-mail-function 'smtpmail-send-it
-      smtpmail-smtp-server "smtp.office365.com"
-      smtpmail-smtp-service 587
-      smtpmail-stream-type 'starttls)
-
-(setq-default
- word-wrap t ; Make line wraps happen at word boundaries
- indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
- electric-indent-inhibit t ; Stop electric indent from indenting the previous line
- )
-
 (with-eval-after-load 'dired-x
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$")))
-
-;; Use y/n instead of longer yes/no
-;; (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;; Bindings
 ;; Similar to the variables set above. Some of these should be moved to
