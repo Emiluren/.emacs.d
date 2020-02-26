@@ -1,14 +1,32 @@
 ;;; -*- lexical-binding: t -*-
 
-;; Added by Package.el. Do not remove
-(package-initialize)
-
 ;;; Initialization
 ;; I don't use custom but directory variables will be marked as safe there.
 (setq custom-file "~/.emacs.d/lisp/custom.el")
 (load custom-file t)
 
-;;; Package repository init
+;;; Package init
+;; If this is a new install we need to make sure that all packages are available
+
+;; straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+
 ;; Unpackaged is my folder for stuff I have not written but is not on melpa.
 ;; Mostly from the Emacs wiki
 (let ((default-directory "~/.emacs.d/unpackaged/"))
@@ -17,21 +35,8 @@
 ;; Load email address and stuff
 (load "~/lisp/private.el" t)
 
-;; Enable melpa repository
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-
-;; If this is a new install we need to make sure that all packages are available
-(package-activate 'use-package)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(setq use-package-always-ensure t)
-(eval-when-compile
-  (require 'use-package))
-(require 'bind-key)
-
-(use-package delight)
+(use-package delight
+  :straight t)
 (delight '((auto-revert-mode nil "autorevert") (eldoc-mode nil "eldoc")))
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
@@ -46,7 +51,7 @@
 ;;; Theme
 ;; Set up color theme and other visual stuff.
 (use-package doom-themes
-  :demand t
+  :straight t
   :config
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
@@ -82,7 +87,7 @@
 
 (use-package solaire-mode
   :after doom-themes
-  :demand t
+  :straight t
   :hook ((after-change-major-mode . turn-on-solaire-mode)
          (ediff-prepare-buffer . solaire-mode)
          ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
@@ -107,10 +112,12 @@
 
 ;; Make parentheses
 (use-package paren-face
+  :straight t
   :config
   (global-paren-face-mode))
 
 (use-package yascroll
+  :straight t
   :config
   (global-yascroll-bar-mode)
   (setq yascroll:delay-to-hide nil))
@@ -300,6 +307,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :defer t)
 
 (use-package company
+  :straight t
   :delight
   :config
   (setq
@@ -310,6 +318,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-company-mode))
 
 (use-package dired-du
+  :straight t
   :config
   (setq dired-listing-switches "-alh")
   (setq dired-du-size-format t))
@@ -364,11 +373,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; evil-numbers is used to increment/decrement numbers in region/at point
 (use-package evil-numbers
+  :straight t
   :config
   (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 (use-package flycheck
+  :straight t
   :config
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
         flycheck-emacs-lisp-load-path 'inherit
@@ -406,6 +417,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           try-complete-lisp-symbol)))
 
 (use-package magit
+  :straight t
   :defer t
   :bind ("C-x g" . magit-status)
   :config
@@ -414,6 +426,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Org
 (use-package org-mime ; Send html email using org-mode export
+  :straight t
   :defer t
   :after org)
 
@@ -424,7 +437,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (defvar gtd-someday-file "~/.emacs.d/personal-org/gtd/someday.org")
 
 (use-package org
-  :ensure org-plus-contrib
+  :straight 'org-plus-contrib
   :defer t
   :bind
   (("C-c l" . 'org-store-link)
@@ -450,24 +463,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (org-clock-persistence-insinuate))
 
 (use-package org-journal
+  :straight t
   :config
   (setq org-journal-dir "~/.emacs.d/personal-org/dagbok")
   :custom
   (org-journal-file-format "%Y-%m-%d"))
 
-;; Better pdf viewing (docview is kind of blurry), can also edit pdfs
-(use-package pdf-tools
-  :bind (:map pdf-view-mode-map
-         ("n" . image-forward-hscroll)
-         ("e" . pdf-view-next-line-or-next-page)
-         ("i" . pdf-view-previous-line-or-previous-page)
-         ("o" . image-backward-hscroll))
-  :config
-  (pdf-loader-install))
-
 ;; To enter passwords in minibuffer instead of separate window
 (use-package pinentry
-  :demand t
+  :straight t
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
@@ -507,6 +511,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; RTags is used in C++
 (use-package rtags
+  :straight t
   :defer t
   :config
   (setq rtags-path
@@ -545,17 +550,16 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     )
 
   ;; c-mode-common-hook is also called by c++-mode
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
-
-  )
+  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup))
 
 (add-hook 'c++-mode-hook
           (lambda ()
             (setq flycheck-clang-language-standard "c++17")))
 
 (use-package smartparens
+  :straight t
   :delight
-  :hook (minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
+  :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
   :config
   (require 'smartparens-config)
   (smartparens-global-mode 1)
@@ -564,20 +568,24 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (sp-base-key-bindings 'paredit))
 
 (use-package undo-fu
+  :straight t
   :delight
   :bind (("C-/" . undo-fu-only-undo)
          ("C-?" . undo-fu-only-redo)))
 
 ;; Show what keys can be pressed in the middle of a sequence
 (use-package which-key
+  :straight t
   :delight
   :config
   (which-key-mode 1))
 
 (use-package auctex
+  :straight t
   :defer t)
 
 (use-package clojure-mode
+  :straight t
   :defer t
   :config
   (use-package cider)
@@ -593,31 +601,31 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (require 'inf-carp-mode)
   (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
-(use-package elm-mode :defer t
+(use-package elm-mode
+  :straight t
+  :defer t
   :config
-  (use-package flycheck-elm))
-(use-package geiser :defer t) ; Scheme IDE
-(use-package glsl-mode :defer t)
+  (use-package flycheck-elm
+    :straight t))
+
+(use-package geiser :straight t :defer t) ; Scheme IDE
+(use-package glsl-mode :straight t :defer t)
 
 (use-package haskell-mode
+  :straight t
   :defer t
   :config
   (use-package intero
+    :straight t
     :config
     (intero-global-mode 1)))
 
-(use-package julia-mode
-  :defer t
-  :config
-  (use-package flycheck-julia :config (flycheck-julia-setup))
-  (use-package julia-repl
-    :hook julia-mode))
-
-(use-package idris-mode :defer t)
-(use-package markdown-mode :defer t)
-(use-package racket-mode :defer t)
+(use-package idris-mode :straight t :defer t)
+(use-package markdown-mode :straight t :defer t)
+(use-package racket-mode :straight t :defer t)
 
 (use-package rust-mode
+  :straight t
   :defer t
   :init
   (defun my-project-try-cargo-toml (dir)
@@ -626,14 +634,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
       (if (stringp found) `(transient . ,found) nil)))
   :config
   (add-to-list 'project-find-functions #'my-project-try-cargo-toml)
-  (use-package eglot
-    ;; eglot is a general lsp package
+  (use-package eglot ; eglot is a general lsp package
+    :straight t
     :hook (rust-mode . eglot-ensure)
     :custom
     (eglot-confirm-server-initiated-edits nil)))
 
 ;; Slime currently has to be used for cepl/livesupport (Don't remember why)
 (use-package slime
+  :straight t
   :defer t
   :hook (lisp-mode . slime-mode)
   :config
@@ -644,11 +653,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (setq slime-lisp-implementations '((sbcl
                                         ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
 
-(use-package toml-mode :defer t)
+(use-package toml-mode :straight t :defer t)
 (use-package typescript-mode
+  :straight t
   :config
-  (use-package tide))
-(use-package yaml-mode :defer t)
+  (use-package tide :straight t))
+(use-package yaml-mode :straight t :defer t)
 
 ;;; Set global builtin modes
 ;; Enable saving of minibuffer history
@@ -821,7 +831,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; dash - list utilities
 (use-package dash
-  :ensure t
+  :straight t
   :config
   (dash-enable-font-lock))
 
