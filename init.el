@@ -425,12 +425,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
         ))
 
-;; Org
-(use-package org-mime ; Send html email using org-mode export
-  :straight t
-  :defer t
-  :after org)
-
 ;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
 (defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
 (defvar gtd-projects-file "~/.emacs.d/personal-org/gtd/projects.org")
