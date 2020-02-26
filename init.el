@@ -504,9 +504,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                         (concat newname (substring name (length oldname)))
                       name))
                   recentf-list)))
+  (defun recentf-save-list-quiet ()
+    (interactive)
+    (let ((inhibit-message t))
+      (recentf-save-list)))
+  :bind (("C-x C-r" . recentf-open-files))
   :config
   (recentf-mode 1)
-  (run-at-time nil (* 5 60) 'recentf-save-list)
+  (run-at-time nil (* 5 60) #'recentf-save-list-quiet)
   (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify))
 
 ;; RTags is used in C++
@@ -766,7 +771,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (global-set-key (kbd "M-`") 'jump-to-mark) ; Pop last mark from mark ring and jump to it
 (define-key global-map [remap exchange-point-and-mark]
   #'exchange-point-and-mark-no-activate) ; Don't change region activation state when swapping point and mark
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 ;; Set up bindings to quickly open special files
 (bind-key* "C-c i" #'find-init-file)
@@ -897,3 +901,4 @@ codepoints starting from codepoint-start."
 (put 'downcase-region 'disabled nil)
 (put 'scroll-left 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'list-timers 'disabled nil)
