@@ -559,12 +559,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package smartparens
   :straight t
   :delight
-  :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode) ; Doesn't seem quite working
+  :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode)
   :config
   (require 'smartparens-config)
+  (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   :custom
   (sp-override-key-bindings '(("M-<backspace>" . nil)))
+  (sp-ignore-modes-list ())
   (sp-base-key-bindings 'paredit))
 
 (use-package undo-fu
