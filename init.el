@@ -571,13 +571,18 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :straight t
   :demand t
   :delight
-  :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode)
+  :init
+  (defun conditionally-enable-smartparens ()
+    "enable smartparens during eval-expression"
+    (if (eq this-command 'eval-expression)
+        ;; Prevent single quote ' from pairing in minibuffer eval
+        (sp-local-pair 'minibuffer-inactive-mode "'" nil
+                       :actions nil)
+        (smartparens-strict-mode 1)
+      (smartparens-strict-mode 0)))
+  :hook (minibuffer-setup . conditionally-enable-smartparens)
   :config
   (require 'smartparens-config)
-  ;; Prevent single quote ' from pairing in minibuffer eval
-  ;; For some reason, this does not work the first time the minibuffer is used
-  (sp-local-pair 'minibuffer-inactive-mode "'" nil
-                 :actions nil)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   :custom
