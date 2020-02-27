@@ -149,6 +149,9 @@
 ;; Show matching parens
 (show-paren-mode 1)
 
+;; Remember last place in file
+(save-place-mode 1)
+
 ;;; Defing functions
 (defun push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
@@ -732,6 +735,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  tab-always-indent 'complete ; Use tab to complete
  ;; Faster than the default scp (according to Emacs wiki)
  tramp-default-method "ssh"
+ vc-follow-symlinks t ; Don't ask before following links
  visible-bell 1 ; Turn off annoying sound
  )
 
