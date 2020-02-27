@@ -569,6 +569,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package smartparens
   :straight t
+  :demand t
   :delight
   :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode)
   :config
