@@ -59,9 +59,6 @@
   (load-theme 'doom-one t)
   (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
 
@@ -135,7 +132,7 @@
 
 ;; Set up highlighting of cursor/line
 (blink-cursor-mode -1)
-;; (global-hl-line-mode 1)
+(global-hl-line-mode 1)
 (setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
 
 ;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
@@ -324,17 +321,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package cmake-mode
   :defer t)
 
-(use-package company
-  :straight t
-  :delight
-  :config
-  (setq
-   ;; Company seems to work poorly with sly and gud/gdb
-   ;; TODO: check with sly again
-   company-global-modes '(not gud-mode lisp-mode sly-mrepl-mode)
-   company-idle-delay 0)
-  (global-company-mode))
-
 (use-package dired-du
   :straight t
   :config
@@ -346,6 +332,21 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :functions ediff-window-setup-plain
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
+
+(use-package emacs
+  :config
+  (setq ring-bell-function 'ignore)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; Enable some commands that are disabled by default
+  ;; The goal collumn is where you end up when you switch line
+  ;; (useful for editing tables)
+  (put 'set-goal-column 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+  (put 'scroll-left 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'list-timers 'disabled nil))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
@@ -400,44 +401,102 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-flycheck-mode)
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
+(use-package dabbrev
+  :commands (dabbrev-expand dabbrev-completion)
+  (setq dabbrev-case-distinction nil
+        dabbrev-case-fold-search t
+        dabbrev-case-replace nil))
+
 (use-package hippie-exp
+  :after dabbrev
   :bind ("M-/" . 'hippie-expand)
   :config
   (setq hippie-expand-try-functions-list
-        '(try-expand-dabbrev
+        '(try-expand-dabbrev-visible
+          try-expand-dabbrev
           try-expand-dabbrev-all-buffers
           try-expand-dabbrev-from-kill
+          try-expand-list-all-buffers
+          try-expand-list
+          try-expand-line-all-buffers
+          try-expand-line
           try-complete-file-name-partially
           try-complete-file-name
-          try-expand-all-abbrevs
-          try-expand-list
-          try-expand-line
-          try-complete-lisp-symbol-partially
-          try-complete-lisp-symbol)))
+          try-expand-all-abbrevs))
+  (setq hippie-expand-verbose nil)) ; Don't show name of expansion function
 
-(use-package ivy
-  :straight t
-  :delight
+(use-package ibuffer
   :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (use-package counsel
-    :straight t
-    :delight
-    :config (counsel-mode 1))
-  (use-package swiper
-    :straight t
-    :bind (("C-s" . swiper-isearch)
-           ("C-r" . swiper-isearch-backward)))
-  (use-package smex :straight t)) ; Smex is for command history
+  (setq ibuffer-display-summary nil
+        ibuffer-use-other-window nil
+        ibuffer-show-empty-filter-groups nil
+        ibuffer-movement-cycle nil
+        ibuffer-default-sorting-mode 'filename/process
+        ibuffer-use-header-line t
+        ibuffer-default-shrink-to-minimum-size nil)
+  (setq ibuffer-saved-filter-groups
+        '(("Main"
+           ("Directories" (mode . dired-mode))
+           ("Org" (mode . org-mode))
+           ("Programming" (mode . prog-mode))
+           ("Magit" (or
+                     (mode . magit-blame-mode)
+                     (mode . magit-cherry-mode)
+                     (mode . magit-diff-mode)
+                     (mode . magit-log-mode)
+                     (mode . magit-process-mode)
+                     (mode . magit-status-mode)))
+           ("Gnus" (or
+                    (mode . message-mode)
+                    (mode . mail-mode)
+                    (mode . gnus-article-mode)
+                    (mode . gnus-group-mode)
+                    (mode . gnus-server-mode)
+                    (mode . gnus-summary-mode)))
+           ("Emacs" (or
+                     (name . "^\\*Help\\*$")
+                     (name . "^\\*Custom.*")
+                     (name . "^\\*Org Agenda\\*$")
+                     (name . "^\\*info\\*$")
+                     (name . "^\\*scratch\\*$")
+                     (name . "^\\*Backtrace\\*$")
+                     (name . "^\\*Messages\\*$"))))))
+  :hook
+  (ibuffer-mode . (lambda ()
+                    (ibuffer-switch-to-saved-filter-groups "Main")))
+  :bind ("C-x C-b" . ibuffer))
+
+
+(use-package icomplete
+  :demand
+  :config
+  (setq icomplete-delay-completions-threshold 0
+        icomplete-max-delay-chars 0
+        icomplete-compute-delay 0
+        icomplete-show-matches-on-no-input t
+        icomplete-hide-common-prefix nil
+        icomplete-with-completion-tables t
+        icomplete-in-buffer t
+        completion-ignore-case t
+        read-file-name-completion-ignore-case t
+        read-buffer-completion-ignore-case t)
+  (icomplete-mode 1))
+
+(use-package isearch
+  :config
+  lazy-highlight-initial-delay 0) ; Don't wait before highlighting searches
 
 (use-package magit
   :straight t
   :defer t
   :bind ("C-x g" . magit-status)
   :config
-  (setq magit-delete-by-moving-to-trash nil ; Delete files directly from magit
-        ))
+  (setq magit-delete-by-moving-to-trash nil)) ; Delete files directly from magit
+
+(use-package magit-diff
+  :after magit
+  :config
+  (setq magit-diff-refine-hunk t)) ; Highlight changes within line
 
 ;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
 (defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
@@ -468,7 +527,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                              (,gtd-reminder-file :maxlevel . 2))
         org-latex-packages-alist '(("margin=2cm" "geometry" nil))
         org-clock-persist 'history
-        org-startup-folded 'showeverything)
+        org-startup-folded 'showeverything
+        org-startup-truncated nil)
   (org-clock-persistence-insinuate))
 
 (use-package org-journal
@@ -536,15 +596,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (unless (file-exists-p rtags-path)
     (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
       (rtags-install)))
-  (use-package company-rtags
-    :after (company rtags))
   (use-package flycheck-rtags
     :after (flycheck rtags))
 
   (setq rtags-completions-enabled t)
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-rtags))
   (setq rtags-autostart-diagnostics t)
   (rtags-enable-standard-keybindings)
 
@@ -553,8 +608,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
             (lambda ()
               (setq-local eldoc-documentation-function #'rtags-eldoc)))
 
-  ;; (define-key c-mode-map [(tab)] 'company-complete)
-  ;; (define-key c++-mode-map [(tab)] 'company-complete)
   (define-key c++-mode-map (kbd "M-.") #'rtags-find-symbol-at-point)
 
   (defun my-flycheck-rtags-setup ()
@@ -720,14 +773,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
- dabbrev-case-fold-search nil ; Make dabbrev case sensitive
  enable-recursive-minibuffers t ; Enable minibuffer commands while using other minibuffer commands
  frame-title-format '("%b - Emacs") ; Set the window title to something better
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
  inhibit-startup-screen t
- lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
  mouse-wheel-progressive-speed nil ; Don't accelerate scroll speed
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
@@ -740,7 +791,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  ;; Faster than the default scp (according to Emacs wiki)
  tramp-default-method "ssh"
  vc-follow-symlinks t ; Don't ask before following links
- visible-bell 1 ; Turn off annoying sound
  )
 
 (setq mouse-autoselect-window t
@@ -901,13 +951,3 @@ codepoints starting from codepoint-start."
 (add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
 (add-to-list 'auto-mode-alist '("config.work" . conf-space-mode))
 (add-to-list 'auto-mode-alist '("config.base" . conf-space-mode))
-
-;;; Enable some commands that are disabled by default
-;; The goal collumn is where you end up when you switch line
-;; (useful for editing tables)
-(put 'set-goal-column 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(put 'scroll-left 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'list-timers 'disabled nil)
