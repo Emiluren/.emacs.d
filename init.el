@@ -126,6 +126,21 @@
 ;; a dark background
 (set-mouse-color "white")
 
+;;; Set global builtin modes
+;; Enable saving of minibuffer history
+(savehist-mode 1)
+
+;; Delete selected text when entering new if region is active
+(delete-selection-mode 1)
+
+;; Set up highlighting of cursor/line
+(blink-cursor-mode -1)
+;; (global-hl-line-mode 1)
+(setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
+
+;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
+(winner-mode 1)
+
 ;; Disable menu and tool bar
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -329,12 +344,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
 
-;; Smartparens is not enabled in minibuffers currently
-;; (use-package electric
-;;   :config
-;;   ;; MESSES WITH SMARTPARENS IF ENABLED SIMULTANEOUSLY
-;;   (electric-pair-mode -1))
-
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
 (use-package eshell
@@ -405,11 +414,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package ivy
   :straight t
+  :delight
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (use-package counsel
     :straight t
+    :delight
     :config (counsel-mode 1))
   (use-package swiper
     :straight t
@@ -454,7 +465,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                              (,gtd-reminder-file :maxlevel . 2))
         org-latex-packages-alist '(("margin=2cm" "geometry" nil))
         org-clock-persist 'history
-        org-startup-folded nil)
+        org-startup-folded 'showeverything)
   (org-clock-persistence-insinuate))
 
 (use-package org-journal
@@ -562,6 +573,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :hook (eval-expression-minibuffer-setup . turn-on-smartparens-strict-mode)
   :config
   (require 'smartparens-config)
+  ;; Prevent single quote ' from pairing in minibuffer eval
+  ;; For some reason, this does not work the first time the minibuffer is used
+  (sp-local-pair 'minibuffer-inactive-mode "'" nil
+                 :actions nil)
   (smartparens-global-mode 1)
   (smartparens-global-strict-mode 1)
   :custom
@@ -661,21 +676,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package tide :straight t))
 (use-package yaml-mode :straight t :defer t)
-
-;;; Set global builtin modes
-;; Enable saving of minibuffer history
-(savehist-mode 1)
-
-;; Delete selected text when entering new if region is active
-(delete-selection-mode 1)
-
-;; Set up highlighting of cursor/line
-(blink-cursor-mode -1)
-;; (global-hl-line-mode 1)
-(setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
-
-;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
-(winner-mode 1)
 
 ;;; Set variables
 ;; Set variables that don't fit better under Package config (or that I
