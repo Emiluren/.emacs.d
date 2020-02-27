@@ -634,6 +634,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (use-package flycheck-elm
     :straight t))
 
+(use-package elisp-mode
+  :hook (emacs-lisp-mode . dirlocals-flycheck-fix)
+  :bind ("C-c C-c" . eval-defun))
+
 (use-package geiser :straight t :defer t) ; Scheme IDE
 (use-package glsl-mode :straight t :defer t)
 
@@ -834,8 +838,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (defadvice recover-session (around disable-dired-omit-for-recover activate)
   (let ((dired-omit-mode nil))
     ad-do-it))
-
-(add-hook 'emacs-lisp-mode-hook #'dirlocals-flycheck-fix)
 
 ;;; Ligature font
 ;; Use the hasklig font but only in haskell mode if it's installed.
