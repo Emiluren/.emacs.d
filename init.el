@@ -403,6 +403,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package dabbrev
   :commands (dabbrev-expand dabbrev-completion)
+  :config
   (setq dabbrev-case-distinction nil
         dabbrev-case-fold-search t
         dabbrev-case-replace nil))
@@ -484,7 +485,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package isearch
   :config
-  lazy-highlight-initial-delay 0) ; Don't wait before highlighting searches
+  (setq lazy-highlight-initial-delay 0)) ; Don't wait before highlighting searches
 
 (use-package magit
   :straight t
