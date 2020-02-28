@@ -602,6 +602,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
       (rtags-install)))
   (use-package flycheck-rtags
+    :straight
     :after (flycheck rtags))
 
   (setq rtags-completions-enabled t)
@@ -672,8 +673,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :straight t
   :defer t
   :config
-  (use-package cider)
-  ;;(use-package clj-refactor)
+  (use-package cider :straight t)
   (setq cider-repl-use-pretty-printing t))
 
 ;; Load carp-mode (must happen after clojure-mode is loaded)
@@ -689,8 +689,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :straight t
   :defer t
   :config
-  (use-package flycheck-elm
-    :straight t))
+  (use-package flycheck-elm :straight t))
 
 (use-package elisp-mode
   :hook (emacs-lisp-mode . dirlocals-flycheck-fix)
