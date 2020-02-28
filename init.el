@@ -335,7 +335,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package emacs
   :config
-  (setq ring-bell-function 'ignore)
+  (setq ring-bell-function 'ignore
+        enable-recursive-minibuffers t ; Enable minibuffer commands while using other minibuffer commands
+        frame-title-format '("%b - Emacs") ; Set the window title to something better
+        )
   (defalias 'yes-or-no-p 'y-or-n-p)
 
   ;; Enable some commands that are disabled by default
@@ -397,7 +400,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
         flycheck-emacs-lisp-load-path 'inherit
         flycheck-ghc-args '("-dynamic")
-        flycheck-global-modes '(not rust-mode))
+        flycheck-global-modes '(not rust-mode)
+        flycheck-display-errors-delay 0)
   (global-flycheck-mode)
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
 
@@ -774,8 +778,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
- enable-recursive-minibuffers t ; Enable minibuffer commands while using other minibuffer commands
- frame-title-format '("%b - Emacs") ; Set the window title to something better
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
