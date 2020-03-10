@@ -665,6 +665,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (which-key-mode 1))
 
+;;; Programming languages
 (use-package auctex
   :straight t
   :defer t)
@@ -746,6 +747,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package tide :straight t))
 (use-package yaml-mode :straight t :defer t)
+(use-package zig-mode :straight t)
 
 ;;; Set variables
 ;; Set variables that don't fit better under Package config (or that I
