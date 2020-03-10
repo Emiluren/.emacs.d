@@ -764,7 +764,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (setq
  ;; Keep backup and auto save files in their own folders
- ;; Also place remote files in /tmp by default (there is something wrong with sudo)
+ ;; Also place remote files in /tmp by default
  auto-save-file-name-transforms `(("\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'" "/tmp/\\2" t)
                                   (".*" ,(concat user-emacs-directory "backups/") t))
  backup-directory-alist `((".*" . ,(concat user-emacs-directory "backups/")))
@@ -796,6 +796,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  tramp-default-method "ssh"
  vc-follow-symlinks t ; Don't ask before following links
  )
+
+;; Use the same backup directory for tramp as for other files
+(setq tramp-backup-directory-alist backup-directory-alist)
 
 (setq mouse-autoselect-window t
       focus-follows-mouse t)
