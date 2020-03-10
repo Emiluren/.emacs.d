@@ -512,6 +512,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package org
   :straight org-plus-contrib
   :defer t
+  :init
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
   :bind
   (("C-c l" . 'org-store-link)
    ("C-c a" . 'org-agenda)
@@ -531,10 +534,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                              (,gtd-someday-file :level . 1)
                              (,gtd-reminder-file :maxlevel . 2))
         org-latex-packages-alist '(("margin=2cm" "geometry" nil))
-        org-clock-persist 'history
         org-startup-folded 'showeverything
-        org-startup-truncated nil)
-  (org-clock-persistence-insinuate))
+        org-startup-truncated nil))
 
 (use-package org-journal
   :straight t
