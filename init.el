@@ -727,6 +727,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (use-package eglot ; eglot is a general lsp package
     :straight t
     :hook (rust-mode . eglot-ensure)
+    :config
+    (add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
     :custom
     (eglot-confirm-server-initiated-edits nil)))
 
