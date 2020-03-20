@@ -590,8 +590,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify))
 
 ;; RTags is used in C++
+(straight-use-package 'rtags 'lazy)
 (use-package rtags
-  :straight t
   :defer t
   :config
   (setq rtags-path
@@ -668,12 +668,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (which-key-mode 1))
 
 ;;; Programming languages
+(straight-use-package 'auctex 'lazy)
 (use-package auctex
-  :straight t
   :defer t)
 
+(straight-use-package 'clojure-mode 'lazy)
 (use-package clojure-mode
-  :straight t
   :defer t
   :config
   (use-package cider :straight t)
@@ -688,6 +688,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (require 'inf-carp-mode)
   (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
+(straight-use-package 'elm-mode 'lazy)
 (use-package elm-mode
   :straight t
   :defer t
@@ -698,11 +699,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :hook (emacs-lisp-mode . dirlocals-flycheck-fix)
   :bind ("C-c C-c" . eval-defun))
 
-(use-package geiser :straight t :defer t) ; Scheme IDE
-(use-package glsl-mode :straight t :defer t)
+(straight-use-package 'geiser 'lazy)
+(use-package geiser :defer t) ; Scheme IDE
+(straight-use-package 'glsl-mode 'lazy)
+(use-package glsl-mode :defer t)
 
+(straight-use-package 'haskell-mode 'lazy)
 (use-package haskell-mode
-  :straight t
   :defer t
   :config
   (use-package intero
@@ -710,12 +713,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :config
     (intero-global-mode 1)))
 
-(use-package idris-mode :straight t :defer t)
-(use-package markdown-mode :straight t :defer t)
-(use-package racket-mode :straight t :defer t)
+(straight-use-package 'idris-mode 'lazy)
+(use-package idris-mode :defer t)
+(straight-use-package 'markdown-mode 'lazy)
+(use-package markdown-mode :defer t)
+(straight-use-package 'racket-mode 'lazy)
+(use-package racket-mode :defer t)
 
+(straight-use-package 'rust-mode 'lazy)
 (use-package rust-mode
-  :straight t
   :defer t
   :init
   (defun my-project-try-cargo-toml (dir)
@@ -733,8 +739,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (eglot-confirm-server-initiated-edits nil)))
 
 ;; Slime currently has to be used for cepl/livesupport (Don't remember why)
+(straight-use-package 'slime 'lazy)
 (use-package slime
-  :straight t
   :defer t
   :hook (lisp-mode . slime-mode)
   :config
@@ -745,13 +751,17 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (setq slime-lisp-implementations '((sbcl
                                         ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
 
-(use-package toml-mode :straight t :defer t)
+(straight-use-package 'toml-mode 'lazy)
+(use-package toml-mode :defer t)
+(straight-use-package 'typescript-mode 'lazy)
 (use-package typescript-mode
-  :straight t
+  :defer t
   :config
   (use-package tide :straight t))
-(use-package yaml-mode :straight t :defer t)
-(use-package zig-mode :straight t)
+(straight-use-package 'yaml-mode 'lazy)
+(use-package yaml-mode :defer t)
+(straight-use-package 'zig-mode 'lazy)
+(use-package zig-mode :defer t)
 
 ;;; Set variables
 ;; Set variables that don't fit better under Package config (or that I
