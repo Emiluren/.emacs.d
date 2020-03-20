@@ -495,6 +495,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :straight t
   :defer t
   :bind ("C-x g" . magit-status)
+  :hook ((git-commit-mode . turn-off-auto-fill)
+         (magit-status-mode . (lambda ()
+                                (setq truncate-lines nil))))
   :config
   (setq magit-delete-by-moving-to-trash nil)) ; Delete files directly from magit
 
