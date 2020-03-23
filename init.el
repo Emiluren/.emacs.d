@@ -511,6 +511,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (defvar gtd-projects-file "~/.emacs.d/personal-org/gtd/projects.org")
 (defvar gtd-reminder-file "~/.emacs.d/personal-org/gtd/reminder.org")
 (defvar gtd-someday-file "~/.emacs.d/personal-org/gtd/someday.org")
+(make-directory "~/.emacs.d/personal-org/gtd" :parents)
 
 (use-package org
   :straight org-plus-contrib
