@@ -727,18 +727,18 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (straight-use-package 'rust-mode 'lazy)
 (use-package rust-mode
   :defer t
-  :init
-  (defun my-project-try-cargo-toml (dir)
-    "Try to locate a Rust project above DIR."
-    (let ((found (locate-dominating-file dir "Cargo.toml")))
-      (if (stringp found) `(transient . ,found) nil)))
   :config
-  (add-to-list 'project-find-functions #'my-project-try-cargo-toml)
   (use-package eglot ; eglot is a general lsp package
     :straight t
+    :init
+    (defun my-project-try-cargo-toml (dir)
+      "Try to locate a Rust project above DIR."
+      (let ((found (locate-dominating-file dir "Cargo.toml")))
+        (if (stringp found) `(transient . ,found) nil)))
     :hook (rust-mode . eglot-ensure)
     :config
     (add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
+    (add-to-list 'project-find-functions #'my-project-try-cargo-toml)
     :custom
     (eglot-confirm-server-initiated-edits nil)))
 
