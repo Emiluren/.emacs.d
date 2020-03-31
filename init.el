@@ -815,6 +815,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  vc-follow-symlinks t ; Don't ask before following links
  )
 
+;; Make it possible to TRAMP-open /sudo:segerback.ninja:/dir/file
+(add-to-list 'tramp-default-proxies-alist
+             '("segerback\\.ninja\\'" "\\`root\\'" "/ssh:%h:"))
+
 ;; Use the same backup directory for tramp as for other files
 (setq tramp-backup-directory-alist backup-directory-alist)
 
