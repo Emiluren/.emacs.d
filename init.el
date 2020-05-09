@@ -799,13 +799,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
- html-quick-keys nil ; prevent C-c X bindings when using sgml-quick-keys
  inhibit-startup-screen t
  mouse-wheel-progressive-speed nil ; Don't accelerate scroll speed
  ;; Push clipboard contents from other programs to kill ring also
  save-interprogram-paste-before-kill t
  sentence-end-double-space nil ; Sentences end with a single space
- sgml-quick-keys t  ; Make characters in html behave electrically
  ;; Make Emacs split window horizontally by default
  split-height-threshold nil
  split-width-threshold 120
