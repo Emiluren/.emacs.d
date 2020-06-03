@@ -708,6 +708,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (straight-use-package 'glsl-mode 'lazy)
 (use-package glsl-mode :defer t)
 
+;; gdscript for the godot game engine
+(straight-use-package 'gdscript-mode)
+(use-package gdscript-mode :defer t)
+
 (straight-use-package 'haskell-mode 'lazy)
 (use-package haskell-mode
   :defer t
