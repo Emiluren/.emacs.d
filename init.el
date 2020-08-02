@@ -56,7 +56,7 @@
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
-  (load-theme 'doom-one t)
+  (load-theme 'doom-one-light t)
   (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
 
   ;; Corrects (and improves) org-mode's native fontification.
