@@ -270,43 +270,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (cons (progn (vertical-motion 0) (point))
           (progn (vertical-motion 1) (point)))))
 
-;;; C++ functions
-;; Functions that are only used for C++ mode.
-
-(require 'gud)
-(require 'gdb-mi)
-
-;; TODO: Gdb ignores default-directory if given a filename
-(defun cmake-ide-gdb-command ()
-  (require 'gud)
-  (let ((build-dir (cide--build-dir)))
-    (if (and (boundp 'cmake-ide-build-dir)
-             (boundp 'cmake-ide-executable))
-        (concat "gdb -i=mi "
-                (file-name-as-directory (symbol-value 'cmake-ide-build-dir))
-                (symbol-value 'cmake-ide-executable))
-      ;; Fall back to last command
-      (car gud-gdb-history))))
-
-(defun cmake-ide-start-or-switch-to-gdb ()
-  (interactive)
-  (if (and gud-comint-buffer (buffer-live-p gud-comint-buffer))
-        (gdb-display-gdb-buffer)
-      (let ((default-directory (cide--locate-project-dir)))
-        (gdb "gdb -i=mi"))))
-
-(defun start-gdb-if-successfully-compiled (buffer msg)
-  ;; Compilation mode is used for some other stuff (grep, etc) so we
-  ;; need to check the buffer name
-  (when (and
-         (string-match "^finished" msg)
-         (string= (buffer-name buffer) "*compilation*"))
-    (cmake-ide-start-or-switch-to-gdb)))
-
-;; TODO: make into an interactive function that runs compile and then starts gdb
-;; (add-hook 'compilation-finish-functions
-;;           #'start-gdb-if-successfully-compiled)
-
 ;;; General package configuration
 ;;; Tools
 (use-package cmake-ide
