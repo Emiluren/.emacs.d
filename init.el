@@ -45,7 +45,7 @@
   (setq use-package-expand-minimally byte-compile-current-file))
 
 ;; (use-package benchmark-init
-;;   :demand t
+;;   :straight t
 ;;   ;; To disable collection of benchmark data after init is done.
 ;;   :hook (after-init . benchmark-init/deactivate))
 
