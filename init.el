@@ -266,14 +266,9 @@ Otherwise, call `backward-kill-word'."
 (defun visual-line-range ()
   "Return a cons cell of the range between the start and end of the visual line.
 Indended to be used for highlighting of only the visual line in hl-line mode"
-  (if truncate-lines
-      (cons
-       (line-beginning-position)
-       (line-beginning-position 2))
-      (save-excursion
-        (cons
-         (progn (beginning-of-visual-line) (point))
-         (progn (beginning-of-visual-line 2) (point))))))
+  (save-excursion
+    (cons (progn (vertical-motion 0) (point))
+          (progn (vertical-motion 1) (point)))))
 
 ;;; C++ functions
 ;; Functions that are only used for C++ mode.
