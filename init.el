@@ -782,9 +782,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Use the same backup directory for tramp as for other files
 (setq tramp-backup-directory-alist backup-directory-alist)
 
-(setq mouse-autoselect-window t
-      focus-follows-mouse t)
-
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
