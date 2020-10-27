@@ -786,6 +786,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
+ show-trailing-whitespace t
  )
 
 (defun in-wayland-p ()
