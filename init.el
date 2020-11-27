@@ -29,6 +29,7 @@
 
 ;; Unpackaged is my folder for stuff I have not written but is not on melpa.
 ;; Mostly from the Emacs wiki
+(add-to-list 'load-path "~/.emacs.d/unpackaged")
 (let ((default-directory "~/.emacs.d/unpackaged/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -291,6 +292,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :functions ediff-window-setup-plain
   :config
   (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
+
+(defun xterm-title-update ()
+    (interactive)
+    (send-string-to-terminal (concat "\033]1;"(buffer-name) " - Emacs\007"))
+    (send-string-to-terminal (concat "\033]2;"(buffer-name) " - Emacs\007")))
+
+(add-hook 'post-command-hook 'xterm-title-update)
 
 (use-package emacs
   :config
