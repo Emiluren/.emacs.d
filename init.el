@@ -55,8 +55,8 @@
   :config
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-  (load-theme 'doom-one-light t)
+  (when (window-system)
+    (load-theme 'doom-one-light t))
   (electric-pair-mode -1) ; For some reason electric-pair-mode is enabled here
 
   ;; Corrects (and improves) org-mode's native fontification.
@@ -131,9 +131,10 @@
 (delete-selection-mode 1)
 
 ;; Set up highlighting of cursor/line
-(blink-cursor-mode -1)
-(global-hl-line-mode 1)
-(setq hl-line-range-function #'visual-line-range) ; Only highlight visual line, not wrapped
+(when (window-system)
+  (blink-cursor-mode -1)
+  (global-hl-line-mode 1)
+  (setq hl-line-range-function #'visual-line-range)) ; Only highlight visual line, not wrapped
 
 ;; Binds ‘C-c left’ and ‘C-c right’ to undo and redo window changes
 (winner-mode 1)
