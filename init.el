@@ -151,6 +151,8 @@
 ;; Remember last place in file
 (save-place-mode 1)
 
+(xterm-mouse-mode 1) ; Use mouse in terminal
+
 ;;; Defing functions
 (defun push-mark-no-activate ()
   "Pushes `point' to `mark-ring' and does not activate the region
@@ -298,7 +300,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (send-string-to-terminal (concat "\033]1;"(buffer-name) " - Emacs\007"))
     (send-string-to-terminal (concat "\033]2;"(buffer-name) " - Emacs\007")))
 
-(add-hook 'post-command-hook 'xterm-title-update)
+(unless (window-system)
+  (add-hook 'post-command-hook 'xterm-title-update))
 
 (use-package emacs
   :config
