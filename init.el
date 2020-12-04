@@ -276,12 +276,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;;; General package configuration
 ;;; Tools
-(use-package cmake-ide
-  :defer t
-  :config
-  (cmake-ide-setup))
-(use-package cmake-mode
-  :defer t)
+(use-package cmake-mode :defer t)
 
 (use-package dired-du
   :straight t
@@ -679,7 +674,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package glsl-mode :defer t)
 
 ;; gdscript for the godot game engine
-(straight-use-package 'gdscript-mode)
+(straight-use-package 'gdscript-mode 'lazy)
 (use-package gdscript-mode :defer t)
 
 (straight-use-package 'haskell-mode 'lazy)
