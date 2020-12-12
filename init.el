@@ -659,11 +659,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (sp-ignore-modes-list ())
   (sp-base-key-bindings 'paredit))
 
-(use-package undo-fu
+(use-package undo-tree
   :straight t
   :delight
-  :bind (("C-/" . undo-fu-only-undo)
-         ("C-?" . undo-fu-only-redo)))
+  :config
+  (setq undo-tree-enable-undo-in-region nil)
+  (global-undo-tree-mode 1))
 
 ;; Show what keys can be pressed in the middle of a sequence
 (use-package which-key
