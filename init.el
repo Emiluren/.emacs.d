@@ -500,7 +500,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
          (magit-status-mode . (lambda ()
                                 (setq truncate-lines nil))))
   :config
-  (setq magit-delete-by-moving-to-trash nil)) ; Delete files directly from magit
+  (setq magit-delete-by-moving-to-trash nil) ; Delete files directly from magit
+  (setq magit-no-confirm '(merge-dirty))) ; Don't ask for confirmation when merging
 
 (use-package magit-diff
   :after magit
