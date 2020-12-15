@@ -80,7 +80,9 @@
 
   (with-eval-after-load "em-prompt"
     ;; Make the eshell prompt slightly green so it stands out
-    (set-face-foreground 'eshell-prompt "#9ccca4")))
+    (set-face-foreground 'eshell-prompt "#9ccca4"))
+
+  (set-face-background 'trailing-whitespace "#888888"))
 
 (use-package solaire-mode
   :after doom-themes
