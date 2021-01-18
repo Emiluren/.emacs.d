@@ -751,6 +751,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :custom
     (eglot-confirm-server-initiated-edits nil)))
 
+; Rust object notation
+; Some problem with straight forced me to do this
+(straight-use-package '(ron-mode :host nil
+                                 :repo "https://codeberg.org/Hutzdog/ron-mode"))
+
 ;; Slime currently has to be used for cepl/livesupport (Don't remember why)
 (straight-use-package 'slime 'lazy)
 (use-package slime
