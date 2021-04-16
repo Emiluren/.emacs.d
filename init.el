@@ -352,7 +352,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (put 'downcase-region 'disabled nil)
   (put 'scroll-left 'disabled nil)
   (put 'upcase-region 'disabled nil)
-  (put 'list-timers 'disabled nil))
+  (put 'list-timers 'disabled nil)
+
+  :hook (comint-mode . (lambda ()
+                         (setq show-trailing-whitespace nil))))
 
 ;; TODO: add iterative reverse history search
 ;; Check comint-history-isearch-backward-regexp.
