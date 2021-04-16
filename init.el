@@ -565,6 +565,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;; Magic advice to rename entries in recentf when moving files in
   ;; dired.
   (defun rjs/recentf-rename-notify (oldname newname &rest args)
+    (ignore args)
     (if (file-directory-p newname)
         (rjs/recentf-rename-directory oldname newname)
       (rjs/recentf-rename-file oldname newname)))
