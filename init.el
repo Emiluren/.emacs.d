@@ -886,10 +886,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
 
-;; TODO: add some way of closing the window if no errors
-;; And start gdb if not running
-(global-set-key (kbd "C-c C") #'cmake-ide-compile)
-
 ;; Go to start and end of visual line instead of wrapped line
 (global-set-key (kbd "C-a")
                 (lambda ()
