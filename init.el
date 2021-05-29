@@ -732,6 +732,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (straight-use-package 'idris-mode 'lazy)
 (use-package idris-mode :defer t)
+(straight-use-package 'lua-mode 'lazy)
+(use-package lua-mode :defer t)
 (straight-use-package 'markdown-mode 'lazy)
 (use-package markdown-mode :defer t)
 (straight-use-package 'racket-mode 'lazy)
