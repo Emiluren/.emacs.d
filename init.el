@@ -814,7 +814,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  column-number-mode t ; Enable column number in modeline
  confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
- confirm-nonexistent-file-or-buffer nil ; Don't ask for confirmation when creating new buffers
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
  history-delete-duplicates t
  inhibit-startup-screen t
