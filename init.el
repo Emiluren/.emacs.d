@@ -550,7 +550,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package pinentry
   :demand t
   :config
-  (setq epa-pinentry-mode 'loopback)
+  (setq epg-pinentry-mode 'loopback)
   (pinentry-start))
 
 (use-package recentf
