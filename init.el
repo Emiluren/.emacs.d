@@ -85,21 +85,8 @@
 (use-package solaire-mode
   :after doom-themes
   :demand t
-  :hook ((after-change-major-mode . turn-on-solaire-mode)
-         (ediff-prepare-buffer . solaire-mode)
-         ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-         ;; itself off every time Emacs reverts the file
-         (after-revert . turn-on-solaire-mode)
-         ;; highlight the minibuffer when it is activated:
-         (minibuffer-setup . solaire-mode-in-minibuffer))
-
-  :config
-  ;; if the bright and dark background colors are the wrong way around, use this
-  ;; to switch the backgrounds of the `default` and `solaire-default-face` faces.
-  ;; This should be used *after* you load the active theme!
-  ;;
-  ;; NOTE: This is necessary for themes in the doom-themes package!
-  (solaire-mode-swap-bg))
+  :hook (ediff-prepare-buffer . solaire-mode)
+  :config (solaire-global-mode 1))
 
 ;; (use-package leuven-theme
 ;;   :config
