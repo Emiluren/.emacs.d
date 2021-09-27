@@ -86,7 +86,12 @@
   :after doom-themes
   :demand t
   :hook (ediff-prepare-buffer . solaire-mode)
-  :config (solaire-global-mode 1))
+  :config (solaire-global-mode 1)
+  :hook ((after-change-major-mode . turn-on-solaire-mode)
+         (ediff-prepare-buffer . turn-on-solaire-mode)
+         ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+         ;; itself off every time Emacs reverts the file
+         (after-revert . turn-on-solaire-mode)))
 
 ;; (use-package leuven-theme
 ;;   :config
