@@ -694,14 +694,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; gdscript for the godot game engine
 (use-package gdscript-mode :defer t)
 
-(use-package haskell-mode
-  :defer t
-  :config
-  (use-package intero
-    :demand t
-    :config
-    (intero-global-mode 1)))
-
+(use-package haskell-mode :defer t)
 (use-package idris-mode :defer t)
 (use-package lua-mode :defer t)
 (use-package markdown-mode :defer t)
