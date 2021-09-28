@@ -347,8 +347,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (put 'upcase-region 'disabled nil)
   (put 'list-timers 'disabled nil)
 
-  :hook ((comint-mode . (lambda ()
-                          (setq show-trailing-whitespace nil)))
+  :hook ((font-lock-mode . (lambda () (setq show-trailing-whitespace t)))
          (emacs-lisp-mode . dirlocals-flycheck-fix)))
 
 ;; TODO: add iterative reverse history search
@@ -799,7 +798,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
- show-trailing-whitespace t
  )
 
 (defun in-wayland-p ()
