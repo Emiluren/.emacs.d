@@ -31,6 +31,9 @@
 (let ((default-directory "~/.emacs.d/unpackaged/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(use-package smali-mode
+  :load-path "unpackaged/")
+
 ;; Load email address and stuff
 (load "~/lisp/private.el" t)
 
