@@ -892,7 +892,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package dash
   :demand t
   :config
-  (dash-enable-font-lock))
+  (global-dash-fontify-mode))
 
 ;; The code in this file comes from https://github.com/Profpatsch/blog/blob/master/posts/ligature-emulation-in-emacs/post.md
 (defun my-correct-symbol-bounds (pretty-alist)
