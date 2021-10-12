@@ -399,6 +399,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         dabbrev-case-fold-search t
         dabbrev-case-replace nil))
 
+(use-package good-scroll
+  :config
+  (good-scroll-mode 1))
+
 (use-package hippie-exp
   :after dabbrev
   :bind ("M-/" . 'hippie-expand)
