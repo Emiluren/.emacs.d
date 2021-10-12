@@ -25,3 +25,4 @@ backups/
 /org-clock-save.el
 /straight
 /places
+/eln-cache/
