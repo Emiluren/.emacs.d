@@ -536,6 +536,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (pinentry-start))
 
 (use-package recentf
+  :demand t
   :init
   (setq recentf-max-menu-items 150)
   ;; Magic advice to rename entries in recentf when moving files in
