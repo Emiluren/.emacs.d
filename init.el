@@ -272,11 +272,6 @@ Assumes that the frame is only split into two."
   (let ((inhibit-read-only t))
     (erase-buffer)))
 
-(defun force-kill-current-buffer ()
-  "Force kill current buffer"
-  (interactive)
-  (let ((inhibit-read-only))))
-
 (defun kill-region-or-backward-word ()
   "If the region is active and non-empty, call `kill-region'.
 Otherwise, call `backward-kill-word'."
