@@ -140,8 +140,6 @@
 
 (xterm-mouse-mode 1) ; Use mouse in terminal
 
-(global-linum-mode 1) ; Show line numbers
-
 ;; Change terminal title to [buffername] - Emacs
 (defun xterm-title-update ()
     (interactive)
