@@ -711,17 +711,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package ron-mode :defer t) ; Rust object notation
 
-;; Slime currently has to be used for cepl/livesupport (Don't remember why)
-(use-package slime
+(use-package sly
   :defer t
-  :hook (lisp-mode . slime-mode)
+  :hook (lisp-mode . sly-mode)
   :config
-  (require 'slime-autoloads)
-  (setq slime-contribs '(slime-fancy))
   (setq inferior-lisp-program "/usr/bin/sbcl")
-  (when (file-exists-p "/home/emil/sbcl.core-for-slime")
-    (setq slime-lisp-implementations '((sbcl
-                                        ("sbcl" "--core" "/home/emil/sbcl.core-for-slime"))))))
+  (let ((sly-core "/home/emil/sbcl.core-for-sly"))
+    (when (file-exists-p sly-core)
+      (setq sly-lisp-implementations `((sbcl
+                                        ("sbcl" "--core" ,sly-core)))))))
 
 (use-package toml-mode :defer t)
 (use-package typescript-mode
