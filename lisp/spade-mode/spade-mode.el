@@ -28,8 +28,9 @@
 
 (define-generic-mode spade-mode
   '("//")
-  '("entity" "fn" "reg" "let" "reset" "inst" "enum")
-  '()
+  '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "match" "if" "else")
+  '(("false\\|true\\|\\d+" . 'font-lock-constant)
+    ("bool\\|int\\|bitvector\\|bit" . 'font-lock-type))
   '("\\.spade$")
   nil
   "A mode for Spade files")
