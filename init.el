@@ -35,7 +35,7 @@
   :load-path "unpackaged/")
 
 ;; Load email address and stuff
-(load "~/lisp/private.el" t)
+(load "~/.emacs.d/lisp/private.el" t)
 
 (use-package delight
   :demand t)
