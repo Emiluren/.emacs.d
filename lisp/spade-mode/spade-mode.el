@@ -26,13 +26,31 @@
 
 (require 'generic)
 
-(define-generic-mode spade-mode
-  '("//")
-  '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "match" "if" "else")
-  '(("false\\|true\\|\\d+" . 'font-lock-constant)
-    ("bool\\|int\\|bitvector\\|bit" . 'font-lock-type))
-  '("\\.spade$")
-  nil
-  "A mode for Spade files")
+(defvar spade-keywords
+  '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "match" "if" "else"))
+
+(defvar spade-constants "false\\|true\\|\\d+")
+
+(defvar spade-tab-width 4)
+
+(defvar spade-font-lock-defaults
+  `((;; stuff between double quotes
+     ("\"\\.\\*\\?" . font-lock-string-face)
+     (,spade-constants . font-lock-constant-face)
+     ("bool\\|int\\|bitvector\\|bit" . font-lock-type-face)
+     (,(regexp-opt spade-keywords) . font-lock-keyword-face)
+     )))
+
+(define-derived-mode spade-mode prog-mode "Spade"
+  "A mode for Spade files, a hardware description language"
+
+  (setq font-lock-defaults spade-font-lock-defaults)
+
+  (setq tab-width spade-tab-width)
+
+  (setq comment-start "//")
+  (setq comment-end ""))
+
+(add-to-list 'auto-mode-alist '("\\.spade\\'" . spade-mode))
 
 ;;; spade-mode.el ends here
