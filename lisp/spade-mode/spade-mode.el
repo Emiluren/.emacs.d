@@ -29,7 +29,7 @@
 (defvar spade-keywords
   '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "match" "if" "else"))
 
-(defvar spade-constants "false\\|true\\|\\d+")
+(defvar spade-constants "false\\|true\\|[0-9]+")
 
 (defvar spade-tab-width 4)
 
@@ -49,7 +49,9 @@
   (setq tab-width spade-tab-width)
 
   (setq comment-start "//")
-  (setq comment-end ""))
+  (setq comment-end "")
+  (modify-syntax-entry ?/ "< 1b" spade-mode-syntax-table)
+  (modify-syntax-entry ?\n "> b" spade-mode-syntax-table))
 
 (add-to-list 'auto-mode-alist '("\\.spade\\'" . spade-mode))
 
