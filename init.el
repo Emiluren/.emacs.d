@@ -337,7 +337,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (put 'upcase-region 'disabled nil)
   (put 'list-timers 'disabled nil)
 
-  :hook ((font-lock-mode . (lambda () (setq show-trailing-whitespace t)))
+  :hook ((prog-mode . (lambda () (setq show-trailing-whitespace t)))
          (emacs-lisp-mode . dirlocals-flycheck-fix)))
 
 ;; TODO: add iterative reverse history search
@@ -878,53 +878,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (let ((dired-omit-mode nil))
     ad-do-it))
 
-;;; Ligature font
-;; Use the hasklig font but only in haskell mode if it's installed.
-
 ;; dash - list utilities
 (use-package dash
   :demand t
   :config
   (global-dash-fontify-mode))
-
-;; The code in this file comes from https://github.com/Profpatsch/blog/blob/master/posts/ligature-emulation-in-emacs/post.md
-(defun my-correct-symbol-bounds (pretty-alist)
-  "Prepend a TAB character to each symbol in this alist,
-this way compose-region called by prettify-symbols-mode
-will use the correct width of the symbols
-instead of the width measured by char-width."
-  (mapcar (lambda (el)
-            (setcdr el (string ?\t (cdr el)))
-            el)
-          pretty-alist))
-
-(defun my-ligature-list (ligatures codepoint-start)
-  "Create an alist of strings to replace with
-codepoints starting from codepoint-start."
-  (let ((codepoints (-iterate '1+ codepoint-start (length ligatures))))
-    (-zip-pair ligatures codepoints)))
-
-;; list can be found at https://github.com/i-tu/Hasklig/blob/master/GlyphOrderAndAliasDB#L1588
-(defvar my-hasklig-ligatures
-  (let* ((ligs '("&&" "***" "*>" "\\\\" "||" "|>" "::"
-                 "==" "===" "==>" "=>" "=<<" "!!" ">>"
-                 ">>=" ">>>" ">>-" ">-" "->" "-<" "-<<"
-                 "<*" "<*>" "<|" "<|>" "<$>" "<>" "<-"
-                 "<<" "<<<" "<+>" ".." "..." "++" "+++"
-                 "/=" ":::" ">=>" "->>" "<=>" "<=<" "<->")))
-    (my-correct-symbol-bounds (my-ligature-list ligs #Xe100))))
-
-;; nice glyphs for haskell with hasklig
-(defun my-set-hasklig-ligatures ()
-  "Add hasklig ligatures for use with prettify-symbols-mode."
-  (setq prettify-symbols-alist
-        (append my-hasklig-ligatures prettify-symbols-alist))
-  (prettify-symbols-mode))
-
-(when (and (window-system)
-           (find-font (font-spec :name "Hasklig")))
-  (set-frame-font "Hasklig")
-  (add-hook 'haskell-mode-hook 'my-set-hasklig-ligatures))
 
 ;;; ** Final init
 ;; Set up some auto modes and enable some useful disabled commands.
