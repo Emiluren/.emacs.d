@@ -694,22 +694,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package markdown-mode :defer t)
 (use-package racket-mode :defer t)
 
-(use-package rust-mode
-  :defer t
-  :config
-  (use-package eglot ; eglot is a general lsp package
-    :demand t
-    :init
-    (defun my-project-try-cargo-toml (dir)
-      "Try to locate a Rust project above DIR."
-      (let ((found (locate-dominating-file dir "Cargo.toml")))
-        (if (stringp found) `(transient . ,found) nil)))
-    :hook (rust-mode . eglot-ensure)
-    :config
-    (add-to-list 'eglot-ignored-server-capabilites :documentHighlightProvider)
-    (add-to-list 'project-find-functions #'my-project-try-cargo-toml)
-    :custom
-    (eglot-confirm-server-initiated-edits nil)))
+(use-package rustic
+  :defer t)
 
 (use-package ron-mode :defer t) ; Rust object notation
 
