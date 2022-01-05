@@ -307,6 +307,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;;; Tools
 (use-package cmake-mode :defer t)
 
+(use-package company
+  :demand t
+  :config
+  (unbind-key "C-n" company-active-map)
+  (unbind-key "C-p" company-active-map)
+  (define-key company-active-map '[remap company-complete-selection] nil)
+  :bind (:map company-active-map ("C-j" . company-complete-selection)))
+
 (use-package dired-du
   :demand t
   :config
