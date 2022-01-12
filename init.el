@@ -864,6 +864,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           (lambda ()
             ;; Don't line break
             (setq truncate-lines t)))
+(add-hook 'prog-mode-hook #'hs-minor-mode) ; Hide/show code blocks
 
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
