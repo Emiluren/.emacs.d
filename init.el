@@ -312,7 +312,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (unbind-key "C-n" company-active-map)
   (unbind-key "C-p" company-active-map)
-  (define-key company-active-map '[remap company-complete-selection] nil)
+  (unbind-key "RET" company-active-map)
+  (unbind-key "<return>" company-active-map)
   :bind (:map company-active-map ("C-j" . company-complete-selection)))
 
 (use-package dired-du
