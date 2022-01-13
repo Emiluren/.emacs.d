@@ -588,7 +588,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (recentf-mode 1)
   (run-at-time nil (* 5 60) #'recentf-save-list-quiet)
-  (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify))
+  (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify)
+  (add-to-list 'recentf-exclude ".*-autoloads\\.el\\'")
+  (add-to-list 'recentf-exclude "[/\\]\\.elpa/'"))
 
 ;; RTags is used in C++
 (use-package rtags
