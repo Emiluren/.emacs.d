@@ -151,6 +151,7 @@
   (add-hook 'post-command-hook 'xterm-title-update))
 
 ;; The following function taken from https://emacs.stackexchange.com/a/13957
+;; To fix some keybindings not working in terminal
 ;; xterm with the resource ?.VT100.modifyOtherKeys: 1
 ;; GNU Emacs >=24.4 sets xterm in this mode and define
 ;; some of the escape sequences but not all of them.
@@ -413,6 +414,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package good-scroll
   :config
   (good-scroll-mode 1))
+
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-method 'bitmap
+        highlight-indent-guides-responsive 'top)
+  :hook (prog-mode . highlight-indent-guides-mode))
 
 (use-package hippie-exp
   :after dabbrev
