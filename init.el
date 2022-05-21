@@ -736,7 +736,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package tide :demand t))
 (use-package yaml-mode :defer t)
-(use-package zig-mode :defer t)
+(use-package zig-mode
+  :defer t
+  :config
+  (setq zig-format-on-save nil))
 
 ;;; Set variables
 ;; Set variables that don't fit better under Package config (or that I
