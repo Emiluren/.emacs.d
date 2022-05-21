@@ -25,9 +25,12 @@
 ;;; Code:
 
 (require 'generic)
+(require 'rust-mode)
+
+(defvar electric-indent-chars)
 
 (defvar spade-keywords
-  '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "match" "if" "else"))
+  '("entity" "fn" "reg" "let" "reset" "inst" "enum" "decl" "struct" "use" "as" "mod" "stage" "pipeline" "assert" "match" "if" "else"))
 
 (defvar spade-constants "false\\|true\\|[0-9]+")
 
@@ -44,12 +47,21 @@
 (define-derived-mode spade-mode prog-mode "Spade"
   "A mode for Spade files, a hardware description language"
 
-  (setq font-lock-defaults spade-font-lock-defaults)
+  (setq-local font-lock-defaults spade-font-lock-defaults)
 
-  (setq tab-width spade-tab-width)
+  (setq-local tab-width spade-tab-width)
 
-  (setq comment-start "//")
-  (setq comment-end "")
+  (setq-local indent-line-function 'rust-mode-indent-line)
+
+  (setq-local comment-start "//")
+  (setq-local comment-end "")
+  (setq-local open-paren-in-column-0-is-defun-start nil)
+
+  ;; Auto indent on }
+  (setq-local electric-indent-chars
+              (cons ?} (and (boundp 'electric-indent-chars)
+                            electric-indent-chars)))
+
   (modify-syntax-entry ?/ "< 1b" spade-mode-syntax-table)
   (modify-syntax-entry ?\n "> b" spade-mode-syntax-table))
 
