@@ -40,7 +40,7 @@
   `((;; stuff between double quotes
      ("\"\\.\\*\\?" . font-lock-string-face)
      (,spade-constants . font-lock-constant-face)
-     ("bool\\|int\\|bitvector\\|bit" . font-lock-type-face)
+     ("bool\\|int\\|clk" . font-lock-type-face)
      (,(regexp-opt spade-keywords) . font-lock-keyword-face)
      )))
 
