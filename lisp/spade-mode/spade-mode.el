@@ -41,7 +41,7 @@
      ("\"\\.\\*\\?" . font-lock-string-face)
      (,spade-constants . font-lock-constant-face)
      ("bool\\|int\\|clk" . font-lock-type-face)
-     (,(regexp-opt spade-keywords) . font-lock-keyword-face)
+     (,(regexp-opt spade-keywords 'symbols) . font-lock-keyword-face)
      )))
 
 (define-derived-mode spade-mode prog-mode "Spade"
