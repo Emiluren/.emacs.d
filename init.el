@@ -794,8 +794,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Use the same backup directory for tramp as for other files
 (setq tramp-backup-directory-alist backup-directory-alist)
 
-(setq mouse-autoselect-window t
-      focus-follows-mouse t)
+(setq mouse-autoselect-window nil
+      focus-follows-mouse nil)
 
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
