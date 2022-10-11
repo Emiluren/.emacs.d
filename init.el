@@ -666,7 +666,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :demand t
   :delight
   :config
-  (setq undo-tree-enable-undo-in-region nil)
+  (setq undo-tree-enable-undo-in-region nil
+        undo-tree-auto-save-history nil)
   (global-undo-tree-mode 1))
 
 ;; Show what keys can be pressed in the middle of a sequence
