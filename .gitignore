@@ -27,3 +27,4 @@ backups/
 /places
 /eln-cache/
 /.lsp-session-*
+/session.*
