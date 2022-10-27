@@ -807,19 +807,24 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Use the same backup directory for tramp as for other files
 (setq tramp-backup-directory-alist backup-directory-alist)
 
-(setq mouse-autoselect-window nil
-      focus-follows-mouse nil)
-
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
  )
 
+(defun program-running-p (process-name)
+  (= (call-process-shell-command (concat "pgrep -x " process-name)) 0))
+
 (defun in-wayland-p ()
   (= (call-process-shell-command "pgrep -x sway") 0))
 
-(when (in-wayland-p)
+(when (or (program-running-p "sway")
+          (program-running-p "i3"))
+ (setq mouse-autoselect-window t
+       focus-follows-mouse t))
+
+(when (program-running-p "sway")
   (setq wl-copy-process nil)
   (defun wl-copy (text)
     (setq wl-copy-process (make-process :name "wl-copy"
