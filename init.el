@@ -781,6 +781,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  confirm-kill-emacs #'y-or-n-p ; Ask for confirmation before closing Emacs
  confirm-kill-processes nil ; Don't ask for confirmation when closing a buffer that is attached to a process
  gdb-display-io-nopopup t ; Stop io buffer from popping up when the program outputs anything
+ gnus-select-method '(nnimap "segerback.ninja"
+                             (nnimap-inbox "INBOX")
+                             (nnimap-user "emil"))
  history-delete-duplicates t
  inhibit-startup-screen t
  lazy-highlight-initial-delay 0 ; Don't wait before highlighting searches
