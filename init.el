@@ -415,6 +415,12 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (good-scroll-mode 1))
 
+(use-package helm
+  :ensure t
+  :config
+  (global-set-key (kbd "M-x") #'helm-M-x)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files))
+
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-method 'bitmap
@@ -480,21 +486,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                     (ibuffer-switch-to-saved-filter-groups "Main")))
   :bind ("C-x C-b" . ibuffer))
 
-
-(use-package icomplete
-  :demand
-  :config
-  (setq icomplete-delay-completions-threshold 0
-        icomplete-max-delay-chars 0
-        icomplete-compute-delay 0
-        icomplete-show-matches-on-no-input t
-        icomplete-hide-common-prefix nil
-        icomplete-with-completion-tables t
-        icomplete-in-buffer t
-        completion-ignore-case t
-        read-file-name-completion-ignore-case t
-        read-buffer-completion-ignore-case t)
-  (icomplete-mode 1))
 
 (use-package magit
   :demand t
