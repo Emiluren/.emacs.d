@@ -52,6 +52,11 @@
 ;;   ;; To disable collection of benchmark data after init is done.
 ;;   :hook (after-init . benchmark-init/deactivate))
 
+(use-package dtrt-indent
+  :demand t
+  :config
+  (dtrt-indent-global-mode 1))
+
 ;;; Theme
 ;; Set up color theme and other visual stuff.
 (use-package doom-themes
@@ -802,6 +807,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  word-wrap t ; Make line wraps happen at word boundaries
  indent-tabs-mode nil ; Don't use tabs unless the .dir-locals file says so
  electric-indent-inhibit t ; Stop electric indent from indenting the previous line
+ tab-width 4
  )
 
 (defun program-running-p (process-name)
@@ -892,6 +898,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; dired-x is required for dired-omit-mode
 (add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
+
+(add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
 
 ;; Do not use dired-omit-mode for 'recover-session'
 (defadvice recover-session (around disable-dired-omit-for-recover activate)
