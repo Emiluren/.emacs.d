@@ -316,6 +316,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package company
   :demand t
   :config
+  (global-company-mode 1)
   (unbind-key "C-n" company-active-map)
   (unbind-key "C-p" company-active-map)
   (unbind-key "RET" company-active-map)
