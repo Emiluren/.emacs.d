@@ -52,11 +52,6 @@
 ;;   ;; To disable collection of benchmark data after init is done.
 ;;   :hook (after-init . benchmark-init/deactivate))
 
-(use-package dtrt-indent
-  :demand t
-  :config
-  (dtrt-indent-global-mode 1))
-
 ;;; Theme
 ;; Set up color theme and other visual stuff.
 (use-package doom-themes
@@ -328,6 +323,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (setq dired-listing-switches "-alh")
   (setq dired-du-size-format t))
+
+(use-package dtrt-indent
+  :demand t
+  :config
+  (dtrt-indent-global-mode 1))
 
 (use-package ediff
   :defer t
