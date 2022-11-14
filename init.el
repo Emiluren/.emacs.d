@@ -314,8 +314,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-company-mode 1)
   (unbind-key "C-n" company-active-map)
   (unbind-key "C-p" company-active-map)
-  (unbind-key "RET" company-active-map)
-  (unbind-key "<return>" company-active-map)
   :bind (:map company-active-map ("C-j" . company-complete-selection)))
 
 (use-package dired-du
@@ -422,10 +420,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (good-scroll-mode 1))
 
 (use-package helm
-  :ensure t
+  :demand t
   :config
-  (global-set-key (kbd "M-x") #'helm-M-x)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files))
+  (helm-autoresize-mode t)
+  :bind (("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x b" . helm-mini)
+         ("C-x C-r" . #'helm-recentf)
+         ("M-y" . helm-show-kill-ring)
+         ("C-h SPC" . helm-all-mark-rings)))
 
 (use-package highlight-indent-guides
   :config
@@ -588,7 +591,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (interactive)
     (let ((inhibit-message t))
       (recentf-save-list)))
-  :bind (("C-x C-r" . recentf-open-files))
   :config
   (recentf-mode 1)
   (run-at-time nil (* 5 60) #'recentf-save-list-quiet)
