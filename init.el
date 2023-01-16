@@ -657,7 +657,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   ;; (sp-with-modes sp-lisp-modes ; Only use strict mode in lisp
   ;;   (smartparens-strict-mode 1))
   :custom
-  (sp-override-key-bindings '(("M-<backspace>" . nil)))
+  (sp-override-key-bindings '(("M-<backspace>" . nil)
+                              ("M-s" . nil)))
   (sp-ignore-modes-list ())
   (sp-base-key-bindings 'paredit))
 
