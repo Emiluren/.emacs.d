@@ -806,7 +806,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
              '("segerback\\.ninja\\'" "\\`root\\'" "/ssh:%h:"))
 
 ;; Use the same backup directory for tramp as for other files
-(setq tramp-backup-directory-alist backup-directory-alist)
+(setq tramp-backup-directory-alist backup-directory-alist
+      tramp-allow-unsafe-temporary-files t) ; Don't warn about autosave files in /tmp
 
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
