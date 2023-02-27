@@ -711,7 +711,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package flycheck-elm :demand t))
 
-(use-package geiser :defer t) ; Scheme IDE
+;; Scheme IDE
+(use-package geiser
+  :defer t
+  :config
+  (use-package geiser-guile
+    :config
+    (setq geiser-guile-binary "guile2.2")))
 (use-package glsl-mode :defer t)
 
 ;; gdscript for the godot game engine
