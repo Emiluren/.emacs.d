@@ -717,7 +717,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package geiser-guile
     :config
-    (setq geiser-guile-binary "guile2.2")))
+    (setq geiser-guile-binary "guile3.0")))
 (use-package glsl-mode :defer t)
 
 ;; gdscript for the godot game engine
