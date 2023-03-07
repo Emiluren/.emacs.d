@@ -936,5 +936,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (add-to-list 'auto-mode-alist '(".xmobarrc" . haskell-mode))
 (add-to-list 'auto-mode-alist '("Makefile2" . makefile-mode))
 (add-to-list 'auto-mode-alist '("PKGBUILD" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.rules\\'" . sh-mode)) ;; Udev rules files
 (add-to-list 'auto-mode-alist '("config.work" . conf-space-mode))
 (add-to-list 'auto-mode-alist '("config.base" . conf-space-mode))
