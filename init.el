@@ -406,7 +406,20 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         flycheck-global-modes '(not rust-mode)
         flycheck-display-errors-delay 0)
   (global-flycheck-mode)
-  (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil))))
+  (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil)))
+
+  (flycheck-define-checker sdcc
+    "A C syntax checker using the Small Device C Compiler"
+    :command ("sdcc-sdcc" "-mmcs51" source
+              "-I" (eval (flycheck-c/c++-quoted-include-directory))
+              "-o" temporary-file-name)
+    :error-patterns
+    ((error line-start (file-name) ":" line ": error " (id) ": " (message) line-end)
+     (error line-start (file-name) ":" line ": fatal error " (id) ": " (message) line-end)
+     (error line-start (file-name) ":" line ": syntax error " (id) ": " (message) line-end)
+     (warning line-start (file-name) ":" line ": warning " (id) ": " (message) line-end))
+    :modes c-mode)
+  (add-to-list 'flycheck-checkers 'sdcc))
 
 (use-package dabbrev
   :commands (dabbrev-expand dabbrev-completion)
