@@ -416,7 +416,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     :error-patterns
     ((error line-start (file-name) ":" line ": error " (id (one-or-more digit)) ": " (message) line-end)
      (error line-start (file-name) ":" line ": fatal error " (id (one-or-more digit)) ": " (message) line-end)
-     (error line-start (file-name) ":" line ": syntax error " (id (one-or-more digit)) ": " (message) " ; column " column line-end)
+     (error line-start (file-name) ":" line ": syntax error: " (message) " ; column " column line-end)
      (warning line-start (file-name) ":" line ": warning " (id (one-or-more digit)) ": " (message) line-end))
     :modes c-mode)
   (add-to-list 'flycheck-checkers 'sdcc))
