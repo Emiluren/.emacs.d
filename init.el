@@ -439,7 +439,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq helm-ff-guess-ffap-urls nil)
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
-         ("C-x b" . helm-mini)
+         ("C-x b" . #'helm-buffers-list)
          ("C-x C-r" . #'helm-recentf)
          ("M-y" . helm-show-kill-ring)
          ("C-h SPC" . helm-all-mark-rings)))
