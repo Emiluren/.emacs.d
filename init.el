@@ -329,9 +329,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package ediff
   :defer t
-  :functions ediff-window-setup-plain
   :config
-  (setq ediff-window-setup-function #'ediff-window-setup-plain)) ; Prevent ediff from using a separate frame for instructions
+  (setq ediff-window-setup-function #'ediff-setup-windows-plain)) ; Prevent ediff from using a separate frame for instructions
 
 (use-package emacs
   :config
