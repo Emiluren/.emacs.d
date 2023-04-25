@@ -418,7 +418,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
      (error line-start (file-name) ":" line ": syntax error: " (message) " ; column " column line-end)
      (warning line-start (file-name) ":" line ": warning " (id (one-or-more digit)) ": " (message) line-end))
     :modes c-mode)
-  (add-to-list 'flycheck-checkers 'sdcc))
+  ;(add-to-list 'flycheck-checkers 'sdcc)
+  )
 
 (use-package dabbrev
   :commands (dabbrev-expand dabbrev-completion)
