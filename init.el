@@ -420,8 +420,60 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
      (error line-start (file-name) ":" line ": syntax error: " (message) " ; column " column line-end)
      (warning line-start (file-name) ":" line ": warning " (id (one-or-more digit)) ": " (message) line-end))
     :modes c-mode)
-  ;(add-to-list 'flycheck-checkers 'sdcc)
-  )
+  (add-to-list 'flycheck-checkers 'sdcc t)
+
+  (flycheck-define-checker c/c++-riscv-gcc
+  "A C/C++ syntax checker for RISCV using GCC. Based on the standard c/c++-gcc (only the command differs)."
+  :command ("riscv-none-elf-gcc"
+            "-fshow-column"
+            "-iquote" (eval (flycheck-c/c++-quoted-include-directory))
+            (option "-std=" flycheck-gcc-language-standard concat)
+            (option-flag "-pedantic" flycheck-gcc-pedantic)
+            (option-flag "-pedantic-errors" flycheck-gcc-pedantic-errors)
+            (option-flag "-fno-exceptions" flycheck-gcc-no-exceptions)
+            (option-flag "-fno-rtti" flycheck-gcc-no-rtti)
+            (option-flag "-fopenmp" flycheck-gcc-openmp)
+            (option-list "-include" flycheck-gcc-includes)
+            (option-list "-W" flycheck-gcc-warnings concat)
+            (option-list "-D" flycheck-gcc-definitions concat)
+            (option-list "-I" flycheck-gcc-include-path)
+            (eval flycheck-gcc-args)
+            "-x" (eval
+                  (pcase major-mode
+                    ((or `c++-mode `c++-ts-mode) "c++")
+                    ((or `c-mode `c-ts-mode) "c")))
+            ;; GCC performs full checking only when actually compiling, so
+            ;; `-fsyntax-only' is not enough. Just let it generate assembly
+            ;; code.
+            "-S" "-o" null-device
+            ;; Read from standard input
+            "-")
+  :standard-input t
+  :error-patterns
+  ((info line-start (or "<stdin>" (file-name))
+         ":" line (optional ":" column)
+         ": note: " (message) line-end)
+   (warning line-start (or "<stdin>" (file-name))
+            ":" line (optional ":" column)
+            ": warning: " (message (one-or-more (not (any "\n["))))
+            (optional "[" (id (one-or-more not-newline)) "]") line-end)
+   (error line-start (or "<stdin>" (file-name))
+          ":" line (optional ":" column)
+          ": " (or "fatal error" "error") ": " (message) line-end))
+  :modes (c-mode c++-mode c-ts-mode c++-ts-mode)
+  :next-checkers ((warning . c/c++-cppcheck)))
+  (add-to-list 'flycheck-checkers 'c/c++-riscv-gcc t)
+
+  ;; Add easier definition of local include directories
+  (use-package project :ensure t)
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (hack-local-variables)
+              (when (boundp 'my-relative-include-paths)
+                (setq flycheck-gcc-include-path
+                      (mapcar (lambda (p)
+                                (expand-file-name p (project-root (project-current))))
+                              my-relative-include-paths))))))
 
 (use-package dabbrev
   :commands (dabbrev-expand dabbrev-completion)
