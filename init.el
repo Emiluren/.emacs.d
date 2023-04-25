@@ -407,6 +407,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-flycheck-mode)
   (add-hook 'flycheck-error-list-mode-hook (lambda () (setq truncate-lines nil)))
 
+  (setenv "LC_MESSAGES" "en_US.UTF-8") ; Flycheck doesn't like Swedish GCC messages
+
   (flycheck-define-checker sdcc
     "A C syntax checker using the Small Device C Compiler"
     :command ("sdcc-sdcc" "-mmcs51" source
