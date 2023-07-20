@@ -28,3 +28,4 @@ backups/
 /eln-cache/
 /.lsp-session-*
 /session.*
+/elpy/

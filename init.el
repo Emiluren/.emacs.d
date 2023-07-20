@@ -780,6 +780,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (use-package flycheck-elm :demand t))
 
+;; Python IDE
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
+
 ;; Scheme IDE
 (use-package geiser
   :defer t
