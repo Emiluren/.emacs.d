@@ -574,7 +574,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :config
   (setq magit-delete-by-moving-to-trash nil) ; Delete files directly from magit
   (setq magit-no-confirm '(merge-dirty)) ; Don't ask for confirmation when merging
-  (setq magit-diff-refine-hunk t)) ; Highlight changes within line
+  (setq magit-diff-refine-hunk t) ; Highlight changes within line
+  (put 'magit-clean 'disabled nil))
 
 ;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
 (defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
