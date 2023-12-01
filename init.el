@@ -37,7 +37,7 @@
 ;; Load email address and stuff
 (load "~/.emacs.d/lisp/private.el" t)
 
-(load "~/.emacs.d/lisp/spade-mode/spade-mode.el" t)
+;(load "~/.emacs.d/lisp/spade-mode/spade-mode.el" t)
 
 (use-package delight
   :demand t)
