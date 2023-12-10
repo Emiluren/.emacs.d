@@ -785,7 +785,9 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :ensure t
   :defer t
   :init
-  (advice-add 'python-mode :before 'elpy-enable))
+  (advice-add 'python-mode :before 'elpy-enable)
+  :config
+  (setq elpy-shell-starting-directory 'current-directory))
 
 ;; Scheme IDE
 (use-package geiser
