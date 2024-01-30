@@ -3,6 +3,8 @@
 ;; Added by Package.el. Do not remove
 (package-initialize)
 
+(setq warning-minimum-level :emergency) ; Don't show warnings
+
 ;;; Initialization
 ;; I don't use custom but directory variables will be marked as safe there.
 (setq custom-file "~/.emacs.d/lisp/custom.el")
