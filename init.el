@@ -492,7 +492,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :demand t
   :config
   (helm-autoresize-mode t)
-  (setq helm-ff-guess-ffap-urls nil)
+  (setq helm-ff-guess-ffap-urls nil
+        helm-move-to-line-cycle-in-source nil)
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
          ("C-x b" . #'helm-buffers-list)
