@@ -27,6 +27,11 @@
   (require 'use-package))
 (require 'bind-key)
 
+;; Until Emacs 30 when vc-use-package is built-in
+(unless (package-installed-p 'vc-use-package)
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
+(require 'vc-use-package)
+
 ;; Unpackaged is my folder for stuff I have not written but is not on melpa.
 ;; Mostly from the Emacs wiki
 (add-to-list 'load-path "~/.emacs.d/unpackaged")
@@ -502,6 +507,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
          ("C-h SPC" . helm-all-mark-rings)))
 
 (use-package highlight-indent-guides
+  :vc (:fetcher github :repo getong/highlight-indent-guides)
   :config
   (setq highlight-indent-guides-method 'bitmap
         highlight-indent-guides-responsive 'top)
@@ -566,6 +572,18 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                     (ibuffer-switch-to-saved-filter-groups "Main")))
   :bind ("C-x C-b" . ibuffer))
 
+(use-package indent-bars
+  :vc (:fetcher github :repo jdtsmith/indent-bars)
+  :config
+  (setq indent-bars-color '(highlight :face-bg t :blend 0.2)
+        indent-bars-pattern "."
+        indent-bars-display-on-blank-lines nil
+        indent-bars-highlight-current-depth '(:face default :blend 0.4)
+        indent-bars-width-frac 0.2
+        indent-bars-pad-frac 0.2
+        indent-bars-zigzag nil
+
+        indent-bars-treesit-support t))
 
 (use-package magit
   :demand t
@@ -790,7 +808,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :init
   (advice-add 'python-mode :before 'elpy-enable)
   :config
-  (setq elpy-shell-starting-directory 'current-directory))
+  (setq elpy-shell-starting-directory 'current-directory)
+  (remove-hook 'elpy-modules 'elpy-module-flymake))
 
 ;; Scheme IDE
 (use-package geiser
