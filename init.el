@@ -321,7 +321,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (global-company-mode 1)
   (unbind-key "C-n" company-active-map)
   (unbind-key "C-p" company-active-map)
-  :bind (:map company-active-map ("C-j" . company-complete-selection)))
+  :bind (:map company-active-map
+              ("C-j" . company-complete-selection)
+              ("M-n" . 'company-select-next-or-abort)
+              ("M-p" . 'company-select-previous-or-abort)))
 
 (use-package dired-du
   :demand t
