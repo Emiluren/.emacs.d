@@ -650,7 +650,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package recentf
   :demand t
   :init
-  (setq recentf-max-menu-items 150)
   ;; Magic advice to rename entries in recentf when moving files in
   ;; dired.
   (defun rjs/recentf-rename-notify (oldname newname &rest args)
@@ -683,6 +682,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
       (recentf-save-list)))
   :config
   (recentf-mode 1)
+  (setq recentf-max-menu-items 150)
   (run-at-time nil (* 5 60) #'recentf-save-list-quiet)
   (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify)
   (add-to-list 'recentf-exclude ".*-autoloads\\.el\\'")
