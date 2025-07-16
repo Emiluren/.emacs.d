@@ -334,6 +334,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 (use-package dtrt-indent
   :demand t
+  :delight
   :config
   (dtrt-indent-global-mode 1))
 
@@ -509,10 +510,16 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
          ("M-y" . helm-show-kill-ring)
          ("C-h SPC" . helm-all-mark-rings)))
 
+;; Hide/show code blocks
+(use-package hideshow
+  :delight hs-minor-mode
+  :hook (prog-mode . hs-minor-mode))
+
 (use-package highlight-indent-guides
   :vc (:fetcher github :repo getong/highlight-indent-guides)
+  :delight
   :config
-  (setq highlight-indent-guides-method 'bitmap
+  (setq highlight-indent-guides-method 'character
         highlight-indent-guides-responsive 'top)
   :hook (prog-mode . highlight-indent-guides-mode))
 
@@ -575,18 +582,19 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                     (ibuffer-switch-to-saved-filter-groups "Main")))
   :bind ("C-x C-b" . ibuffer))
 
-(use-package indent-bars
-  :vc (:fetcher github :repo jdtsmith/indent-bars)
-  :config
-  (setq indent-bars-color '(highlight :face-bg t :blend 0.2)
-        indent-bars-pattern "."
-        indent-bars-display-on-blank-lines nil
-        indent-bars-highlight-current-depth '(:face default :blend 0.4)
-        indent-bars-width-frac 0.2
-        indent-bars-pad-frac 0.2
-        indent-bars-zigzag nil
+;; TODO: Test with Emacs 30, "stipples" seem to not work in 29
+;; (use-package indent-bars
+;;   :vc (:fetcher github :repo jdtsmith/indent-bars)
+;;   :config
+;;   (setq indent-bars-color '(highlight :face-bg t :blend 0.2)
+;;         indent-bars-pattern "."
+;;         indent-bars-display-on-blank-lines nil
+;;         indent-bars-highlight-current-depth '(:face default :blend 0.4)
+;;         indent-bars-width-frac 0.2
+;;         indent-bars-pad-frac 0.2
+;;         indent-bars-zigzag nil
 
-        indent-bars-treesit-support t))
+;;         indent-bars-treesit-support t))
 
 (use-package magit
   :demand t
@@ -1007,7 +1015,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           (lambda ()
             ;; Don't line break
             (setq truncate-lines t)))
-(add-hook 'prog-mode-hook #'hs-minor-mode) ; Hide/show code blocks
 
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
