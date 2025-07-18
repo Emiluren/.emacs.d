@@ -22,7 +22,7 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(setq use-package-always-ensure t)
+;(setq use-package-always-ensure t)
 (eval-when-compile
   (require 'use-package))
 (require 'bind-key)
@@ -47,7 +47,7 @@
 ;(load "~/.emacs.d/lisp/spade-mode/spade-mode.el" t)
 
 (use-package delight
-  :demand t)
+  :ensure t :demand t)
 (delight '((auto-revert-mode nil "autorevert") (eldoc-mode nil "eldoc")))
 
 ;; Necessary to prevent warnings about undeclared functions during byte compilation
@@ -62,6 +62,7 @@
 ;;; Theme
 ;; Set up color theme and other visual stuff.
 (use-package doom-themes
+  :ensure t
   :demand t
   :config
   (setq doom-themes-enable-bold t ; if nil, bold is universally disabled
@@ -96,6 +97,7 @@
 
 (use-package solaire-mode
   :after doom-themes
+  :ensure t
   :demand t
   :hook (ediff-prepare-buffer . solaire-mode)
   :config (solaire-global-mode 1)
@@ -113,6 +115,7 @@
 
 ;; Dim parentheses
 (use-package paren-face
+  :ensure t
   :demand t
   :config
   (global-paren-face-mode))
@@ -316,6 +319,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package cmake-mode :defer t)
 
 (use-package company
+  :ensure t
   :demand t
   :config
   (global-company-mode 1)
@@ -327,12 +331,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
               ("M-p" . 'company-select-previous-or-abort)))
 
 (use-package dired-du
+  :ensure t
   :demand t
   :config
   (setq dired-listing-switches "-alh")
   (setq dired-du-size-format t))
 
 (use-package dtrt-indent
+  :ensure t
   :demand t
   :delight
   :config
@@ -402,12 +408,14 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; evil-numbers is used to increment/decrement numbers in region/at point
 (use-package evil-numbers
+  :ensure t
   :demand t
   :config
   (global-set-key (kbd "C-c +") #'evil-numbers/inc-at-pt)
   (global-set-key (kbd "C-c -") #'evil-numbers/dec-at-pt))
 
 (use-package flycheck
+  :ensure t
   :demand t
   :config
   (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list ; Don't pop up a new window for errors if there's already a list
@@ -498,6 +506,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (good-scroll-mode 1))
 
 (use-package helm
+  :ensure t
   :demand t
   :config
   (helm-autoresize-mode t)
@@ -597,6 +606,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;;         indent-bars-treesit-support t))
 
 (use-package magit
+  :ensure t
   :demand t
   :defer t
   :bind ("C-x g" . magit-status)
@@ -617,6 +627,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (make-directory "~/.emacs.d/personal-org/gtd" :parents)
 
 (use-package org
+  :ensure org-plus-contrib
   :demand org-plus-contrib
   :defer t
   :init
@@ -645,6 +656,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         org-startup-truncated nil))
 
 (use-package org-journal
+  :ensure t
   :demand t
   :config
   (setq org-journal-dir "~/.emacs.d/personal-org/dagbok")
@@ -653,6 +665,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; To enter passwords in minibuffer instead of separate window
 (use-package pinentry
+  :ensure t
   :demand t
   :config
   (setq epg-pinentry-mode 'loopback)
@@ -713,7 +726,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
       (rtags-install)))
   (use-package flycheck-rtags
-    :demand
+    :ensure t
+    :demand t
     :after (flycheck rtags))
 
   (setq rtags-completions-enabled t)
@@ -741,6 +755,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
             (setq flycheck-clang-language-standard "c++17")))
 
 (use-package smartparens
+  :ensure t
   :demand t
   :delight
   :init
@@ -775,6 +790,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq tramp-backup-directory-alist backup-directory-alist))
 
 (use-package undo-tree
+  :ensure t
   :demand t
   :delight
   :config
@@ -784,6 +800,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Show what keys can be pressed in the middle of a sequence
 (use-package which-key
+  :ensure t
   :demand t
   :delight
   :config
@@ -795,7 +812,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package clojure-mode
   :defer t
   :config
-  (use-package cider :demand t)
+  (use-package cider :ensure t)
   (setq cider-repl-use-pretty-printing t))
 
 ;; Load carp-mode (must happen after clojure-mode is loaded)
@@ -808,10 +825,10 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode)))
 
 (use-package elm-mode
-  :demand t
+  :ensure t
   :defer t
   :config
-  (use-package flycheck-elm :demand t))
+  (use-package flycheck-elm :ensure t :demand t))
 
 ;; Python IDE
 (use-package elpy
@@ -863,8 +880,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 (use-package typescript-mode
   :defer t
   :config
-  (use-package tide :demand t))
-(use-package yaml-mode :defer t)
+  (use-package tide :ensure t :demand t))
+(use-package yaml-mode :ensure t :defer t)
 (use-package zig-mode
   :defer t
   :config
@@ -1031,6 +1048,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; dash - list utilities
 (use-package dash
+  :ensure t
   :demand t
   :config
   (global-dash-fontify-mode))
