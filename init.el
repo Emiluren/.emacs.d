@@ -813,7 +813,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :defer t
   :config
   (use-package cider :ensure t)
-  (setq cider-repl-use-pretty-printing t))
+  (setq cider-repl-use-pretty-printing t)
+
+  (defun my/start-babashka ()
+    (interactive)
+    (async-shell-command "bb nrepl-server")
+    (sleep-for 0.5)
+    (cider-connect '(:host "localhost" :port 1667))))
 
 ;; Load carp-mode (must happen after clojure-mode is loaded)
 (when (or (file-exists-p "~/programmering/Carp/emacs/carp-mode.el")
