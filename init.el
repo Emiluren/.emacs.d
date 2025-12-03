@@ -619,42 +619,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (setq magit-diff-refine-hunk t) ; Highlight changes within line
   (put 'magit-clean 'disabled nil))
 
-;; GTD setup inspired by https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
-(defvar gtd-inbox-file "~/.emacs.d/personal-org/gtd/inbox.org")
-(defvar gtd-projects-file "~/.emacs.d/personal-org/gtd/projects.org")
-(defvar gtd-reminder-file "~/.emacs.d/personal-org/gtd/reminder.org")
-(defvar gtd-someday-file "~/.emacs.d/personal-org/gtd/someday.org")
-(make-directory "~/.emacs.d/personal-org/gtd" :parents)
-
-(use-package org
-  :ensure org-plus-contrib
-  :demand org-plus-contrib
-  :defer t
-  :init
-  (setq org-clock-persist 'history)
-  (org-clock-persistence-insinuate)
-  :bind
-  (("C-c l" . 'org-store-link)
-   ("C-c a" . 'org-agenda)
-   ("C-c c" . 'org-capture)
-   ("C-c b" . 'org-switchb))
-  :config
-  (setq org-directory "~/.emacs.d/personal-org/"
-        org-default-notes-file (concat org-directory "/notes.org")
-        org-agenda-files (list gtd-inbox-file gtd-projects-file gtd-reminder-file)
-        org-capture-templates '(("t" "Todo [inbox]" entry
-                                 (file+headline gtd-inbox-file "Tasks")
-                                 "* TODO %i%?")
-                              ("T" "Reminder" entry
-                               (file+headline gtd-reminder-file "Reminder")
-                               "* %i%? \n %U"))
-        org-refile-targets `((,gtd-projects-file :maxlevel . 3)
-                             (,gtd-someday-file :level . 1)
-                             (,gtd-reminder-file :maxlevel . 2))
-        org-latex-packages-alist '(("margin=2cm" "geometry" nil))
-        org-startup-folded 'showeverything
-        org-startup-truncated nil))
-
 (use-package org-journal
   :ensure t
   :demand t
