@@ -777,7 +777,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :defer t
   :config
   (use-package cider :ensure t)
-  (setq cider-repl-use-pretty-printing t)
+  (setq cider-repl-use-pretty-printing t
+        cider-clojure-cli-global-aliases ":dev")
 
   (defun my/start-babashka ()
     (interactive)
