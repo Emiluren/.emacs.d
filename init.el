@@ -833,7 +833,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   :defer t
   :config
   (setq lsp-eldoc-render-all nil ; Doesn't seek to work so I added multiline setting below
-        eldoc-echo-area-use-multiline-p nil))
+        eldoc-echo-area-use-multiline-p nil)
+  (yas-global-mode 1))
 
 (use-package ron-mode :defer t) ; Rust object notation
 
