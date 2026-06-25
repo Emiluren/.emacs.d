@@ -1,10 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-;; Added by Package.el. Do not remove
-(package-initialize)
-
-(setq warning-minimum-level :emergency) ; Don't show warnings
-
 ;;; Initialization
 ;; I don't use custom but directory variables will be marked as safe there.
 (setq custom-file "~/.emacs.d/lisp/custom.el")
@@ -15,16 +10,7 @@
 
 ;; Enable melpa repository
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
-;; If this is a new install we need to make sure that all packages are available
-(package-activate 'use-package)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-;(setq use-package-always-ensure t)
-(eval-when-compile
-  (require 'use-package))
 (require 'bind-key)
 
 ;; Until Emacs 30 when vc-use-package is built-in
@@ -80,14 +66,6 @@
      (lsp-face-highlight-read :background brighter-bg)
      (lsp-face-highlight-textual :background brighter-bg)
      (lsp-face-highlight-write :background brighter-bg))))
-
-  (with-eval-after-load "rtags"
-    (dolist (props '((rtags-errline "red")
-                  (rtags-fixitline "yellow")))
-      (cl-destructuring-bind (face color) props
-     (unset-face-attributes face '(:foreground :background))
-     (set-face-attribute face nil :underline
-                         `(:color ,color :style wave)))))
 
   (with-eval-after-load "em-prompt"
     ;; Make the eshell prompt slightly green so it stands out
@@ -158,7 +136,7 @@
     (send-string-to-terminal (concat "\033]1;"(buffer-name) " - Emacs\007"))
     (send-string-to-terminal (concat "\033]2;"(buffer-name) " - Emacs\007")))
 (unless (window-system)
-  (add-hook 'post-command-hook 'xterm-title-update))
+  (add-hook 'post-command-hook #'xterm-title-update))
 
 ;; The following function taken from https://emacs.stackexchange.com/a/13957
 ;; To fix some keybindings not working in terminal
@@ -228,18 +206,6 @@ Return an event vector."
   (interactive)
   (find-file "~/.emacs.d/personal-org/emacs_todo.org"))
 
-;; Found on http://emacs-fu.blogspot.com/
-(defun ido-sudo-find-file ()
-  "Like `ido-find-file, but automatically edit the file with
-root-privileges (using tramp/sudo), if the file is not writable
-by user."
-  (interactive)
-  (let ((file (ido-read-file-name "Edit as root: ")))
-    (find-file
-     (if (file-writable-p file)
-         file
-       (concat "/sudo::" file)))))
-
 (defun focus-gdb-buffer-when-stopped (gdb-result)
   (require 'bindat)
   (require 'notifications)
@@ -255,15 +221,6 @@ by user."
       (switch-to-buffer (gdb-get-buffer-create 'gdb-inferior-io)))
     (when (fboundp 'gdb-display-gdb-buffer)
       (gdb-display-gdb-buffer))))
-
-(defun swap-windows ()
-  "Swap the buffer in the current window with the one in the next."
-  (interactive)
-  (let ((this-buffer (window-buffer))
-        (next-buffer (window-buffer (next-window))))
-    (set-window-buffer (selected-window) next-buffer)
-    (set-window-buffer (next-window) this-buffer)
-    (select-window (next-window))))
 
 (defun toggle-frame-split ()
   "If the frame is split vertically, split it horizontally or vice versa.
@@ -501,10 +458,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
         dabbrev-case-fold-search t
         dabbrev-case-replace nil))
 
-(use-package good-scroll
-  :config
-  (good-scroll-mode 1))
-
 (use-package helm
   :ensure t
   :demand t
@@ -636,7 +589,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (pinentry-start))
 
 (use-package recentf
-  :demand t
   :init
   ;; Magic advice to rename entries in recentf when moving files in
   ;; dired.
@@ -651,7 +603,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
           (mapcar (lambda (name)
                     (if (string-equal name oldname)
                         newname
-                      oldname))
+                      name))
                   recentf-list)))
 
   (defun rjs/recentf-rename-directory (oldname newname)
@@ -675,44 +627,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
   (advice-add 'dired-rename-file :after #'rjs/recentf-rename-notify)
   (add-to-list 'recentf-exclude ".*-autoloads\\.el\\'")
   (add-to-list 'recentf-exclude "[/\\]\\.elpa/'")
+  (add-to-list 'recentf-exclude "^/\\(?:ssh\\|su\\|sudo\\)?:")
   (recentf-mode 1))
-
-;; RTags is used in C++
-(use-package rtags
-  :defer t
-  :config
-  (setq rtags-path
-      (format "%srtags-%s/bin/"
-              (rtags-package-install-path)
-              rtags-package-version))
-
-  (unless (file-exists-p rtags-path)
-    (when (y-or-n-p "RTags has not been compiled. Do you want to do that now?")
-      (rtags-install)))
-  (use-package flycheck-rtags
-    :ensure t
-    :demand t
-    :after (flycheck rtags))
-
-  (setq rtags-completions-enabled t)
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
-
-  ;; TODO: Should rtags be used for all c-modes?
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (setq-local eldoc-documentation-function #'rtags-eldoc)))
-
-  (define-key c++-mode-map (kbd "M-.") #'rtags-find-symbol-at-point)
-
-  (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil) ; RTags creates more accurate overlays.
-    (setq-local flycheck-check-syntax-automatically nil) ; RTags runs checker manually?
-    )
-
-  ;; c-mode-common-hook is also called by c++-mode
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup))
 
 (add-hook 'c++-mode-hook
           (lambda ()
@@ -751,7 +667,11 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
                '("segerback\\.ninja\\'" "\\`root\\'" "/ssh:%h:"))
 
   ;; Use the same backup directory for tramp as for other files
-  (setq tramp-backup-directory-alist backup-directory-alist))
+  (setq tramp-backup-directory-alist backup-directory-alist
+        ;; Don't warn about autosave files in /tmp
+        tramp-allow-unsafe-temporary-files t
+        ;; Faster than the default scp (according to Emacs wiki)
+        tramp-default-method "ssh"))
 
 (use-package undo-tree
   :ensure t
@@ -903,18 +823,8 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
  split-height-threshold nil
  split-width-threshold 120
  tab-always-indent 'complete ; Use tab to complete
- ;; Faster than the default scp (according to Emacs wiki)
- tramp-default-method "ssh"
  vc-follow-symlinks t ; Don't ask before following links
  )
-
-;; Make it possible to TRAMP-open /sudo:segerback.ninja:/dir/file
-(add-to-list 'tramp-default-proxies-alist
-             '("segerback\\.ninja\\'" "\\`root\\'" "/ssh:%h:"))
-
-;; Use the same backup directory for tramp as for other files
-(setq tramp-backup-directory-alist backup-directory-alist
-      tramp-allow-unsafe-temporary-files t) ; Don't warn about autosave files in /tmp
 
 (setq-default
  word-wrap t ; Make line wraps happen at word boundaries
@@ -947,18 +857,15 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
     (if (and wl-copy-process (process-live-p wl-copy-process))
         nil ; should return nil if we're the current paste owner
       (shell-command-to-string "wl-paste -n | tr -d \r")))
-  (setq interprogram-cut-function 'wl-copy)
-  (setq interprogram-paste-function 'wl-paste))
-
-(with-eval-after-load 'dired-x
-  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$")))
+  (setq interprogram-cut-function #'wl-copy)
+  (setq interprogram-paste-function #'wl-paste))
 
 ;;; Bindings
 ;; Similar to the variables set above. Some of these should be moved to
 ;; the configuration of their respective packages.
 
 (global-set-key (kbd "C-`") #'push-mark-no-activate) ; Push current position to mark ring
-(global-set-key (kbd "M-`") 'jump-to-mark) ; Pop last mark from mark ring and jump to it
+(global-set-key (kbd "M-`") #'jump-to-mark) ; Pop last mark from mark ring and jump to it
 (define-key global-map [remap exchange-point-and-mark]
   #'exchange-point-and-mark-no-activate) ; Don't change region activation state when swapping point and mark
 
@@ -967,16 +874,13 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 ;; Set up bindings to quickly open special files
 (bind-key* "C-c i" #'find-init-file)
 
-(global-set-key (kbd "C-x F") 'ido-sudo-find-file) ; Open file as root
-
 ;; Make it easier to use macro bindings when fn keys are default
-(global-set-key (kbd "M-<f4>") 'kmacro-end-or-call-macro)
-(global-set-key (kbd "<f5>") 'kmacro-start-macro-or-insert-counter)
+(global-set-key (kbd "M-<f4>") #'kmacro-end-or-call-macro)
+(global-set-key (kbd "<f5>") #'kmacro-start-macro-or-insert-counter)
 
-(global-set-key (kbd "C-c o") 'swap-windows)
-(define-key ctl-x-4-map "t" #'toggle-frame-split)
+(global-set-key (kbd "C-c o") #'window-swap-states)
 
-(global-set-key (kbd "C-w") 'kill-region-or-backward-word)
+(global-set-key (kbd "C-w") #'kill-region-or-backward-word)
 
 ;; Go to start and end of visual line instead of wrapped line
 (global-set-key (kbd "C-a")
@@ -998,7 +902,7 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;;; ** Hooks
 ;; Make sure dir-locals.el is reloaded if the major mode changes
-(add-hook 'after-change-major-mode-hook 'hack-local-variables)
+(add-hook 'after-change-major-mode-hook #'hack-local-variables)
 
 (add-hook 'prog-mode-hook
           (lambda ()
@@ -1007,16 +911,6 @@ Indended to be used for highlighting of only the visual line in hl-line mode"
 
 ;; Pop up emacs frame, gdb buffer and io buffer on error
 (add-hook 'gdb-stopped-functions #'focus-gdb-buffer-when-stopped)
-
-;; dired-x is required for dired-omit-mode
-(add-hook 'dired-mode-hook (lambda () (require 'dired-x)))
-
-(add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
-
-;; Do not use dired-omit-mode for 'recover-session'
-(defadvice recover-session (around disable-dired-omit-for-recover activate)
-  (let ((dired-omit-mode nil))
-    ad-do-it))
 
 ;; dash - list utilities
 (use-package dash
